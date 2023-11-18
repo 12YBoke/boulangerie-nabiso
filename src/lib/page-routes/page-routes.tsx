@@ -1,5 +1,5 @@
 import { AppLinks } from "@/types/app-links";
-import { BookUser, CandlestickChart, Coins, Landmark, PackageCheck, PackageOpen, Presentation, Shield, Zap } from "lucide-react";
+import { BookUser, CandlestickChart, Coins, Landmark, PackageCheck, PackageOpen, Presentation, Settings, Shield, Zap } from "lucide-react";
 
 export const AsideRoutes: AppLinks[] = [
   {
@@ -70,6 +70,11 @@ export const AsideRoutes: AppLinks[] = [
         baseUrl: '/Archives',
         Icon: PackageOpen
       },
+      {
+        title: 'Configuration',
+        baseUrl: '/Setting',
+        Icon: Settings
+      }
     ]
   },
 ]
