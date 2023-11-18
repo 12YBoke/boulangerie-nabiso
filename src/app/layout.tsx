@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { Container } from '@/ui/components/container/container'
+import { AsideNav } from '@/routes/aside-nav'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,8 +17,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className='!scroll-smooth'>
+      <body className={inter.className}>
+        <Container className='h-[100vh] flex flex-row'>
+          <Container className='basis-1/6 overflow-hidden'>
+            <AsideNav/>
+          </Container>
+          <Container className='basis-5/6 overflow-auto bg-primary-50'>
+            {children}
+          </Container>
+        </Container>
+      </body>
     </html>
   )
 }
