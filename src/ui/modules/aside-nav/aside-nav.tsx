@@ -50,7 +50,7 @@ export const AsideNav = async() => {
       </Container>
       <Container className="p-4 flex flex-col items-center gap-4">
         <UserCard name={session?.user?.name!} extensions={extensions}/>
-        <SignOutButton className="w-full bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600 border-0 border-red-500"/>
+        <SignOutButton className="w-full bg-red-50 hover:bg-red-100 text-red-500 hover:text-red-600"/>
       </Container>
     </Container>
   )
