@@ -6,8 +6,8 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/shadcnui/ui/sheet"
-import { Button } from "@/ui/components/buttons/button"
+} from "@/shadcnui/components/ui/sheet"
+import { Button } from "@/ui/components/button/button"
 import { Container } from "@/ui/components/container/container"
 import { Typography } from "@/ui/components/typography/typography"
 
@@ -24,11 +24,11 @@ export const AddCashFlow = ({
         { 
           type === 'cash-in' ?
           <SheetTitle>
-            <Typography className="text-green-500" component="h3" variant="title-base">Ajouter une entrée d'argent</Typography>
+            <Typography className="text-green-500" variant="title-base">Ajouter une entrée d'argent</Typography>
           </SheetTitle>
           :
           <SheetTitle>
-            <Typography className="text-red-500" component="h3" variant="title-base">Ajouter une sortie d'argent</Typography>
+            <Typography className="text-red-500" variant="title-base">Ajouter une sortie d'argent</Typography>
           </SheetTitle>
         }
       </SheetHeader>

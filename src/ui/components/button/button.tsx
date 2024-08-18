@@ -1,9 +1,10 @@
 'use client'
-
-import { Button as _Button } from "@/shadcnui/ui/button"
+import { Button as ButtonShadcn } from "@/shadcnui/components/ui/button"
 import clsx from "clsx"
 import Link from "next/link"
 import { Loader2 } from "lucide-react"
+import Image, { StaticImageData } from "next/image"
+import { Typography } from "@/ui/components/typography/typography"
 
 interface Props {
   action?: Function
@@ -16,27 +17,30 @@ interface Props {
   className?: string
   children?: React.ReactNode
   disabled?: boolean
+  isLoading?: boolean
   buttonType?: 'link' | 'anchor' | 'action' | undefined
   outline?: 'outline' | 'default'
-  width?: 'lg' | 'default' | 'sm' | 'icon'
-  Icon?: React.ElementType
-  isloading?: boolean
+  width?: 'lg' | 'default' | 'sm'
+  Icon?: React.ElementType 
+  CustomIcon?: StaticImageData
+  type?: 'submit' | 'reset' | 'button'
 }
 
-export const  Button = ({
+export const Button = ({
   action = () => {},
   baseUrl,
   buttonType = undefined,
   children,
   className,
   disabled = false,
+  isLoading = false,
   Icon,
-  isloading = false,
+  CustomIcon,
   outline = 'default',
   variant = 'primary',
   width = 'default',
+  type = 'button'
 }: Props) => {
-
   let colorStyles: string = ''
   let txt_colorStyles: string = ''
 
@@ -46,8 +50,8 @@ export const  Button = ({
       txt_colorStyles = 'text-white'
       break;  
     case 'ghost':
-      colorStyles = 'g-gray-100 hover:bg-gray-50'
-      txt_colorStyles = 'text-primary-Default'
+      colorStyles = 'bg-white hover:bg-white'
+      txt_colorStyles = 'text-primary-Default hover:text-primary-600'
   }
 
   if (!disabled) {
@@ -65,11 +69,11 @@ export const  Button = ({
     } else {
       switch (variant) {
         case "primary":
-          colorStyles = 'bg-white hover:text-primary-Default hover:bg-primary-50 border-primary-Default'
+          colorStyles = 'bg-gray-50 hover:text-primary-Default hover:bg-primary-50 border-primary-Default'
           txt_colorStyles = 'text-primary-Default'
           break;
         case "secondary":
-          colorStyles = 'bg-white hover:text-secondary-Default hover:bg-secondary-50 border-secondary-Default'
+          colorStyles = 'bg-gray-50 hover:text-secondary-Default hover:bg-secondary-50 border-secondary-Default'
           txt_colorStyles = 'text-secondary-Default'
           break;
       }
@@ -89,11 +93,11 @@ export const  Button = ({
     } else {
       switch (variant) {
         case "primary":
-          colorStyles = 'bg-white border-primary-300'
+          colorStyles = 'bg-gray-50 border-primary-300'
           txt_colorStyles = 'text-primary-300'
           break;
         case "secondary":
-          colorStyles = 'bg-white border-secondary-300'
+          colorStyles = 'bg-gray-50 border-secondary-300'
           txt_colorStyles = 'text-secondary-300'
           break;
       }
@@ -108,107 +112,104 @@ export const  Button = ({
   
   const buttonLink = (
     <>
-      <_Button
+      <ButtonShadcn
         variant={outline}
         className={
           clsx(
-            children? "rounded" : "rounded-full",
+            children? "rounded-lg" : "rounded-full",
             colorStyles,
             txt_colorStyles,
             className
           )
         }
-        size={
-          children ?
-            width
-            :
-            'icon'
-        }
-        disabled= {isloading ? isloading : disabled}
+        size={width}
+        disabled = {isLoading ? isLoading : disabled}
         asChild
+        type={type}
       >
         <Link href={baseUrl!}>
           {
-            isloading ? 
-            <Loader2 className= {children? "mr-2 h-5 w-5 animate-spin":"h-5 w-5 animate-spin"}/>
+            isLoading ? 
+            <Loader2 className= {children? "mr-2 h-6 w-6 animate-spin":"h-6 w-6 animate-spin"}/>
             :
               Icon ?
-              <Icon className= {children? "mr-2 h-5 w-5":"h-5 w-5"}/>
+              <Icon className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
               :
-              null
+              CustomIcon ?
+              <Image src={CustomIcon} alt={CustomIcon + ' icon'} className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
+              :
+            null
           }
-          {children}
+          <Typography className="text-current">{children}</Typography>
         </Link>
-      </_Button>
+      </ButtonShadcn>
     </>
   )
 
   const buttonAction = (
     <>
-      <_Button
+      <ButtonShadcn
         variant={outline}
         className={
           clsx(
-            children? "rounded" : "rounded-full",
+            children? "rounded-lg" : "rounded-full",
             txt_colorStyles,
             colorStyles,
             className
           )
         }
-        size={
-          children ?
-            width
-            :
-            'icon'
-        }
-        disabled= {isloading ? isloading : disabled}
+        size={width}
+        disabled = {isLoading ? isLoading : disabled}
         onClick={handleClick}
+        type={type}
       >
         {
-          isloading ? 
-          <Loader2 className= {children? "mr-2 h-5 w-5 animate-spin":"h-5 w-5 animate-spin"}/>
+          isLoading ? 
+          <Loader2 className= {children? "mr-2 h-6 w-6 animate-spin":"h-6 w-6 animate-spin"}/>
           :
             Icon ?
-            <Icon className= {children? "mr-2 h-5 w-5" : "h-5 w-5"}/>
+            <Icon className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
             :
-            null
+            CustomIcon ?
+            <Image src={CustomIcon} alt={CustomIcon + ' icon'} className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
+            :
+          null
         }
-        {children}
-      </_Button>
+        <Typography className="text-current">{children}</Typography>
+      </ButtonShadcn>
     </>
   )
 
   const buttonDefault = (
     <>
-      <_Button
+      <ButtonShadcn
         variant={outline}
         className={
           clsx(
-            children? "rounded" : "rounded-full",
+            children? "rounded-lg" : "rounded-full",
             txt_colorStyles,
             colorStyles,
             className
           )
         }
-        size={
-          children ?
-            width
-            :
-            'icon'
-        }
-        disabled= {isloading ? isloading : disabled}
+        size={width}
+        disabled = {isLoading ? isLoading : disabled}
+        type={type}
       >
         {
-          isloading ? 
-          <Loader2 className= {children? "mr-2 h-5 w-5 animate-spin":"h-5 w-5 animate-spin"}/>
+          isLoading ? 
+          <Loader2 className= {children? "mr-2 h-6 w-6 animate-spin":"h-6 w-6 animate-spin"}/>
           :
             Icon ?
-            <Icon className= {children? "mr-2 h-5 w-5":"h-5 w-5"}/>
+            <Icon className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
             :
-            null
+            CustomIcon ?
+            <Image src={CustomIcon} alt={CustomIcon + ' icon'} className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
+            :
+          null
         }
-        {children}
-      </_Button>
+        <Typography className="text-current">{children}</Typography>
+      </ButtonShadcn>
     </>
   )
 

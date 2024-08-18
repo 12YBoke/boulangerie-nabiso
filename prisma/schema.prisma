@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String     @id @default(cuid())
+  name        String
+  salt        String
+  createdAt   DateTime   @default(now())
+  extensionId String
+  role        Role       @default(USER)
+  password    String
+  Customer    Customer[]
+  Extension   Extension  @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+  accounts    Account[]
+  sessions    Session[]
+ 
+  @@unique(name: "loginData", fields: [name, extensionId])
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+ 
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+ 
+model Session {
+  sessionToken      String          @unique
+  userId            String
+  expires           DateTime
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+ 
+model VerificationToken {
+  identifier        String
+  token             String
+  expires           DateTime
+ 
+  @@id([identifier, token])
+}
+
+model Card {
+  id            String        @id  @default(cuid())
+  cardNumber    Int
+  customerId    String
+  extensionId   String
+  dateCreated   DateTime      @default(now())
+  cardStatus    CardStatus    @default(ACTIVE)
+  paymentStatus PaymentStatus @default(PENDING)
+  Customer      Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Extension     Extension     @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+  Orders        Orders[]
+
+  @@unique([customerId, extensionId, id, cardNumber])
+}
+
+model Customer {
+  id             String    @id  @default(cuid())
+  customerNumber Int
+  extensionId    String
+  name           String
+  phoneNumber    String?
+  createdAt      DateTime  @default(now())
+  userId         String
+  Card           Card[]
+  Extension      Extension @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+  User           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Orders         Orders[]
+  @@unique([customerNumber, extensionId])
+}
+
+model Deliveries {
+  id             String   @id  @default(cuid())
+  orderId        String
+  amoutDelivered Float
+  dateDelivered  DateTime
+  Orders         Orders   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model Extension {
+  id       String     @id   @default(cuid())
+  name     String
+  Card     Card[]
+  Customer Customer[]
+  User     User[]
+}
+
+model Orders {
+  id                    String        @id   @default(cuid())
+  cardId                String?
+  amount                Float?
+  amountPaid            Float?
+  voucher               Float?
+  voucherPaid           Float?
+  dateOrdered           DateTime
+  CustomerId            String?
+  name                  String?
+  amountToBeDelivered   Float?
+  type                  OrderType     @default(ORDER)
+  Deliveries            Deliveries[]
+  Customer              Customer?     @relation(fields: [CustomerId], references: [id], onDelete: Cascade)
+  Card                  Card?         @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+enum CardStatus {
+  ACTIVE
+  CLOSED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum OrderType {
+  ORDER
+  CASH_SALE
+  CHARGE
+  DONATION
+  DAMAGE
+}

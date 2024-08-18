@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-main {
-  @apply p-4;
+.animate{
+  @apply transition-all duration-200 ease-in-out
 }

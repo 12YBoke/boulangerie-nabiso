@@ -3,22 +3,21 @@
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Calendar } from "@/shadcnui/ui/calendar"
+import { Calendar } from "@/shadcnui/components/ui/calendar"
 import {
-  Form,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/shadcnui/ui/form"
+} from "@/shadcnui/components/ui/form"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/shadcnui/ui/popover"
-import { Button } from "@/shadcnui/ui/button"
+} from "@/shadcnui/components/ui/popover"
+import { Button } from "@/shadcnui/components/ui/button"
 
 interface Props {
   control: any,
@@ -46,7 +45,7 @@ export const InputFieldDate = ({
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "w-[240px] pl-3 text-left font-normal rounded",
+                    "w-[240px] pl-3 text-left font-normal rounded-lg focus:ring-primary-Default",
                     !field.value && "text-muted-foreground"
                   )}
                 >
@@ -64,7 +63,7 @@ export const InputFieldDate = ({
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
-                disabled={(date) =>
+                disabled={(date : Date) =>
                   date > new Date() || date < new Date("1900-01-01")
                 }
                 initialFocus

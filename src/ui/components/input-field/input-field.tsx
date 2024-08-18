@@ -5,20 +5,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/shadcnui/ui/form"
-import { Input } from "@/shadcnui/ui/input"
+} from "@/shadcnui/components/ui/form"
+import { Textarea } from "@/shadcnui/components/ui/textarea"
+import { Input } from "@/shadcnui/components/ui/input"
+import { Container } from "../container/container"
+import clsx from "clsx"
+import { Typography } from "../typography/typography"
 
 interface Props {
-  control: any,
-  name: string,
-  label: string,
-  placeholder: string,
-  description? : string,
+  control: any
+  name: string
+  label?: string | React.ReactNode
+  placeholder?: string
+  description? : string | React.ReactNode
   type?: 
     'text'      | 
     'email'     |
     'file'      |
-    'password'  
+    'password'  |
+    'textarea'  |
+    'number'
+  autocompletion? : boolean
+  children? : React.ReactNode
+  required? : boolean
 }
 
 export const InputField = ({
@@ -27,7 +36,10 @@ export const InputField = ({
   label,
   placeholder,
   description,
-  type = 'text'
+  type = 'text',
+  autocompletion = true,
+  children,
+  required = true,
 }: Props) => {
   return (
     <FormField
@@ -35,9 +47,51 @@ export const InputField = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          {
+            label ?
+                required ?
+                <FormLabel>
+                  <Typography variant="title-sm" className="">
+                    {label}{' '}<span className="text-red-500">*</span>
+                  </Typography>
+                </FormLabel>
+                :
+                <FormLabel>
+                  <Typography variant="title-sm" className="">
+                    {label}
+                  </Typography>
+                </FormLabel>
+            :
+            null
+          }
           <FormControl>
-            <Input className="rounded" placeholder={placeholder} {...field} type={type}/>
+            <Container className="relative flex justify-center items-center">
+              {
+                type === "textarea" ?
+                <Textarea
+                  placeholder={placeholder}
+                  className={clsx(
+                    "resize-none rounded-lg h-48 focus:ring-primary-Default w-full",
+                    children? "px-12" : "",
+                    )}
+                  {...field}
+                />
+                :
+                <Input 
+                  className={clsx(
+                    "rounded-lg focus:ring-primary-Default w-full",
+                    children? "px-12" : "",
+                    )}
+                  placeholder={placeholder} {...field} type={type} name={name} id={name} autoComplete={"'" + {autocompletion} +"'"}
+                />
+              }
+              {
+                children?
+                  children
+                :
+                null
+              }
+            </Container>
           </FormControl>
           <FormDescription>
             {description}

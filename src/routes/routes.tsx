@@ -21,12 +21,7 @@ export const AsideRoutes: AppLinks[] = [
         Icon: Coins
       },
       {
-        title: 'Vente cash',
-        baseUrl: '/Cash-sale',
-        Icon: Zap
-      },
-      {
-        title: 'Livraison',
+        title: 'Livraisons',
         baseUrl: '/Delivery',
         Icon: PackageCheck
       },
@@ -36,8 +31,8 @@ export const AsideRoutes: AppLinks[] = [
     title: 'Gestion des cartes',
     children: [
       {
-        title: 'Cartes clients',
-        baseUrl: '/Customer-cards',
+        title: 'Clients',
+        baseUrl: '/Customer',
         Icon: BookUser
       },
     ]
@@ -50,26 +45,11 @@ export const AsideRoutes: AppLinks[] = [
         baseUrl: '/Financial-statement',
         Icon: CandlestickChart
       },
-      {
-        title: 'Paiement',
-        baseUrl: '/Payment',
-        Icon: Landmark
-      },
     ]
   },
   {
     title: 'Administration',
     children: [
-      {
-        title: 'Personnel',
-        baseUrl: '/Staff-management',
-        Icon: Shield
-      },
-      {
-        title: 'Archives',
-        baseUrl: '/Archives',
-        Icon: PackageOpen
-      },
       {
         title: 'Configuration',
         baseUrl: '/Setting',

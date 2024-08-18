@@ -1,5 +1,5 @@
 'use client'
-import { Sheet, SheetTrigger } from "@/shadcnui/ui/sheet"
+import { Sheet, SheetTrigger } from "@/shadcnui/components/ui/sheet"
 import { Container } from "@/ui/components/container/container"
 import { Typography } from "@/ui/components/typography/typography"
 import { ArrowDownRight, Plus } from "lucide-react"
@@ -13,12 +13,12 @@ export const Disburse = () => {
           <Container className="h-8 w-8 bg-red-500 rounded-full flex justify-center items-center">
             <ArrowDownRight className="text-white"/>
           </Container>
-          <Typography variant="title-sm" component="h4">Sorties</Typography>
+          <Typography variant="title-sm">Sorties</Typography>
         </Container>
         <Sheet>
           <SheetTrigger className="bg-primary-Default px-4 py-2 hover:bg-primary-600 flex flex-row text-white gap-2 items-center rounded">
             <Plus className="h-5 w-5"/>
-            <Typography component="p" variant="body-base">Ajouter une sortie</Typography>
+            <Typography variant="body-base">Ajouter une sortie</Typography>
           </SheetTrigger>
           <AddCashFlow type="disburse"/>
         </Sheet>

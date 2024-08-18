@@ -4,7 +4,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/shadcnui/ui/popover"
+} from "@/shadcnui/components/ui/popover"
 import { clsx } from "clsx"
 
 interface Props {

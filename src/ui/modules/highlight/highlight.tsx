@@ -11,13 +11,13 @@ export const Highlight = () => {
       )}
     >
       <Container className="bg-primary-400 text-white basis-1/4">
-        <Typography variant="title-sm" component="h4">Recettes brutes</Typography>
+        <Typography variant="title-sm">Recettes brutes</Typography>
       </Container>
       <Container className="bg-red-400 text-white basis-1/4">
-        <Typography variant="title-sm" component="h4">Recettes nettes</Typography>
+        <Typography variant="title-sm">Recettes nettes</Typography>
       </Container>
       <Container className="bg-secondary-400 text-white basis-2/4">
-        <Typography variant="title-sm" component="h4">Trésorerie disponible</Typography>
+        <Typography variant="title-sm">Trésorerie disponible</Typography>
       </Container>
     </Container>
   )

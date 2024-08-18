@@ -1,9 +1,11 @@
 import { clsx } from "clsx"
 
-interface Props {children: React.ReactNode
+interface Props {
+  children: React.ReactNode
   className?: string
-  component: 'h1' | 'h2' | 'h3' | 'h4' | 'p'
-  variant: 
+  ref?: any
+  variant?: 
+    'display'     |
     'title-lg'    | 
     'title-base'  | 
     'title-sm'    | 
@@ -18,13 +20,15 @@ export const Typography = ({
   variant = 'body-base',
   children, 
   className,
-  component : Component  = 'p'
+  ref
 }: Props) => {
   
   let variantStyles: string = ''
-  let colorStyles: string = ''
   
   switch (variant) {
+    case "display":
+      variantStyles = 'text-title-lg lg:text-display'
+      break;
     case "title-lg":
       variantStyles = 'text-title-lg'
       break;
@@ -34,8 +38,11 @@ export const Typography = ({
     case "title-sm":
       variantStyles = 'text-title-sm'
       break;
+    case "title-xs":
+      variantStyles = 'text-title-xs'
+      break;
     case "body-lg":
-      variantStyles = 'text-body-lg'
+      variantStyles = 'text-body-base lg:text-body-lg'
       break;
     case "body-base": // Default
       variantStyles = 'text-body-base'
@@ -46,15 +53,15 @@ export const Typography = ({
   }
 
   return (
-    <Component 
-      className={
-        clsx(
-          variantStyles,
-          className
-        )
+    <>
+      {
+        variant === 'display' ? <h1 ref={ref} className={clsx(variantStyles, className)}>{children}</h1>
+        : variant === 'title-lg' ? <h2 ref={ref} className={clsx(variantStyles, className)}>{children}</h2>
+        : variant === 'title-base' ? <h3 ref={ref} className={clsx(variantStyles, className)}>{children}</h3>
+        : variant === 'title-sm' ? <h4 ref={ref} className={clsx(variantStyles, className)}>{children}</h4>
+        : variant === 'title-xs' ? <h5 ref={ref} className={clsx(variantStyles, className)}>{children}</h5>
+        : <p ref={ref} className={clsx(variantStyles, className)}>{children}</p>
       }
-    >
-      {children}
-    </Component>
+    </>
   )
 }
