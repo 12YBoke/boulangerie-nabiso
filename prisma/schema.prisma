@@ -15,10 +15,11 @@ model User {
   extensionId String
   role        Role       @default(USER)
   password    String
-  Customer    Customer[]
-  Extension   Extension  @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+  customer    Customer[]
+  extension   Extension  @relation(fields: [extensionId], references: [id], onDelete: Cascade)
   accounts    Account[]
   sessions    Session[]
+  orders      Orders[]
  
   @@unique(name: "loginData", fields: [name, extensionId])
 }
@@ -70,10 +71,10 @@ model Card {
   dateCreated   DateTime      @default(now())
   cardStatus    CardStatus    @default(ACTIVE)
   paymentStatus PaymentStatus @default(PENDING)
-  Customer      Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  Extension     Extension     @relation(fields: [extensionId], references: [id], onDelete: Cascade)
-  Orders        Orders[]
-
+  customer      Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  extension     Extension     @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+  orders        Orders[]
+  
   @@unique([customerId, extensionId, id, cardNumber])
 }
 
@@ -85,10 +86,12 @@ model Customer {
   phoneNumber    String?
   createdAt      DateTime  @default(now())
   userId         String
-  Card           Card[]
-  Extension      Extension @relation(fields: [extensionId], references: [id], onDelete: Cascade)
-  User           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Orders         Orders[]
+  currentCardId  String
+  card           Card[]
+  extension      Extension @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders         Orders[]
+  
   @@unique([customerNumber, extensionId])
 }
 
@@ -97,14 +100,14 @@ model Deliveries {
   orderId        String
   amoutDelivered Float
   dateDelivered  DateTime
-  Orders         Orders   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orders         Orders   @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model Extension {
   id       String     @id   @default(cuid())
   name     String
-  Card     Card[]
-  Customer Customer[]
+  card     Card[]
+  customer Customer[]
   User     User[]
 }
 
@@ -119,10 +122,12 @@ model Orders {
   CustomerId            String?
   name                  String?
   amountToBeDelivered   Float?
+  userId                String
   type                  OrderType     @default(ORDER)
-  Deliveries            Deliveries[]
-  Customer              Customer?     @relation(fields: [CustomerId], references: [id], onDelete: Cascade)
-  Card                  Card?         @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  deliveries            Deliveries[]
+  customer              Customer?     @relation(fields: [CustomerId], references: [id], onDelete: Cascade)
+  card                  Card?         @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  user                  User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum CardStatus {

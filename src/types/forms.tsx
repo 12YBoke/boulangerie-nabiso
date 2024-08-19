@@ -46,15 +46,21 @@ export const LoginFormFieldsType = z.object({
 })
 
 export const OrdersFormFieldsType = z.object({
-  cardid: z.string(),
   amount: z.number(),
   amountpaid: z.number(),
   voucher: z.number(),
   voucherpaid: z.number(),
   dateordered: z.date(),
-  password: z.string(),
   customerid: z.string(),
   name: z.string(),
-  type: z.string(),
+  type: z.enum([
+      "ORDER",
+      "CASH_SALE",
+      "CHARGE",
+      "DONATION",
+      "DAMAGE"
+    ], {
+      required_error: "Veuillez selectionner une option",
+    }),
   amountDelivered: z.number(),
 })
