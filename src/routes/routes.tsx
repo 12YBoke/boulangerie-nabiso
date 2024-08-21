@@ -22,7 +22,7 @@ export const AsideRoutes: AppLinks[] = [
       },
       {
         title: 'Livraisons',
-        baseUrl: '/Delivery',
+        baseUrl: '/Deliveries',
         Icon: PackageCheck
       },
     ]
@@ -32,7 +32,7 @@ export const AsideRoutes: AppLinks[] = [
     children: [
       {
         title: 'Clients',
-        baseUrl: '/Customer',
+        baseUrl: '/Customers',
         Icon: BookUser
       },
     ]

@@ -28,6 +28,7 @@ interface Props {
   autocompletion? : boolean
   children? : React.ReactNode
   required? : boolean
+  disabled? : boolean
 }
 
 export const InputField = ({
@@ -39,7 +40,8 @@ export const InputField = ({
   type = 'text',
   autocompletion = true,
   children,
-  required = true,
+  required = false,
+  disabled = false
 }: Props) => {
   return (
     <FormField
@@ -69,6 +71,7 @@ export const InputField = ({
               {
                 type === "textarea" ?
                 <Textarea
+                  disabled = {disabled}
                   placeholder={placeholder}
                   className={clsx(
                     "resize-none rounded-lg h-48 focus:ring-primary-Default w-full",
@@ -78,11 +81,20 @@ export const InputField = ({
                 />
                 :
                 <Input 
+                  disabled = {disabled}
                   className={clsx(
                     "rounded-lg focus:ring-primary-Default w-full",
                     children? "px-12" : "",
                     )}
-                  placeholder={placeholder} {...field} type={type} name={name} id={name} autoComplete={"'" + {autocompletion} +"'"}
+                  placeholder={placeholder} 
+                  {...field} 
+                  type={type} 
+                  name={name} 
+                  id={name}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    field.onChange(type === "number" ? parseInt(value) : value);
+                  }}
                 />
               }
               {

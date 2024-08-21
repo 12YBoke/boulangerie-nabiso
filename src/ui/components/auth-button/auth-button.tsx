@@ -3,7 +3,7 @@
 
 import useExtensionIdStore from "@/store/extension-id-store"
 import { Button } from "../button/button"
-import { LogIn, LogOut, Store, User, UserCircle2, Warehouse } from "lucide-react"
+import { LogIn, LogOut, UserCircle2, Warehouse } from "lucide-react"
 import { signOut } from "next-auth/react"
 import React from "react"
 import { Container } from "../container/container"
@@ -24,21 +24,15 @@ export const UserCard = ({ name, extensions }: Props) => {
   const currentExtension = extensionId ? extensions?.find((extension) => extension.id === extensionId) : null
   
   return(
-    <Container className="bg-emerald-400 w-full p-4 text-white rounded flex flex-col gap-2">
+    <Container className="bg-emerald-300 w-full p-4 text-white rounded-lg flex flex-col gap-1">
       <Container className="flex flex-row justify-center items-center">
-        <Container className="w-[20%]">
-          <UserCircle2 className="h-5 w-5"/>
-        </Container>
-        <Container className="w-[80%]">
+        <Container className="w-full">
           <Typography variant="title-sm">{name}</Typography>
         </Container>
       </Container>
       <Container className="flex flex-row justify-center items-center">
-        <Container className="w-[20%]">
-          <Warehouse className="h-5 w-5"/>
-        </Container>
-        <Container className="w-[80%]">
-          <Typography variant="title-sm">{currentExtension?.name}</Typography>
+        <Container className="w-full text-emerald-50">
+          <Typography variant="body-sm">{currentExtension?.name}</Typography>
         </Container>
       </Container>
     </Container>

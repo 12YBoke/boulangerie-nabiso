@@ -28,7 +28,7 @@ export const InputFieldRadio = ({
   name,
   label,
   description,
-  required = true,
+  required = false,
   items,
 }: Props) => {
   return (

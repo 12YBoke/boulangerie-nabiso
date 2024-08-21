@@ -32,7 +32,7 @@ interface Props {
   name: string,
   label?: string | React.ReactNode,
   description? : string | React.ReactNode,
-  items?: {
+  items: {
     label: string
     value: string
   }[]
@@ -49,7 +49,7 @@ export const InputFieldCombobox = ({
   description,
   items,
   children,
-  required = true,
+  required = false,
   placeholder,
 }: Props) => {
 
@@ -116,7 +116,7 @@ export const InputFieldCombobox = ({
                 <CommandList>
                   <CommandEmpty>Aucune données trouvées</CommandEmpty>
                   <CommandGroup>
-                    {items!.map((item) => (
+                    {items.map((item) => (
                       <CommandItem
                         value={item.label}
                         key={item.value}

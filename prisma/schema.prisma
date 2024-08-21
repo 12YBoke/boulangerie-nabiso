@@ -83,10 +83,9 @@ model Customer {
   customerNumber Int
   extensionId    String
   name           String
-  phoneNumber    String?
+  phoneNumber    String
   createdAt      DateTime  @default(now())
   userId         String
-  currentCardId  String
   card           Card[]
   extension      Extension @relation(fields: [extensionId], references: [id], onDelete: Cascade)
   user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)

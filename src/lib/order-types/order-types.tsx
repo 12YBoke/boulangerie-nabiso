@@ -19,6 +19,6 @@ export const OrderTypes : _OrderTypes[] = [
   },
   {
     value: "DAMAGE",
-    label: "Dégradés",
+    label: "Foutus",
   },
 ];

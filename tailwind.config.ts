@@ -32,28 +32,11 @@ const config: Config = {
           900: '#444764',
           950: '#2d2e3e',
         },
-      
-      
-        // surf
-        secondary:{
-          50: '#f1f8f2',
-          100: '#dcefdc',
-          200: '#bbdfbd',
-          300: '#87c38f',
-          400: '#5ea96b',
-          Default: '#3d8c4d',
-          600: '#2c6f3b',
-          700: '#235931',
-          800: '#1e4729',
-          900: '#193b22',
-          950: '#0d2113',
-        },
-       
         destructive: '#ff0035',
         // carnation
         accent: '#f2414c',
         white : '#ffffff',
-        black : '#393e41',
+        black : '#000',
         white_powder : '#fdfdfd'
       },
       fontSize: {

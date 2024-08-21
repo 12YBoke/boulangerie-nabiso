@@ -46,10 +46,10 @@ export const LoginFormFieldsType = z.object({
 })
 
 export const OrdersFormFieldsType = z.object({
-  amount: z.number(),
-  amountpaid: z.number(),
-  voucher: z.number(),
-  voucherpaid: z.number(),
+  amount: z.number().min(0, {message: "Le montant doit être supérieur ou égal à 0." }),
+  amountpaid: z.number().min(0, { message: "Le montant payé doit être supérieur ou égal à 0." }),
+  voucher: z.number().min(0, { message: "Le montant du B.P. doit être supérieur ou égal à 0." }),
+  voucherpaid: z.number().min(0, { message: "Le B.P.P. doit être supérieur ou égal à 0." }),
   dateordered: z.date(),
   customerid: z.string(),
   name: z.string(),
@@ -62,5 +62,20 @@ export const OrdersFormFieldsType = z.object({
     ], {
       required_error: "Veuillez selectionner une option",
     }),
-  amountDelivered: z.number(),
+  amountdelivered: z.number().min(0, { message: "Le montant livré doit être supérieur ou égal à 0." }),
+}).refine((data) => data.amountpaid <= data.amount, {
+  message: "Le montant payé doit être inférieur ou égal au montant total de la commande.",
+  path: ["amountpaid"],
+}).refine((data) => data.voucher === data.amount - data.amountpaid, {
+  message: "Le B.P. doit être égal à la différence entre le montant et le montant payé.",
+  path: ["voucher"],
+})
+
+export const RegisterCustomersFormFieldsType = z.object({
+  customernumber: z.number().min(0, { message: "Le numéro de client doit être supérieur ou égal à 0." }),
+  name: z.string().min(2, { message: "Le nom du client doit avoir au moins 2 caractères." }),
+  phonenumber: z.string()
+    .regex(new RegExp('^0(8|9)[0-9]{8}$'), {
+      message: "Veuillez entrer un numero de telephone valide"
+    }),
 })
