@@ -20,6 +20,7 @@ import Link from "next/link"
 import { signIn } from "next-auth/react";
 import { Options } from "@/types/options";
 import { InputFieldSelect } from "@/ui/components/input-field-select/input-field-select";
+import useExtensionIdStore from "@/store/extension-id-store"
 
 interface Props {
   extensions: Options[]
@@ -38,6 +39,7 @@ export const NewUserForm = ({ extensions }: Props) => {
       name: "",
     },
   });
+  const setExtensionId = useExtensionIdStore(state => state.setExtensionId);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -89,6 +91,8 @@ export const NewUserForm = ({ extensions }: Props) => {
           })
           stopLoading()
           router.refresh()
+          stopLoading()
+          setExtensionId(extensionid)
           router.push('/')
         } else {
           toast({
