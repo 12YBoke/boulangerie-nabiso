@@ -6,7 +6,7 @@ export async function POST (
 ) {
   const { name, phonenumber, customernumber, userfilteredid, userfilteredextensionid } = await req.json();
 
-  await prisma.customer.create({
+  const customer = await prisma.customer.create({
     data: { 
       name : name,
       phoneNumber : phonenumber,
@@ -14,8 +14,13 @@ export async function POST (
       userId : userfilteredid,
       extensionId : userfilteredextensionid,
     },
+    select: {
+      id: true,
+    },
   });
 
-  return NextResponse.json({ status: 200 });
+  const customerId = customer.id;
+
+  return NextResponse.json({customerId, status: 200 });
 
 }

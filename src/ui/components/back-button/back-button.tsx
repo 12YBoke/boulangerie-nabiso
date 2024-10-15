@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/ui/components/button/button"
-import { MoveLeft } from "lucide-react"
+import { ArrowLeft, MoveLeft } from "lucide-react"
 
 interface Props {
   backTo : string,
@@ -9,7 +9,7 @@ interface Props {
 export const BackButton = ({backTo} : Props) => {
   return(
     <>
-      <Button Icon={MoveLeft} variant="secondary" buttonType="link" baseUrl={backTo} className=""/>
+      <Button Icon={ArrowLeft} variant="primary" buttonType="link" baseUrl={backTo} className=""/>
     </>
   )
 }

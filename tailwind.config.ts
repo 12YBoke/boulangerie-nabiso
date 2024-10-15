@@ -42,25 +42,25 @@ const config: Config = {
       fontSize: {
         'display': ['4rem', {
           lineHeight: '100%',
-          fontWeight: '800'
+          fontWeight: '700'
         }],
-        'title-lg': ['2rem', {
+        'title-lg': ['1.5rem', {
           lineHeight: '100%',
-          fontWeight: '800'
+          fontWeight: '700'
         }],
-        'title-base': ['1.5rem', {
+        'title-base': ['1.2rem', {
           lineHeight: '100%',
-          fontWeight: '800'
+          fontWeight: '700'
         }],
         'title-sm': ['1rem', {
           lineHeight: '100%',
-          fontWeight: '600'
+          fontWeight: '700'
         }],
         'title-xs': ['0.75rem', {
           lineHeight: '100%',
           fontWeight: '600'
         }],
-        'body-lg': ['1.5rem', {
+        'body-lg': ['1.2rem', {
           lineHeight: '100%',
           fontWeight: '400'
         }],

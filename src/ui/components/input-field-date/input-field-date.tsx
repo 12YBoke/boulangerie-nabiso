@@ -48,7 +48,7 @@ export const InputFieldDate = ({
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "w-[240px] pl-3 text-left font-normal rounded-lg focus:ring-primary-Default",
+                    "w-full pl-3 text-left font-normal rounded-lg focus:ring-primary-Default",
                     !field.value && "text-muted-foreground"
                   )}
                 >

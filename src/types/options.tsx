@@ -1,7 +1,6 @@
-import React from "react"
 
 export interface Options {
-  id: string 
-  Icon?: React.ElementType
-  name?: string
+  value: string
+  label: string
+  currentCard?: string;
 }

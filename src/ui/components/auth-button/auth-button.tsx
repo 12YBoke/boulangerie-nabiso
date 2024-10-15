@@ -24,7 +24,7 @@ export const UserCard = ({ name, extensions }: Props) => {
   const currentExtension = extensionId ? extensions?.find((extension) => extension.id === extensionId) : null
   
   return(
-    <Container className="bg-emerald-300 w-full p-4 text-white rounded-lg flex flex-col gap-1">
+    <Container className="bg-emerald-500 w-full p-4 text-white rounded-lg flex flex-col gap-1">
       <Container className="flex flex-row justify-center items-center">
         <Container className="w-full">
           <Typography variant="title-sm">{name}</Typography>
@@ -61,7 +61,7 @@ export const SignOutButton = ({className}: Props) => {
     <Button 
       variant="primary"
       buttonType="action"
-      action = {() => { 
+      action = {async() => { 
         setExtensionId(''),
         signOut({ callbackUrl: '/' }) 
       }}

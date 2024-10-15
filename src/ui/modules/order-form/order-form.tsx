@@ -19,15 +19,23 @@ import { InputFieldCombobox } from "@/ui/components/input-field-combobox/input-f
 import { InputFieldRadio } from "@/ui/components/input-field-radio/input-field-radio";
 import { OrderTypes } from "@/lib/order-types/order-types";
 import { InputFieldDate } from "@/ui/components/input-field-date/input-field-date";
+import useStore from "@/hooks/useStore";
+import useExtensionIdStore from "@/store/extension-id-store";
 
 interface Props {
   customers: Options[]
-
+  users: {
+    id: string,
+    extensionId: string
+  }[]
 }
 
-export const OrderForm = ({ customers }: Props) => {
+export const OrderForm = ({ customers, users }: Props) => {
+  const extensionId = useStore(useExtensionIdStore, (state) => state.extensionId)
+  const currentUser = extensionId ? users.find(user => user.extensionId === extensionId) : null
   const { toast } = useToast();
   const router = useRouter();
+  const [currentCardId, setCurrentCardId] = useState<string | null>(null);
   const [isLoading, startLoading, stopLoading] = UseLoading();
   const [isReady, setIsReady] = useState(false);
   const form = useForm<z.infer<typeof OrdersFormFieldsType>>({
@@ -81,6 +89,12 @@ export const OrderForm = ({ customers }: Props) => {
     defaultValue: 0,
   });
 
+  useEffect(() => {
+    if (customerid !== "") {
+      const currentCustomer = customers.find(customer => customer.value === customerid)
+      setCurrentCardId(currentCustomer?.currentCard!)
+    }
+  }, [customerid, customers])
 
   useEffect(() => {
     if (type === "ORDER") {
@@ -125,16 +139,58 @@ export const OrderForm = ({ customers }: Props) => {
       amountdelivered
     } = values
 
+    const addOrder = await fetch(`/api/order`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        cardid: currentCardId,
+        amount,
+        amountpaid,
+        voucher,
+        voucherpaid,
+        dateordered,
+        customerid,
+        name,
+        type,
+        amountdelivered,
+        userid: currentUser?.id
+      }),
+    })
+
+    if(addOrder.status === 200) {
+      toast({
+        title: "Commande ajoutée",
+        description: 
+        <Typography variant="body-sm">
+          La commande a été ajoutée avec succès
+        </Typography>
+      })
+      router.refresh();
+      stopLoading();
+    } else {
+      toast({
+        title: "Erreur !",
+        description: 
+        <Typography variant="body-sm">
+          Une erreur s'est produite lors de l'ajout de la commande. Veuillez réessayer.
+        </Typography>
+      })
+      router.refresh();
+      stopLoading();
+    }
+    router.refresh();
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="relative flex flex-col gap-8">
-        <Container className="flex flex-row gap-8 w-full">
-          <Container  className="flex flex-row gap-4 basis-3/5">
+        <Container className="flex flex-row gap-4 w-full">
+          <Container  className="flex flex-row gap-4 basis-3/4">
             <Container className="flex flex-col gap-8 basis-1/2 border p-8 rounded-lg">
               <Typography variant="title-sm">Type de la commande</Typography>
-              {isReady ? "Pret" : "Pas du tout"}
               <Container>
                 <InputFieldRadio
                   control={form.control} 
@@ -160,7 +216,7 @@ export const OrderForm = ({ customers }: Props) => {
                       control={form.control} 
                       name={"customerid"} 
                       placeholder={"Selectionnez le client"} 
-                      items={[{label: "Extension 1", value: "1"}, {label: "Extension 2", value: "2"}, {label: "Extension 3", value: "3"}]}
+                      items={customers}
                     />
                   </Container>
                   <Container>
@@ -232,7 +288,7 @@ export const OrderForm = ({ customers }: Props) => {
               }
             </Container>
           </Container>
-          <Container className="flex flex-col justify-between basis-2/5 p-8 bg-primary-400 rounded-lg h-[78vh]">
+          <Container className="flex flex-col justify-between basis-1/4 p-8 bg-primary-400 rounded-lg h-[78vh]">
             <Container>
               <Typography variant="title-sm">Informations sur le client</Typography>
             </Container>

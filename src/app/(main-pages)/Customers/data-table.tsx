@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
         <div className="flex py-4 flex-col gap-4 md:flex-row justify-between">
           <div className="flex gap-4 flex-row">
             <Input
-              placeholder="Filtrez par N° client"
+              placeholder="Filtrez par N° du client"
               value={(table.getColumn("customerNumber")?.getFilterValue() as string) ?? ""}
               onChange={(event) =>
                 table.getColumn("customerNumber")?.setFilterValue(event.target.value)
@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
               type="number"
             />
             <Input
-              placeholder="Filtrez par nom"
+              placeholder="Filtrez par nom du client"
               value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
               onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
@@ -95,7 +95,7 @@ export function DataTable<TData, TValue>({
           <DialogTrigger asChild>
             <span className="flex flex-row py-2 px-4 cursor-pointer justify-center items-center bg-primary-Default animate rounded-lg hover:bg-primary-600 w-full md:w-auto text-white">
               <UserPlus className= "mr-2 h-6 w-6"/>
-              Ajouter un employé
+              Ajouter un client
             </span>
           </DialogTrigger>
         </div>
@@ -138,7 +138,7 @@ export function DataTable<TData, TValue>({
               ) : (
                 <TableRow>
                   <TableCell colSpan={columns.length} className="h-24 text-center">
-                    Aucun clients trouvées
+                    Aucun client trouvé
                   </TableCell>
                 </TableRow>
               )}
@@ -150,7 +150,7 @@ export function DataTable<TData, TValue>({
             variant="ghost"
             outline="outline"
             buttonType="action"
-            action={() => table.previousPage()}
+            action={async() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
             className="text-black rounded-lg cursor-pointer"
             Icon={MoveLeft}
@@ -159,7 +159,7 @@ export function DataTable<TData, TValue>({
             variant="ghost"
             outline="outline"
             buttonType="action"
-            action={() => table.nextPage()}
+            action={async() => table.nextPage()}
             disabled={!table.getCanNextPage()}
             className="text-black rounded-lg cursor-pointer"
             Icon={MoveRight}
@@ -169,7 +169,7 @@ export function DataTable<TData, TValue>({
       <DialogContent>
         <DialogHeader className="flex flex-col gap-4">
           <DialogTitle>
-            <Typography variant="title-lg">Ajouter un employé</Typography>
+            <Typography variant="title-lg">Ajouter un client</Typography>
           </DialogTitle>
           <DialogDescription className="h-full w-full">
             <AddCustomerForm userData={userData} />

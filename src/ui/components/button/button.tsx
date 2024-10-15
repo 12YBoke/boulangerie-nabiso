@@ -7,7 +7,8 @@ import Image, { StaticImageData } from "next/image"
 import { Typography } from "@/ui/components/typography/typography"
 
 interface Props {
-  action?: Function
+  action?: () => Promise<void>
+  target?: "_blank" | "_self"
   baseUrl?: string
   variant?: 
     'primary'                  |
@@ -20,14 +21,15 @@ interface Props {
   isLoading?: boolean
   buttonType?: 'link' | 'anchor' | 'action' | undefined
   outline?: 'outline' | 'default'
-  width?: 'lg' | 'default' | 'sm'
+  width?: 'default'
   Icon?: React.ElementType 
   CustomIcon?: StaticImageData
   type?: 'submit' | 'reset' | 'button'
 }
 
 export const Button = ({
-  action = () => {},
+  target = '_self',
+  action = async () => {},
   baseUrl,
   buttonType = undefined,
   children,
@@ -54,53 +56,27 @@ export const Button = ({
       txt_colorStyles = 'text-primary-Default hover:text-primary-600'
   }
 
-  if (!disabled) {
-    if (outline === 'default') {
-      switch (variant) {
-        case "primary": //Default
-          colorStyles = 'bg-primary-Default hover:bg-primary-600'
-          txt_colorStyles = 'text-white'
-          break;
-        case "secondary":
-          colorStyles = 'bg-secondary-Default hover:bg-secondary-600'
-          txt_colorStyles = 'text-white'
-          break;
-      }
-    } else {
-      switch (variant) {
-        case "primary":
-          colorStyles = 'bg-gray-50 hover:text-primary-Default hover:bg-primary-50 border-primary-Default'
-          txt_colorStyles = 'text-primary-Default'
-          break;
-        case "secondary":
-          colorStyles = 'bg-gray-50 hover:text-secondary-Default hover:bg-secondary-50 border-secondary-Default'
-          txt_colorStyles = 'text-secondary-Default'
-          break;
-      }
+  if (outline === 'default') {
+    switch (variant) {
+      case "primary": //Default
+        colorStyles = 'bg-primary-Default hover:bg-primary-400'
+        txt_colorStyles = 'text-white'
+        break;
+      case "secondary":
+        colorStyles = 'bg-secondary-Default hover:bg-secondary-400'
+        txt_colorStyles = 'text-white'
+        break;
     }
   } else {
-    if (outline === 'default') {
-      switch (variant) {
-        case "primary": //Default
-          colorStyles = 'bg-primary-200'
-          txt_colorStyles = 'text-primary-Default'
-          break;
-        case "secondary":
-          colorStyles = 'bg-secondary-200'
-          txt_colorStyles = 'text-secondary-Default'
-          break;
-      }
-    } else {
-      switch (variant) {
-        case "primary":
-          colorStyles = 'bg-gray-50 border-primary-300'
-          txt_colorStyles = 'text-primary-300'
-          break;
-        case "secondary":
-          colorStyles = 'bg-gray-50 border-secondary-300'
-          txt_colorStyles = 'text-secondary-300'
-          break;
-      }
+    switch (variant) {
+      case "primary":
+        colorStyles = 'bg-white hover:text-primary-Default hover:bg-white border-white hover:border-primary-Default border-2'
+        txt_colorStyles = 'text-primary-Default'
+        break;
+      case "secondary":
+        colorStyles = 'bg-gray-50 hover:text-secondary-Default hover:bg-white border-white border-secondary-Default border-2'
+        txt_colorStyles = 'text-secondary-Default'
+        break;
     }
   }
 
@@ -116,18 +92,19 @@ export const Button = ({
         variant={outline}
         className={
           clsx(
-            children? "rounded-lg" : "rounded-full",
+            "animate",
+            children? "rounded-md" : "rounded-full",
             colorStyles,
             txt_colorStyles,
             className
           )
         }
-        size={width}
+        size={children ? width : 'icon'}
         disabled = {isLoading ? isLoading : disabled}
         asChild
         type={type}
       >
-        <Link href={baseUrl!}>
+        <Link href={baseUrl!} target={target}>
           {
             isLoading ? 
             <Loader2 className= {children? "mr-2 h-6 w-6 animate-spin":"h-6 w-6 animate-spin"}/>
@@ -152,13 +129,14 @@ export const Button = ({
         variant={outline}
         className={
           clsx(
-            children? "rounded-lg" : "rounded-full",
+            "animate",
+            children? "rounded-md" : "rounded-full",
             txt_colorStyles,
             colorStyles,
             className
           )
         }
-        size={width}
+        size={children ? width : 'icon'}
         disabled = {isLoading ? isLoading : disabled}
         onClick={handleClick}
         type={type}
@@ -171,7 +149,7 @@ export const Button = ({
             <Icon className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
             :
             CustomIcon ?
-            <Image src={CustomIcon} alt={CustomIcon + ' icon'} className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
+            <Image src={CustomIcon} alt={CustomIcon + ' icon'} className={clsx(children? "mr-2 h-6 w-6":"h-6 w-6")}/>
             :
           null
         }
@@ -186,13 +164,14 @@ export const Button = ({
         variant={outline}
         className={
           clsx(
-            children? "rounded-lg" : "rounded-full",
+            "animate",
+            children? "rounded-md" : "rounded-full",
             txt_colorStyles,
             colorStyles,
             className
           )
         }
-        size={width}
+        size={children ? width : 'icon'}
         disabled = {isLoading ? isLoading : disabled}
         type={type}
       >
@@ -204,7 +183,7 @@ export const Button = ({
             <Icon className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
             :
             CustomIcon ?
-            <Image src={CustomIcon} alt={CustomIcon + ' icon'} className= {children? "mr-2 h-6 w-6":"h-6 w-6"}/>
+            <Image src={CustomIcon} alt={CustomIcon + ' icon'} className= {clsx(children? "mr-2 h-6 w-6":"h-6 w-6")}/>
             :
           null
         }

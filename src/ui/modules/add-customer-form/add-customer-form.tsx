@@ -61,12 +61,39 @@ export const AddCustomerForm = ({ userData } : Props) => {
     })
 
     if(addEmployee.status === 200) {
-      toast({
-        title: "Succès",
-        description: <Typography variant="body-sm">Un nouveau client a été ajoutée avec succès</Typography>,
+      const data = await addEmployee.json();
+
+      const addCard = await fetch(`/api/card`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cardnumber: 0,
+          customerid: data.customerId,
+          extensionid: filterUser[0].extensionId,
+        }),
       })
-      stopLoading()
-      router.refresh();
+
+      if(addCard.status === 200) {
+        toast({
+          title: "Succès",
+          description: <Typography variant="body-sm">Un nouveau client a été ajoutée avec succès</Typography>,
+        })
+        stopLoading()
+        router.refresh();
+      } else {
+        toast({
+          title: "Erreur !",
+          description: 
+          <Typography variant="body-sm">
+            Une erreur est survenue durant l'enregistrement du client. Veuillez recommencer l'opération.
+          </Typography>,
+        })
+        router.refresh();
+        stopLoading()
+      }
     } else {
       toast({
         title: "Erreur !",

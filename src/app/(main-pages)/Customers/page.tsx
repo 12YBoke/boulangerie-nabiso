@@ -41,7 +41,7 @@ export default async function Home()  {
   return (
     <main className="w-full flex flex-col">
       <Container className="w-full h-full flex flex-col gap-4 rounded">
-        <Typography variant="title-lg">Liste des employés</Typography>
+        <Typography variant="title-lg">Liste des clients</Typography>
         <DataTable columns={columns} data={data} userData={userData} />
       </Container>
     </main>
