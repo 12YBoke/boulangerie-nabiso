@@ -36,6 +36,7 @@ export const SignInForm = ({ extensions }: Props) => {
       name: "",
     },
   });
+
   const setExtensionId = useExtensionIdStore(state => state.setExtensionId);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -53,7 +54,7 @@ export const SignInForm = ({ extensions }: Props) => {
     if(loginRespose?.status === 200) {
       toast({
         title: "Connexion réussie",
-        description: "Content de vous revoir !",
+        description: `Content de vous revoir ! ${extensionid}`,
       })
       stopLoading()
       setExtensionId(extensionid)
@@ -62,7 +63,7 @@ export const SignInForm = ({ extensions }: Props) => {
       toast({
         variant: "destructive",
         title: "Une erreur est survenue",
-        description: <Typography variant="body-sm">Votre nom d'utilisateur ou votre mot de passe a été saisi incorrectement. Veuillez réessayer.</Typography>,
+        description: <Typography variant="body-sm"> Votre nom d'utilisateur ou votre mot de passe a été saisi incorrectement. Veuillez réessayer.</Typography>,
       })
       stopLoading()
     }

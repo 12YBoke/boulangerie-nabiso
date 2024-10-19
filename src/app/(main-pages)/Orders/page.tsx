@@ -2,9 +2,10 @@ import { Container } from "@/ui/components/container/container";
 import { Typography } from "@/ui/components/typography/typography";
 import { OrderForm } from "@/ui/modules/order-form/order-form";
 import { auth } from "@/auth"
+import prisma from "@/lib/prisma"
 
 export default async function Home() {
-  const customers = await prisma?.customer.findMany({
+  const customers = await prisma.customer.findMany({
     select : {
       id: true,
       name: true,
