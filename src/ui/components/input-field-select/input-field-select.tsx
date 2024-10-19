@@ -80,8 +80,8 @@ export const InputFieldSelect = ({
             </FormControl>
             <SelectContent className="max-h-[40vh] overflow-auto rounded-lg bg-white">
               {
-                options.map(({id, name, Icon}) => 
-                  <SelectItem key={id} value={id!} className="focus:bg-primary-50">{name}</SelectItem>
+                options.map(({value, label}) => 
+                  <SelectItem key={value} value={value!} className="focus:bg-primary-50">{label}</SelectItem>
                 )
               }
             </SelectContent>
