@@ -29,7 +29,10 @@ export default async function Home({ params } : { params: { id: string } }) {
               voucherPaid: true,
               dateOrdered: true,
               userId: true,
-              CustomerId: true
+              CustomerId: true,
+              name: true,
+              amountToBeDelivered: true,
+              type: true
             },
             orderBy: {
               dateOrdered: 'desc'

@@ -30,6 +30,9 @@ interface Props {
       dateOrdered: Date
       CustomerId: string | null
       userId: string
+      amountToBeDelivered: number | null
+      type: "ORDER" | "CASH_SALE" | "CHARGE" | "DONATION" | "DAMAGE"
+      name: string | null
     }[]
   }[]
 }

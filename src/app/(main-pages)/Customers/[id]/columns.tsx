@@ -5,6 +5,8 @@ import { Typography } from "@/ui/components/typography/typography"
 import { format } from "date-fns"
 import { fr } from "date-fns/locale"
 import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency"
+import { Container } from "@/ui/components/container/container"
+import { Update } from "./actions/update"
 // import { Delete } from "./actions/delete"
 
 // This type is used to define the shape of our data.
@@ -19,6 +21,9 @@ export type Order = {
   dateOrdered: Date | null
   CustomerId: string | null
   userId: string
+  name: string | null
+  amountToBeDelivered: number | null
+  type: "ORDER" | "CASH_SALE" | "CHARGE" | "DONATION" | "DAMAGE",
 }
 
 export const columns: ColumnDef<Order>[] = [
@@ -81,19 +86,22 @@ export const columns: ColumnDef<Order>[] = [
         </Typography>
       )
     }
-  }
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const order = row.original
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const order = row.original
  
-  //     return (
-  //       <Container className="flex flex-row gap-2 justify-end">
-  //         <Container>
-  //           <Delete id={order.id} name={order.name} />
-  //         </Container>
-  //       </Container>
-  //     )
-  //   },
-  // },
+      return (
+        <Container className="flex flex-row gap-2 justify-end">
+          <Container>
+            <Update order={order!} />
+          </Container>
+          {/* <Container>
+            <Delete id={order.id} name={order.name} />
+          </Container> */}
+        </Container>
+      )
+    },
+  },
 ]
