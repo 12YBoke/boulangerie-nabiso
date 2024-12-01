@@ -23,7 +23,7 @@ import {
 } from "@/shadcnui/components/ui/table";
 
 import { Button } from "@/ui/components/button/button";
-import { MoveLeft, MoveRight, Plus, UserPlus } from "lucide-react";
+import { MoveLeft, MoveRight, UserPlus } from "lucide-react";
 import { Typography } from "@/ui/components/typography/typography";
 import { Input } from "@/shadcnui/components/ui/input";
 import {
@@ -82,35 +82,28 @@ export function DataTable<TData, TValue>({
             <Input
               placeholder="Filtrez par N° du client"
               value={
-                (table
-                  .getColumn("customerNumber")
-                  ?.getFilterValue() as string) ?? ""
+                (table.getColumn("cardNumber")?.getFilterValue() as string) ??
+                ""
               }
               onChange={(event) =>
                 table
-                  .getColumn("customerNumber")
+                  .getColumn("cardNumber")
                   ?.setFilterValue(event.target.value)
               }
               className="w-full lg:w-auto rounded-lg focus:ring-primary-Default"
               type="number"
             />
             <Input
-              placeholder="Filtrez par nom du client"
+              placeholder="Filtrez par type"
               value={
-                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+                (table.getColumn("typeLabel")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table.getColumn("name")?.setFilterValue(event.target.value)
+                table.getColumn("typeLabel")?.setFilterValue(event.target.value)
               }
               className="w-full lg:w-auto rounded-lg focus:ring-primary-Default"
             />
           </div>
-          <DialogTrigger asChild>
-            <span className="flex flex-row py-2 px-4 cursor-pointer justify-center items-center bg-primary-Default animate rounded-lg hover:bg-primary-600 w-full md:w-auto text-white">
-              <UserPlus className="mr-2 h-6 w-6" />
-              Ajouter un client
-            </span>
-          </DialogTrigger>
         </div>
         <div className="rounded-lg border">
           <Table>
@@ -164,37 +157,7 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="ghost"
-            outline="outline"
-            buttonType="action"
-            action={async () => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="text-black rounded-lg cursor-pointer"
-            Icon={MoveLeft}
-          />
-          <Button
-            variant="ghost"
-            outline="outline"
-            buttonType="action"
-            action={async () => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className="text-black rounded-lg cursor-pointer"
-            Icon={MoveRight}
-          />
-        </div>
       </div>
-      <DialogContent>
-        <DialogHeader className="flex flex-col gap-4">
-          <DialogTitle>
-            <Typography variant="title-lg">Ajouter un client</Typography>
-          </DialogTitle>
-          <DialogDescription className="h-full w-full">
-            <AddCustomerForm userData={userData} />
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
     </Dialog>
   );
 }

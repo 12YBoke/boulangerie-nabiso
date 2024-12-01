@@ -1,42 +1,43 @@
-import prisma from '@/lib/prisma'
-import { Customer, columns } from "./columns"
-import { DataTable } from "./data-table"
-import { Container } from "@/ui/components/container/container"
-import { Typography } from "@/ui/components/typography/typography"
-import { auth } from '@/auth'
+import prisma from "@/lib/prisma";
+import { Customer, columns } from "./columns";
+import { DataTable } from "./data-table";
+import { Container } from "@/ui/components/container/container";
+import { Typography } from "@/ui/components/typography/typography";
+import { auth } from "@/auth";
+import { useCurrentExtension } from "@/hooks/use-current-extension";
 
-async function getData(): Promise<Customer[]> {
-  
+async function getData(extensionId: string): Promise<Customer[]> {
   const customers = await prisma?.customer.findMany({
-    select : {
+    where: { extensionId: extensionId },
+    select: {
       id: true,
       customerNumber: true,
       name: true,
       phoneNumber: true,
-      createdAt: true
+      createdAt: true,
     },
     orderBy: {
-      customerNumber: 'asc'
+      customerNumber: "asc",
     },
-  })
+  });
 
-  return customers
+  return customers;
 }
 
-export default async function Home()  {
-  const data = await getData()
-  const session = await auth()
+export default async function Home() {
+  const session = await auth();
 
   const userData = await prisma.user.findMany({
     where: {
-      name: session!.user!.name!,
+      id: session!.user!.id,
     },
     select: {
       id: true,
       extensionId: true,
-    }
-  })
+    },
+  });
 
+  const data = await getData(userData[0].extensionId!);
 
   return (
     <main className="w-full flex flex-col">
@@ -45,5 +46,5 @@ export default async function Home()  {
         <DataTable columns={columns} data={data} userData={userData} />
       </Container>
     </main>
-  )
+  );
 }

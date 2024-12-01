@@ -3,20 +3,20 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params: { id } } : { params: { id: string } }
+  { params: { id } }: { params: { id: string } }
 ) {
   await prisma.orders.delete({
     where: {
-      id: id
-    }
-  })
+      id: id,
+    },
+  });
 
   return NextResponse.json({ status: 200 });
 }
 
-export async function PATCH (
+export async function PATCH(
   req: Request,
-  { params: { id } } : { params: { id: string } }
+  { params: { id } }: { params: { id: string } }
 ) {
   const {
     cardid,
@@ -29,27 +29,27 @@ export async function PATCH (
     name,
     type,
     amountdelivered,
-    userid
+    userid,
   } = await req.json();
 
   await prisma.orders.update({
-    where : {
-      id : id
+    where: {
+      id: id,
     },
     data: {
-      cardId : cardid,
-      amount : amount,
-      amountPaid : amountpaid,
-      voucher : voucher,
-      voucherPaid : voucherpaid,
-      dateOrdered : dateordered,
-      CustomerId : customerid,
-      name : name,
-      type : type,
-      amountToBeDelivered : amountdelivered,
-      userId : userid
-    }
-  })
+      cardId: cardid,
+      amount: amount,
+      amountPaid: amountpaid,
+      voucher: voucher,
+      voucherPaid: voucherpaid,
+      dateOrdered: dateordered,
+      CustomerId: customerid,
+      name: name,
+      type: type,
+      amountToBeDelivered: amountdelivered,
+      userId: userid,
+    },
+  });
 
   return NextResponse.json({ status: 200 });
 }

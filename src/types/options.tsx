@@ -1,6 +1,5 @@
-
 export interface Options {
-  value: string
-  label: string
+  value: string;
+  label: string;
   currentCard?: string;
 }

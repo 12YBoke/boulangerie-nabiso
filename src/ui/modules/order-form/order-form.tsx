@@ -1,19 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
-'use client'
+"use client";
 
 import { useToast } from "@/shadcnui/components/ui/use-toast";
 import { OrdersFormFieldsType } from "@/types/forms";
-import { Container } from "@/ui/components/container/container"
-import { useRouter } from "next/navigation"
-import * as z from "zod"
+import { Container } from "@/ui/components/container/container";
+import { useRouter } from "next/navigation";
+import * as z from "zod";
 import { useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod";
 import UseLoading from "@/hooks/use-loading";
 import { useEffect, useState } from "react";
 import { Typography } from "@/ui/components/typography/typography";
 import { InputField } from "@/ui/components/input-field/input-field";
 import { Form } from "@/shadcnui/components/ui/form";
-import { Button } from "@/ui/components/button/button"
+import { Button } from "@/ui/components/button/button";
 import { Options } from "@/types/options";
 import { InputFieldCombobox } from "@/ui/components/input-field-combobox/input-field-combobox";
 import { InputFieldRadio } from "@/ui/components/input-field-radio/input-field-radio";
@@ -23,16 +23,21 @@ import useStore from "@/hooks/useStore";
 import useExtensionIdStore from "@/store/extension-id-store";
 
 interface Props {
-  customers: Options[]
+  customers: Options[];
   users: {
-    id: string,
-    extensionId: string
-  }[]
+    id: string;
+    extensionId: string;
+  }[];
 }
 
 export const OrderForm = ({ customers, users }: Props) => {
-  const extensionId = useStore(useExtensionIdStore, (state) => state.extensionId)
-  const currentUser = extensionId ? users.find(user => user.extensionId === extensionId) : null
+  const extensionId = useStore(
+    useExtensionIdStore,
+    (state) => state.extensionId
+  );
+  const currentUser = extensionId
+    ? users.find((user) => user.extensionId === extensionId)
+    : null;
   const { toast } = useToast();
   const router = useRouter();
   const [currentCardId, setCurrentCardId] = useState<string | null>(null);
@@ -41,15 +46,15 @@ export const OrderForm = ({ customers, users }: Props) => {
   const form = useForm<z.infer<typeof OrdersFormFieldsType>>({
     resolver: zodResolver(OrdersFormFieldsType),
     defaultValues: {
-      amount : 0,
-      amountpaid : 0,
-      voucher : 0,
-      voucherpaid : 0,
-      dateordered : new Date(),
-      customerid : "",
-      name : "",
-      type : "ORDER",
-      amountdelivered : 0,
+      amount: 0,
+      amountpaid: 0,
+      voucher: 0,
+      voucherpaid: 0,
+      dateordered: new Date(),
+      customerid: "",
+      name: "",
+      type: "ORDER",
+      amountdelivered: 0,
     },
   });
 
@@ -91,30 +96,32 @@ export const OrderForm = ({ customers, users }: Props) => {
 
   useEffect(() => {
     if (customerid !== "") {
-      const currentCustomer = customers.find(customer => customer.value === customerid)
-      setCurrentCardId(currentCustomer?.currentCard!)
+      const currentCustomer = customers.find(
+        (customer) => customer.value === customerid
+      );
+      setCurrentCardId(currentCustomer?.currentCard!);
     }
-  }, [customerid, customers])
+  }, [customerid, customers]);
 
   useEffect(() => {
     if (type === "ORDER") {
-      if ( customerid != "" ) {
-        if( amount > 0 || voucherpaid > 0) {
-          setIsReady(true)
+      if (customerid != "") {
+        if (amount > 0 || voucherpaid > 0) {
+          setIsReady(true);
         } else {
-          setIsReady(false)
+          setIsReady(false);
         }
       } else {
-        setIsReady(false)
+        setIsReady(false);
       }
     } else {
-      if ( name !== "" && amountdelivered > amount) {
-        setIsReady(true)
+      if (name !== "" && amountdelivered > amount) {
+        setIsReady(true);
       } else {
-        setIsReady(false)
+        setIsReady(false);
       }
     }
-  }, [type, customerid, form, name, amountdelivered, amount, voucherpaid])
+  }, [type, customerid, form, name, amountdelivered, amount, voucherpaid]);
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
@@ -136,8 +143,8 @@ export const OrderForm = ({ customers, users }: Props) => {
       customerid,
       name,
       type,
-      amountdelivered
-    } = values
+      amountdelivered,
+    } = values;
 
     const addOrder = await fetch(`/api/order`, {
       method: "POST",
@@ -145,7 +152,7 @@ export const OrderForm = ({ customers, users }: Props) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         cardid: currentCardId,
         amount,
         amountpaid,
@@ -156,28 +163,33 @@ export const OrderForm = ({ customers, users }: Props) => {
         name,
         type,
         amountdelivered,
-        userid: currentUser?.id
+        userid: currentUser?.id,
       }),
-    })
+    });
 
-    if(addOrder.status === 200) {
+    if (addOrder.status === 200) {
       toast({
         title: "Commande ajoutée",
-        description: 
-        <Typography variant="body-sm">
-          La commande a été ajoutée avec succès
-        </Typography>
-      })
-      router.refresh();
+        description: (
+          <Typography variant="body-sm">
+            La commande a été ajoutée avec succès
+          </Typography>
+        ),
+      });
       stopLoading();
+      form.reset();
+      router.refresh();
     } else {
       toast({
+        variant: "destructive",
         title: "Erreur !",
-        description: 
-        <Typography variant="body-sm">
-          Une erreur s'est produite lors de l'ajout de la commande. Veuillez réessayer.
-        </Typography>
-      })
+        description: (
+          <Typography variant="body-sm">
+            Une erreur s'est produite lors de l'ajout de la commande. Veuillez
+            réessayer.
+          </Typography>
+        ),
+      });
       router.refresh();
       stopLoading();
     }
@@ -186,118 +198,121 @@ export const OrderForm = ({ customers, users }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="relative flex flex-col gap-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="relative flex flex-col gap-8"
+      >
         <Container className="flex flex-row gap-4 w-full">
-          <Container  className="flex flex-row gap-4 basis-3/4">
-            <Container className="flex flex-col gap-8 basis-1/2 border p-8 rounded-lg">
-              <Typography variant="title-sm">Type de la commande</Typography>
-              <Container>
-                <InputFieldRadio
-                  control={form.control} 
-                  name={"type"} 
-                  items={OrderTypes}
-                />
-              </Container>
-              <Container>
-                <InputFieldDate
-                  control={form.control} 
-                  name={"dateordered"} 
-                  label={"Date de la commande"}
-                />
-              </Container>
+          <Container className="flex flex-col gap-8 basis-1/3 border p-8 rounded-lg">
+            <Typography variant="title-sm">Type de la commande</Typography>
+            <Container>
+              <InputFieldRadio
+                control={form.control}
+                name={"type"}
+                items={OrderTypes}
+              />
             </Container>
-            <Container className="flex flex-col gap-8 basis-1/2 border p-8 rounded-lg">
+            <Container>
+              <InputFieldDate
+                control={form.control}
+                name={"dateordered"}
+                label={"Date de la commande"}
+              />
+            </Container>
+          </Container>
+          <Container className="flex flex-col justify-between basis-2/3 border p-8 rounded-lg h-[78vh]">
+            <Container className="flex flex-col gap-8">
               <Typography variant="title-sm">Détails de la commande</Typography>
-              {
-              type === "ORDER" ?
-                <Container className="flex flex-col gap-2">
+              {type === "ORDER" ? (
+                <Container className="flex flex-col gap-4">
                   <Container>
-                    <InputFieldCombobox 
-                      control={form.control} 
-                      name={"customerid"} 
-                      placeholder={"Selectionnez le client"} 
+                    <InputFieldCombobox
+                      control={form.control}
+                      name={"customerid"}
+                      placeholder={"Selectionnez le client"}
                       items={customers}
                     />
                   </Container>
-                  <Container>
-                    <InputField
-                      placeholder="Montant de la commande"
-                      control={form.control}
-                      name="amount"
-                      type={"number"}
-                      label="Montant de la commande"
-                    />
-                  </Container>
-                  <Container>
-                    <InputField
-                      placeholder="Montant payé"
-                      control={form.control}
-                      name="amountpaid"
-                      type={"number"}
-                      label="Montant payé"
-                    />
-                  </Container>
-                  <Container>
-                    <InputField
-                      placeholder="B.P."
-                      control={form.control}
-                      name="voucher"
-                      type={"number"}
-                      label="B.P."
-                      disabled
-                    />
-                  </Container>
-                  <Container>
-                    <InputField
-                      placeholder="B.P.P."
-                      control={form.control}
-                      name="voucherpaid"
-                      type={"number"}
-                      label="B.P.P."
-                    />
+                  <Container className="grid grid-cols-2 gap-4">
+                    <Container>
+                      <InputField
+                        placeholder="Montant de la commande"
+                        control={form.control}
+                        name="amount"
+                        type={"number"}
+                        label="Montant de la commande"
+                      />
+                    </Container>
+                    <Container>
+                      <InputField
+                        placeholder="Montant payé"
+                        control={form.control}
+                        name="amountpaid"
+                        type={"number"}
+                        label="Montant payé"
+                      />
+                    </Container>
+                    <Container>
+                      <InputField
+                        placeholder="B.P."
+                        control={form.control}
+                        name="voucher"
+                        type={"number"}
+                        label="B.P."
+                        disabled
+                      />
+                    </Container>
+                    <Container>
+                      <InputField
+                        placeholder="B.P.P."
+                        control={form.control}
+                        name="voucherpaid"
+                        type={"number"}
+                        label="B.P.P."
+                      />
+                    </Container>
                   </Container>
                 </Container>
-              :
-                <Container className="flex flex-col gap-2">
+              ) : (
+                <Container className="flex flex-col gap-4">
                   <Container>
-                    <InputField 
-                      control={form.control} 
+                    <InputField
+                      control={form.control}
                       name={"name"}
                       placeholder={"Nom du client"}
                     />
                   </Container>
-                  <Container>
-                    <InputField
-                      placeholder="Montant de la commande"
-                      control={form.control}
-                      name="amount"
-                      type={"number"}
-                      label="Montant de la commande"
-                    />
-                  </Container>
-                  <Container>
-                    <InputField
-                      placeholder="Montant à livrer"
-                      control={form.control}
-                      name="amountdelivered"
-                      type={"number"}
-                      label="Montant à livrer"
-                    />
+                  <Container className="grid grid-cols-2 gap-4">
+                    <Container>
+                      <InputField
+                        placeholder="Montant de la commande"
+                        control={form.control}
+                        name="amount"
+                        type={"number"}
+                        label="Montant de la commande"
+                      />
+                    </Container>
+                    <Container>
+                      <InputField
+                        placeholder="Montant à livrer"
+                        control={form.control}
+                        name="amountdelivered"
+                        type={"number"}
+                        label="Montant à livrer"
+                      />
+                    </Container>
                   </Container>
                 </Container>
-              }
-            </Container>
-          </Container>
-          <Container className="flex flex-col justify-between basis-1/4 p-8 bg-primary-400 rounded-lg h-[78vh]">
-            <Container>
-              <Typography variant="title-sm">Informations sur le client</Typography>
+              )}
             </Container>
             <Container>
-              <Button disabled={!isReady} variant="ghost" type="submit" className="w-full hover:bg-primary-50" isLoading={isLoading}>Valider la commande</Button>
+              <Button disabled={!isReady} type="submit" isLoading={isLoading}>
+                Valider la commande
+              </Button>
             </Container>
           </Container>
         </Container>
       </form>
     </Form>
-  )
-}
+  );
+};

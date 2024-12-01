@@ -1,50 +1,57 @@
 /* eslint-disable react/no-unescaped-entities */
-'use client'
+"use client";
 
-import { Container } from "@/ui/components/container/container"
-import { Form } from "@/shadcnui/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { useForm } from "react-hook-form"
-import { RegisterCustomersFormFieldsType } from "@/types/forms"
-import { InputField } from "@/ui/components/input-field/input-field"
-import { Typography } from "@/ui/components/typography/typography"
-import { Button } from "@/ui/components/button/button"
-import { useToast } from "@/shadcnui/components/ui/use-toast"
-import { useRouter } from "next/navigation"
-import UseLoading from "@/hooks/use-loading"
-import { ListOrdered, Smartphone, User, UserPlus } from "lucide-react"
-import useExtensionIdStore from "@/store/extension-id-store"
-import useStore from "@/hooks/useStore"
+import { Container } from "@/ui/components/container/container";
+import { Form } from "@/shadcnui/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { RegisterCustomersFormFieldsType } from "@/types/forms";
+import { InputField } from "@/ui/components/input-field/input-field";
+import { Typography } from "@/ui/components/typography/typography";
+import { Button } from "@/ui/components/button/button";
+import { useToast } from "@/shadcnui/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import UseLoading from "@/hooks/use-loading";
+import { ListOrdered, Smartphone, User, UserPlus } from "lucide-react";
+import useExtensionIdStore from "@/store/extension-id-store";
+import useStore from "@/hooks/useStore";
 
 interface Props {
-  userData : {
-    id: string
-    extensionId: string
-  }[]
+  userData: {
+    id: string;
+    extensionId: string;
+  }[];
 }
 
-export const AddCustomerForm = ({ userData } : Props) => {
-  const router = useRouter()
-  const { toast } = useToast()
-  const [ isLoading , startLoading, stopLoading ] = UseLoading()
+export const AddCustomerForm = ({ userData }: Props) => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isLoading, startLoading, stopLoading] = UseLoading();
   const form = useForm<z.infer<typeof RegisterCustomersFormFieldsType>>({
     resolver: zodResolver(RegisterCustomersFormFieldsType),
     defaultValues: {
-      name: '',
-      phonenumber: '',
+      name: "",
+      phonenumber: "",
       customernumber: 0,
     },
-  })
+  });
 
-  const extensionid = useStore(useExtensionIdStore, (state) => state.extensionId)
-  
-  const filterUser = userData.filter(user => user.extensionId === extensionid)
-  
-  async function onSubmit(values: z.infer<typeof RegisterCustomersFormFieldsType>) {
-    startLoading()
-    const { name, phonenumber, customernumber } = values
-    
+  const extensionid = useStore(
+    useExtensionIdStore,
+    (state) => state.extensionId
+  );
+
+  const filterUser = userData.filter(
+    (user) => user.extensionId === extensionid
+  );
+
+  async function onSubmit(
+    values: z.infer<typeof RegisterCustomersFormFieldsType>
+  ) {
+    startLoading();
+    const { name, phonenumber, customernumber } = values;
+
     const addEmployee = await fetch(`/api/customer`, {
       method: "POST",
       credentials: "include",
@@ -52,15 +59,15 @@ export const AddCustomerForm = ({ userData } : Props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name, 
-        phonenumber, 
+        name,
+        phonenumber,
         customernumber,
-        userfilteredid : filterUser[0].id,
-        userfilteredextensionid : filterUser[0].extensionId,
+        userfilteredid: filterUser[0].id,
+        userfilteredextensionid: filterUser[0].extensionId,
       }),
-    })
+    });
 
-    if(addEmployee.status === 200) {
+    if (addEmployee.status === 200) {
       const data = await addEmployee.json();
 
       const addCard = await fetch(`/api/card`, {
@@ -74,55 +81,71 @@ export const AddCustomerForm = ({ userData } : Props) => {
           customerid: data.customerId,
           extensionid: filterUser[0].extensionId,
         }),
-      })
+      });
 
-      if(addCard.status === 200) {
+      if (addCard.status === 200) {
         toast({
           title: "Succès",
-          description: <Typography variant="body-sm">Un nouveau client a été ajoutée avec succès</Typography>,
-        })
-        stopLoading()
+          description: (
+            <Typography variant="body-sm">
+              Un nouveau client a été ajoutée avec succès
+            </Typography>
+          ),
+        });
+        stopLoading();
         router.refresh();
       } else {
         toast({
+          variant: "destructive",
           title: "Erreur !",
-          description: 
-          <Typography variant="body-sm">
-            Une erreur est survenue durant l'enregistrement du client. Veuillez recommencer l'opération.
-          </Typography>,
-        })
+          description: (
+            <Typography variant="body-sm">
+              Une erreur est survenue durant l'enregistrement du client.
+              Veuillez recommencer l'opération.
+            </Typography>
+          ),
+        });
         router.refresh();
-        stopLoading()
+        stopLoading();
       }
     } else {
       toast({
+        variant: "destructive",
         title: "Erreur !",
-        description: 
-        <Typography variant="body-sm">
-          Une erreur est survenue durant l'enregistrement du client. Veuillez recommencer l'opération.
-        </Typography>,
-      })
+        description: (
+          <Typography variant="body-sm">
+            Une erreur est survenue durant l'enregistrement du client. Veuillez
+            recommencer l'opération.
+          </Typography>
+        ),
+      });
       router.refresh();
-      stopLoading()
+      stopLoading();
     }
     router.refresh();
   }
 
   const UserIcon = () => {
-    return <User className="w-5 h-5 absolute left-4 cursor-pointer text-neutral-300"/>
-  }
+    return (
+      <User className="w-5 h-5 absolute left-4 cursor-pointer text-neutral-300" />
+    );
+  };
 
   const NumberIcon = () => {
-    return <ListOrdered className="w-5 h-5 absolute left-4 cursor-pointer text-neutral-300"/>
-  }
+    return (
+      <ListOrdered className="w-5 h-5 absolute left-4 cursor-pointer text-neutral-300" />
+    );
+  };
 
   const PhoneIcon = () => {
-    return <Smartphone className="w-5 h-5 absolute left-4 cursor-pointer text-neutral-300"/>
-  }
+    return (
+      <Smartphone className="w-5 h-5 absolute left-4 cursor-pointer text-neutral-300" />
+    );
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <Container className="flex flex-col gap-4">
           <Container className="w-full">
             <Container className="w-full">
@@ -149,16 +172,18 @@ export const AddCustomerForm = ({ userData } : Props) => {
                 placeholder="Contact du client"
                 control={form.control}
                 name="phonenumber"
-              > 
+              >
                 {PhoneIcon()}
               </InputField>
             </Container>
           </Container>
           <Container className="w-full">
-            <Button Icon={UserPlus} type="submit" isLoading={isLoading}>Ajouter</Button>
+            <Button Icon={UserPlus} type="submit" isLoading={isLoading}>
+              Ajouter
+            </Button>
           </Container>
         </Container>
       </form>
     </Form>
-  )
-}
+  );
+};

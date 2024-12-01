@@ -1,35 +1,35 @@
 /* eslint-disable react/no-unescaped-entities */
-'use client'
+"use client";
 
 import { useToast } from "@/shadcnui/components/ui/use-toast";
 import { OrdersFormFieldsType } from "@/types/forms";
-import { Container } from "@/ui/components/container/container"
-import { useRouter } from "next/navigation"
-import * as z from "zod"
+import { Container } from "@/ui/components/container/container";
+import { useRouter } from "next/navigation";
+import * as z from "zod";
 import { useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod";
 import UseLoading from "@/hooks/use-loading";
 import { useEffect, useState } from "react";
 import { Typography } from "@/ui/components/typography/typography";
 import { InputField } from "@/ui/components/input-field/input-field";
 import { Form } from "@/shadcnui/components/ui/form";
-import { Button } from "@/ui/components/button/button"
+import { Button } from "@/ui/components/button/button";
 
 interface Props {
   order: {
-    id: string,
-    cardId: string | null,
-    amount: number | null,
-    amountPaid: number | null,
-    voucher: number | null,
-    voucherPaid: number | null,
-    dateOrdered: Date | null,
-    CustomerId: string | null,
-    userId: string,
-    name: string | null,
-    amountToBeDelivered: number | null,
-    type: "ORDER" | "CASH_SALE" | "CHARGE" | "DONATION" | "DAMAGE",
-  }
+    id: string;
+    cardId: string | null;
+    amount: number | null;
+    amountPaid: number | null;
+    voucher: number | null;
+    voucherPaid: number | null;
+    dateOrdered: Date | null;
+    CustomerId: string | null;
+    userId: string;
+    name: string | null;
+    amountToBeDelivered: number | null;
+    type: "ORDER" | "CASH_SALE" | "CHARGE" | "DONATION" | "DAMAGE";
+  };
 }
 
 export const UpdateOrderForm = ({ order }: Props) => {
@@ -40,15 +40,15 @@ export const UpdateOrderForm = ({ order }: Props) => {
   const form = useForm<z.infer<typeof OrdersFormFieldsType>>({
     resolver: zodResolver(OrdersFormFieldsType),
     defaultValues: {
-      amount : order.amount!,
-      amountpaid : order.amountPaid!,
-      voucher : order.voucher!,
-      voucherpaid : order.voucherPaid!,
-      type : order.type,
-      amountdelivered : order.amountToBeDelivered!,
-      dateordered : order.dateOrdered!,
-      customerid : order.CustomerId!,
-      name : order.name!,
+      amount: order.amount!,
+      amountpaid: order.amountPaid!,
+      voucher: order.voucher!,
+      voucherpaid: order.voucherPaid!,
+      type: order.type,
+      amountdelivered: order.amountToBeDelivered!,
+      dateordered: order.dateOrdered!,
+      customerid: order.CustomerId!,
+      name: order.name!,
     },
   });
 
@@ -78,19 +78,19 @@ export const UpdateOrderForm = ({ order }: Props) => {
 
   useEffect(() => {
     if (type === "ORDER") {
-      if( amount > 0 || voucherpaid > 0) {
-        setIsReady(true)
+      if (amount > 0 || voucherpaid > 0) {
+        setIsReady(true);
       } else {
-        setIsReady(false)
+        setIsReady(false);
       }
     } else {
-      if ( amountdelivered > amount) {
-        setIsReady(true)
+      if (amountdelivered > amount) {
+        setIsReady(true);
       } else {
-        setIsReady(false)
+        setIsReady(false);
       }
     }
-  }, [type, form, amountdelivered, amount, voucherpaid])
+  }, [type, form, amountdelivered, amount, voucherpaid]);
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
@@ -112,8 +112,8 @@ export const UpdateOrderForm = ({ order }: Props) => {
       customerid,
       name,
       type,
-      amountdelivered
-    } = values
+      amountdelivered,
+    } = values;
 
     const updateOrder = await fetch(`/api/order/${order.id}`, {
       method: "PATCH",
@@ -134,26 +134,30 @@ export const UpdateOrderForm = ({ order }: Props) => {
         userid: order.userId,
         cardid: order.cardId,
       }),
-    })
+    });
 
-    if(updateOrder.status === 200) {
+    if (updateOrder.status === 200) {
       toast({
         title: "Commande modifiée",
-        description: 
-        <Typography variant="body-sm">
-          La commande a été modifiée avec succès
-        </Typography>
-      })
+        description: (
+          <Typography variant="body-sm">
+            La commande a été modifiée avec succès
+          </Typography>
+        ),
+      });
       router.refresh();
       stopLoading();
     } else {
       toast({
+        variant: "destructive",
         title: "Erreur !",
-        description: 
-        <Typography variant="body-sm">
-          Une erreur s'est produite lors de la modification de la commande. Veuillez réessayer.
-        </Typography>
-      })
+        description: (
+          <Typography variant="body-sm">
+            Une erreur s'est produite lors de la modification de la commande.
+            Veuillez réessayer.
+          </Typography>
+        ),
+      });
       router.refresh();
       stopLoading();
     }
@@ -162,11 +166,13 @@ export const UpdateOrderForm = ({ order }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="relative flex flex-col gap-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="relative flex flex-col gap-8"
+      >
         <Container className="flex flex-col gap-4 w-full">
           <Container className="gap-8">
-            {
-            type === "ORDER" ?
+            {type === "ORDER" ? (
               <Container className="gap-2 grid grid-cols-2">
                 <Container>
                   <InputField
@@ -206,11 +212,11 @@ export const UpdateOrderForm = ({ order }: Props) => {
                   />
                 </Container>
               </Container>
-            :
+            ) : (
               <Container className="flex flex-col gap-2">
                 <Container>
-                  <InputField 
-                    control={form.control} 
+                  <InputField
+                    control={form.control}
                     name={"name"}
                     placeholder={"Nom du client"}
                   />
@@ -234,13 +240,15 @@ export const UpdateOrderForm = ({ order }: Props) => {
                   />
                 </Container>
               </Container>
-            }
+            )}
           </Container>
           <Container>
-            <Button disabled={!isReady} type="submit" isLoading={isLoading}>Valider la commande</Button>
+            <Button disabled={!isReady} type="submit" isLoading={isLoading}>
+              Valider la commande
+            </Button>
           </Container>
         </Container>
       </form>
     </Form>
-  )
-}
+  );
+};

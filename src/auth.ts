@@ -1,12 +1,12 @@
-import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import Credentials from "next-auth/providers/credentials"
-import { verifyPassword } from "./lib/password-to-salt"
-import prisma from "@/lib/prisma"
+import NextAuth from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import Credentials from "next-auth/providers/credentials";
+import { verifyPassword } from "./lib/password-to-salt";
+import prisma from "@/lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
-    strategy: 'jwt'
+    strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -16,7 +16,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         extensionId: {},
         password: {},
       },
-      
+
       async authorize(credentials) {
         if (credentials) {
           const user = await prisma.user.findUnique({
@@ -24,19 +24,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               loginData: {
                 name: credentials.name as string,
                 extensionId: credentials.extensionId as string,
-              }
+              },
             },
           });
-          
+
           if (user) {
-            if (verifyPassword(credentials.password as string, user.password!, user.salt!)) {
-              return user
+            if (
+              verifyPassword(
+                credentials.password as string,
+                user.password!,
+                user.salt!
+              )
+            ) {
+              return user;
             }
-            return null
+            return null;
           }
-          return null
+          return null;
         }
-        return null
+        return null;
       },
     }),
   ],
@@ -48,5 +54,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     verifyRequest: "/verify-request",
     newUser: "/new-user",
   },
-  
-})
+
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        // User is available during sign-in
+        token.id = user.id;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      session.user.id = token.id as string;
+      return session;
+    },
+  },
+});

@@ -97,7 +97,7 @@ model Customer {
 model Deliveries {
   id             String   @id  @default(cuid())
   orderId        String
-  amoutDelivered Float
+  amountDelivered Float
   dateDelivered  DateTime
   orders         Orders   @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Command,
   CommandEmpty,
@@ -6,7 +6,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/shadcnui/components/ui/command"
+} from "@/shadcnui/components/ui/command";
 import {
   Form,
   FormControl,
@@ -15,32 +15,32 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/shadcnui/components/ui/form"
-import clsx from "clsx"
-import { Check, ChevronsUpDown } from "lucide-react"
+} from "@/shadcnui/components/ui/form";
+import clsx from "clsx";
+import { Check, ChevronsUpDown } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/shadcnui/components/ui/popover"
-import { Typography } from "../typography/typography"
-import { Container } from "../container/container"
-import { Button as ShadBtn } from "@/shadcnui/components/ui/button"
+} from "@/shadcnui/components/ui/popover";
+import { Typography } from "../typography/typography";
+import { Container } from "../container/container";
+import { Button as ShadBtn } from "@/shadcnui/components/ui/button";
 
 interface Props {
-  control: any,
-  name: string,
-  label?: string | React.ReactNode,
-  description? : string | React.ReactNode,
+  control: any;
+  name: string;
+  label?: string | React.ReactNode;
+  description?: string | React.ReactNode;
   items: {
-    label: string
-    value: string
-  }[]
-  children? : React.ReactNode
-  required? : boolean
-  placeholder? : string
+    label: string;
+    value: string;
+    customerNumber?: number;
+  }[];
+  children?: React.ReactNode;
+  required?: boolean;
+  placeholder?: string;
 }
-
 
 export const InputFieldCombobox = ({
   control,
@@ -52,30 +52,27 @@ export const InputFieldCombobox = ({
   required = false,
   placeholder,
 }: Props) => {
-
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormItem>
-          {
-            label ?
-              required ?
+          {label ? (
+            required ? (
               <FormLabel>
                 <Typography variant="title-sm" className="">
-                  {label}{' '}<span className="text-red-500">*</span>
+                  {label} <span className="text-red-500">*</span>
                 </Typography>
               </FormLabel>
-              :
+            ) : (
               <FormLabel>
                 <Typography variant="title-sm" className="">
                   {label}
                 </Typography>
               </FormLabel>
-            :
-            null
-          }
+            )
+          ) : null}
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -84,33 +81,22 @@ export const InputFieldCombobox = ({
                   role="combobox"
                   className={clsx(
                     "w-full relative justify-between hover:bg-none bg-white",
-                    !field.value && "text-muted-foreground",
+                    !field.value && "text-muted-foreground"
                   )}
                 >
-                  <span
-                    className={clsx(
-                      children && "pl-8",
-                    )}
-                  >
-                    {
-                      field.value
-                      ? items!.find(
-                          (item) => item.value === field.value
-                        )?.label
-                      : placeholder ? placeholder : ""
-                    }
+                  <span className={clsx(children && "pl-8")}>
+                    {field.value
+                      ? items!.find((item) => item.value === field.value)?.label
+                      : placeholder
+                      ? placeholder
+                      : ""}
                   </span>
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  {
-                    children?
-                      children
-                    :
-                    null
-                  }
+                  {children ? children : null}
                 </ShadBtn>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0">    
+            <PopoverContent className="w-full p-0">
               <Command>
                 <CommandInput placeholder={placeholder} />
                 <CommandList>
@@ -140,12 +126,10 @@ export const InputFieldCombobox = ({
               </Command>
             </PopoverContent>
           </Popover>
-          <FormDescription>
-            {description}
-          </FormDescription>
+          <FormDescription>{description}</FormDescription>
           <FormMessage />
         </FormItem>
       )}
     />
-  )
-}
+  );
+};
