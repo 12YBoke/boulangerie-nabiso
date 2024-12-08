@@ -59,6 +59,14 @@ export const columns: ColumnDef<Deliveries>[] = [
     },
   },
   {
+    accessorKey: "typeLabel",
+    header: "Type",
+    cell: ({ row }) => {
+      const delivery = row.original;
+      return <span className="text-body-base">{delivery.typeLabel}</span>;
+    },
+  },
+  {
     accessorKey: "dateOrdered",
     header: "Date",
     cell: ({ row }) => {
