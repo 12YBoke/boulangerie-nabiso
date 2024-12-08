@@ -15,5 +15,6 @@ export interface _DeliveryTypes {
   }[];
   cardId: string | null;
   cardNumber: number | null;
+  customerId: string | null;
   totaldelivered: number;
 }

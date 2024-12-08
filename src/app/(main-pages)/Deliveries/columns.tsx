@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
 import clsx from "clsx";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -29,6 +30,7 @@ export interface Deliveries {
   }[];
   cardId: string | null;
   cardNumber: number | null;
+  customerId: string | null;
   totaldelivered: number;
 }
 
@@ -39,18 +41,21 @@ export const columns: ColumnDef<Deliveries>[] = [
     cell: ({ row }) => {
       const delivery = row.original;
       return (
-        <span className="text-body-base">
-          {delivery.cardNumber! || truncateText(delivery.name, 10)}
-        </span>
+        <>
+          {delivery.cardNumber ? (
+            <Link
+              href={`Customers/${delivery.customerId}`}
+              className="hover:underline underline-offset-2"
+            >
+              <span className="text-body-base">{delivery.cardNumber!}</span>
+            </Link>
+          ) : (
+            <span className="text-body-base">
+              {truncateText(delivery.name, 10)}
+            </span>
+          )}
+        </>
       );
-    },
-  },
-  {
-    accessorKey: "typeLabel",
-    header: "Type",
-    cell: ({ row }) => {
-      const delivery = row.original;
-      return <span className="text-body-base">{delivery.typeLabel}</span>;
     },
   },
   {
@@ -98,8 +103,10 @@ export const columns: ColumnDef<Deliveries>[] = [
     cell: ({ row }) => {
       const delivery = row.original;
       return (
-        <span className="text-body-base">
-          {FormatNumberWithCurrency(delivery.amount || 0)}
+        <span className="text-body-base px-2 py-1 rounded-lg bg-primary-100 text-primary-800">
+          {delivery.type === "ORDER"
+            ? FormatNumberWithCurrency(delivery.amountPaid || 0)
+            : FormatNumberWithCurrency(delivery.amount || 0)}
         </span>
       );
     },

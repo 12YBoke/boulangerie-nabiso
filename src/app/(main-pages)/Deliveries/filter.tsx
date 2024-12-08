@@ -10,16 +10,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { _DeliveryTypes } from "@/types/_delivery-types";
+import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
+import { fr } from "date-fns/locale";
 
 interface Props {
   data: _DeliveryTypes[];
-  userData: {
-    id: string;
-    extensionId: string;
-  }[];
 }
 
-export const Filter = ({ userData, data }: Props) => {
+export const Filter = ({ data }: Props) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date()); // Initialise avec la date actuelle
   const [filteredData, setFilteredData] = useState<_DeliveryTypes[]>([]);
@@ -78,16 +76,34 @@ export const Filter = ({ userData, data }: Props) => {
 
   useEffect(() => {
     const date = selectedDate || new Date();
-    const filteredData = data.filter((order) => {
-      return (
-        format(order.dateOrdered, "yyyy-MM-dd") ===
-          format(date, "yyyy-MM-dd") ||
-        (order.deliveries.length > 0 &&
-          order.deliveries[0].dateDelivered &&
-          format(order.deliveries[0].dateDelivered, "yyyy-MM-dd") ===
-            format(date, "yyyy-MM-dd"))
-      );
-    });
+    const formattedDate = format(date, "yyyy-MM-dd");
+
+    // Filtrage des commandes
+    const filteredData: _DeliveryTypes[] = data
+      .map((order) => {
+        // Filtrage des livraisons par date sélectionnée
+        const filteredDeliveries = order.deliveries.filter(
+          (delivery) =>
+            delivery?.dateDelivered &&
+            format(delivery.dateDelivered, "yyyy-MM-dd") === formattedDate
+        );
+
+        // Vérification si la commande ou ses livraisons correspondent
+        const isOrderSelected =
+          format(order.dateOrdered, "yyyy-MM-dd") === formattedDate ||
+          filteredDeliveries.length > 0;
+
+        if (isOrderSelected) {
+          // Retourne la commande avec les livraisons filtrées
+          return {
+            ...order,
+            deliveries: filteredDeliveries,
+          };
+        }
+
+        return null; // Si la commande ne correspond pas, retourne null
+      })
+      .filter((order): order is _DeliveryTypes => order !== null); // Type Guard pour éliminer les `null`
 
     setFilteredData(filteredData);
   }, [data, selectedDate]);
@@ -95,26 +111,241 @@ export const Filter = ({ userData, data }: Props) => {
   const orderByDay = (day: Date) => {
     return (
       data.filter((order) => {
-        return (
-          format(order.dateOrdered, "yyyy-MM-dd") ===
-            format(day, "yyyy-MM-dd") ||
-          (order.deliveries.length > 0 &&
-            order.deliveries[0].dateDelivered &&
-            format(order.deliveries[0].dateDelivered, "yyyy-MM-dd") ===
-              format(day, "yyyy-MM-dd"))
-        );
+        // Vérifie si la date de commande correspond
+        const isOrderDateMatching =
+          format(order.dateOrdered, "yyyy-MM-dd") === format(day, "yyyy-MM-dd");
+
+        // Vérifie si au moins une livraison correspond à la date
+        const isDeliveryDateMatching =
+          order.deliveries.length > 0 &&
+          order.deliveries.some(
+            (delivery) =>
+              delivery.dateDelivered &&
+              format(delivery.dateDelivered, "yyyy-MM-dd") ===
+                format(day, "yyyy-MM-dd")
+          );
+
+        // Retourne true si une des deux conditions est remplie
+        return isOrderDateMatching || isDeliveryDateMatching;
       }).length > 0
     );
   };
 
+  console.log(
+    filteredData
+      .filter((data) => {
+        return data.deliveries.length > 0;
+      })
+      .map((data) => data.deliveries)
+      .flat()
+  );
+
   return (
     <Container>
-      <Container className="flex flex-row justify-between">
-        <Container>
-          <Typography variant="title-lg">Liste des livraisons</Typography>
-          rapport
+      <Container className="flex flex-row justify-between ">
+        <Container className="flex flex-col gap-8 w-[60%]">
+          <Container>
+            <Typography variant="title-lg">Liste des livraisons</Typography>
+          </Container>
+          <Container className="flex flex-row gap-2 items-center">
+            <Typography>Date</Typography>
+            <Typography className="bg-primary-200 p-2 rounded-lg text-primary-800">
+              {format(selectedDate, "dd-MM-yyyy", { locale: fr })}
+            </Typography>
+          </Container>
+          <Container className="flex flex-col gap-4">
+            <Container
+              className="
+          grid grid-cols-3 gap-4 
+          *:bg-primary-200 *:flex *:flex-col *:gap-4 *:p-4 *:rounded-lg *:w-full
+          "
+            >
+              <Container className="flex flex-col gap-2">
+                <Typography className="text-primary-800">
+                  Total montant payé
+                </Typography>
+                <Typography variant="title-lg" className="text-primary-800">
+                  {FormatNumberWithCurrency(
+                    filteredData
+                      .filter((data) => {
+                        return data.type === "ORDER";
+                      })
+                      .filter((data) => {
+                        return (
+                          format(data.dateOrdered!, "yyyy-MM-dd") ===
+                          format(selectedDate, "yyyy-MM-dd")
+                        );
+                      })
+                      .reduce((acc, curr) => {
+                        return acc + (curr.amountPaid || 0);
+                      }, 0) +
+                      filteredData
+                        .filter((data) => {
+                          return data.type != "ORDER";
+                        })
+                        .filter((data) => {
+                          return (
+                            format(data.dateOrdered!, "yyyy-MM-dd") ===
+                            format(selectedDate, "yyyy-MM-dd")
+                          );
+                        })
+                        .reduce((acc, curr) => {
+                          return acc + (curr.amount || 0);
+                        }, 0)
+                  )}
+                </Typography>
+              </Container>
+              <Container className="flex flex-col gap-2">
+                <Typography className="text-primary-800">
+                  Total commande
+                </Typography>
+                <Typography variant="title-lg" className="text-primary-800">
+                  {FormatNumberWithCurrency(
+                    filteredData
+                      .filter((data) => {
+                        return data.type === "ORDER";
+                      })
+                      .filter((data) => {
+                        return (
+                          format(data.dateOrdered!, "yyyy-MM-dd") ===
+                          format(selectedDate, "yyyy-MM-dd")
+                        );
+                      })
+                      .reduce((acc, curr) => {
+                        return acc + (curr.amount || 0);
+                      }, 0) +
+                      filteredData
+                        .filter((data) => {
+                          return data.type != "ORDER";
+                        })
+                        .filter((data) => {
+                          return (
+                            format(data.dateOrdered!, "yyyy-MM-dd") ===
+                            format(selectedDate, "yyyy-MM-dd")
+                          );
+                        })
+                        .reduce((acc, curr) => {
+                          return acc + (curr.amountToBeDelivered || 0);
+                        }, 0)
+                  )}
+                </Typography>
+              </Container>
+              <Container className="flex flex-col gap-2">
+                <Typography className="text-primary-800">
+                  Total livraison
+                </Typography>
+                <Typography variant="title-lg" className="text-primary-800">
+                  {FormatNumberWithCurrency(
+                    filteredData
+                      .filter((data) => {
+                        return data.deliveries.length === 0;
+                      })
+                      .filter((data) => {
+                        return data.type === "ORDER";
+                      })
+                      .reduce((acc, curr) => {
+                        return acc + (curr.amount || 0);
+                      }, 0) +
+                      filteredData
+                        .filter((data) => {
+                          return data.deliveries.length === 0;
+                        })
+                        .filter((data) => {
+                          return data.type != "ORDER";
+                        })
+                        .reduce((acc, curr) => {
+                          return acc + (curr.amountToBeDelivered || 0);
+                        }, 0) +
+                      filteredData
+                        .filter((data) => {
+                          return data.deliveries.length > 0;
+                        })
+                        .map((data) => data.deliveries)
+                        .flat()
+                        .reduce((acc, curr) => {
+                          return acc + (curr.amountDelivered || 0);
+                        }, 0)
+                  )}
+                </Typography>
+              </Container>
+            </Container>
+            <Container
+              className="
+          grid grid-cols-4 gap-4 *:flex *:flex-col *:gap-4 *:p-4 *:rounded-lg *:w-full
+          "
+            >
+              <Container className="flex flex-col gap-2 bg-emerald-100">
+                <Typography className="text-emerald-800">
+                  Nombre de commande
+                </Typography>
+                <Typography variant="title-lg" className="text-emerald-800">
+                  {
+                    filteredData.filter((data) => {
+                      return (
+                        format(data.dateOrdered, "yyyy-MM-dd") ===
+                        format(selectedDate, "yyyy-MM-dd")
+                      );
+                    }).length
+                  }
+                </Typography>
+              </Container>
+              <Container className="flex flex-col gap-2 bg-emerald-100">
+                <Typography className="text-emerald-800">
+                  Commandes avec carte
+                </Typography>
+                <Typography variant="title-lg" className="text-emerald-800">
+                  {
+                    filteredData
+                      .filter((data) => {
+                        return (
+                          format(data.dateOrdered, "yyyy-MM-dd") ===
+                          format(selectedDate, "yyyy-MM-dd")
+                        );
+                      })
+                      .filter((data) => {
+                        return data.type === "ORDER";
+                      }).length
+                  }
+                </Typography>
+              </Container>
+              <Container className="flex flex-col gap-2 bg-emerald-100">
+                <Typography className="text-emerald-800">
+                  Commandes sans carte
+                </Typography>
+                <Typography variant="title-lg" className="text-emerald-800">
+                  {
+                    filteredData
+                      .filter((data) => {
+                        return (
+                          format(data.dateOrdered, "yyyy-MM-dd") ===
+                          format(selectedDate, "yyyy-MM-dd")
+                        );
+                      })
+                      .filter((data) => {
+                        return data.type != "ORDER";
+                      }).length
+                  }
+                </Typography>
+              </Container>
+              <Container className="flex flex-col gap-2 bg-red-200">
+                <Typography className="text-red-800">
+                  Commandes précédentes
+                </Typography>
+                <Typography variant="title-lg" className="text-red-800">
+                  {
+                    filteredData.filter((data) => {
+                      return (
+                        format(data.dateOrdered, "yyyy-MM-dd") !=
+                        format(selectedDate, "yyyy-MM-dd")
+                      );
+                    }).length
+                  }
+                </Typography>
+              </Container>
+            </Container>
+          </Container>
         </Container>
-        <Container className="p-4 border rounded-md">
+        <Container className="w-[36%] p-4 border rounded-md">
           <Container className="text-center mb-2 flex justify-between items-center">
             <Button
               onClick={handlePreviousMonth}
@@ -193,7 +424,7 @@ export const Filter = ({ userData, data }: Props) => {
         </Container>
       </Container>
       <Container>
-        <DataTable columns={columns} data={filteredData} userData={userData} />
+        <DataTable columns={columns} data={filteredData} />
       </Container>
     </Container>
   );

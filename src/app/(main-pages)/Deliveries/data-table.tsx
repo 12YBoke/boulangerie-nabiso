@@ -22,33 +22,18 @@ import {
   TableRow,
 } from "@/shadcnui/components/ui/table";
 
-import { Button } from "@/ui/components/button/button";
-import { MoveLeft, MoveRight, UserPlus } from "lucide-react";
 import { Typography } from "@/ui/components/typography/typography";
 import { Input } from "@/shadcnui/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/shadcnui/components/ui/dialog";
-import { AddCustomerForm } from "@/ui/modules/add-customer-form/add-customer-form";
+import { Dialog } from "@/shadcnui/components/ui/dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  userData: {
-    id: string;
-    extensionId: string;
-  }[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  userData,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -150,7 +135,7 @@ export function DataTable<TData, TValue>({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    Aucun client trouvé
+                    Aucune commande trouvée
                   </TableCell>
                 </TableRow>
               )}

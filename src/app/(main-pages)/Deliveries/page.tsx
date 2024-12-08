@@ -30,6 +30,7 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
       },
       customer: {
         select: {
+          id: true,
           customerNumber: true,
         },
       },
@@ -65,6 +66,7 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
     ),
     cardId: order.card ? order.card.id : null,
     cardNumber: order.customer ? order.customer.customerNumber : null,
+    customerId: order.customer ? order.customer.id : null,
   }));
 
   return orders;
@@ -88,7 +90,7 @@ export default async function Home() {
   return (
     <main className="w-full flex flex-col">
       <Container className="w-full h-full flex flex-col gap-4 rounded">
-        <Filter userData={userData} data={data} />
+        <Filter data={data} />
       </Container>
     </main>
   );
