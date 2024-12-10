@@ -73,9 +73,12 @@ export const OrdersFormFieldsType = z
     dateordered: z.date(),
     customerid: z.string(),
     name: z.string(),
-    type: z.enum(["ORDER", "CASH_SALE", "CHARGE", "DONATION", "DAMAGE"], {
-      required_error: "Veuillez selectionner une option",
-    }),
+    type: z.enum(
+      ["ORDER", "CASH_SALE", "CHARGE", "DONATION", "DAMAGE", "BURN"],
+      {
+        required_error: "Veuillez selectionner une option",
+      }
+    ),
     amountdelivered: z
       .number()
       .min(0, { message: "Le montant livré doit être supérieur ou égal à 0." }),

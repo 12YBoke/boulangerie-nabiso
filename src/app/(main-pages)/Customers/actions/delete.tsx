@@ -1,27 +1,29 @@
 /* eslint-disable react/no-unescaped-entities */
-import { 
+import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger, 
-} from "@/shadcnui/components/ui/dialog"
+  DialogTrigger,
+} from "@/shadcnui/components/ui/dialog";
 import { Typography } from "@/ui/components/typography/typography";
 import { DeleteCustomerForm } from "@/ui/modules/delete-customer-form/delete-customer-form";
 
 import { Trash } from "lucide-react";
 
 interface Props {
-  id: string
-  name: string
+  id: string;
+  name: string;
 }
 
-export const Delete = ({ id, name } : Props) => {
-
+export const Delete = ({ id, name }: Props) => {
   return (
     <Dialog>
-      <DialogTrigger asChild className="cursor-pointer hover:bg-red-100 animate flex flex-row items-center text-red-500 rounded-full bg-red-50">
+      <DialogTrigger
+        asChild
+        className="cursor-pointer hover:bg-red-100 animate flex flex-row items-center text-red-500 rounded-full bg-red-50"
+      >
         <span className="p-2">
           <Trash className="h-5 w-5" />
         </span>
@@ -31,11 +33,13 @@ export const Delete = ({ id, name } : Props) => {
           <DialogTitle>
             <Typography variant="title-lg">Suppression</Typography>
           </DialogTitle>
-          <DialogDescription className="h-full w-full gap-4 flex flex-row">
-            <DeleteCustomerForm id={id} name={name} />
+          <DialogDescription className="h-full w-full">
+            Vous étes sur le point de supprimer les informations de cet
+            utilisateur.
           </DialogDescription>
+          <DeleteCustomerForm id={id} name={name} />
         </DialogHeader>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

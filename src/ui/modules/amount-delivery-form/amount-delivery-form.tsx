@@ -19,9 +19,15 @@ interface Props {
   orderId: string;
   first?: boolean;
   limit: number;
+  orderDate: Date;
 }
 
-export const AmountDeliveredForm = ({ orderId, first, limit }: Props) => {
+export const AmountDeliveredForm = ({
+  orderId,
+  first,
+  limit,
+  orderDate,
+}: Props) => {
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, startLoading, stopLoading] = UseLoading();
@@ -49,11 +55,18 @@ export const AmountDeliveredForm = ({ orderId, first, limit }: Props) => {
 
       if (first) {
         // Si `first` est activé, retourner la date actuelle
-        return now; // Objet Date actuel
+        if (currentHour < 12) {
+          return orderDate; // Objet Date actuel
+        } else {
+          // Ajouter un jour pour obtenir la date de demain
+          const tomorrow = new Date(now);
+          tomorrow.setDate(now.getDate() + 1);
+          return tomorrow; // Objet Date pour demain
+        }
       } else {
         // Vérifier si l'heure actuelle est avant 12h
         if (currentHour < 12) {
-          return now; // Objet Date actuel
+          return orderDate; // Objet Date actuel
         } else {
           // Ajouter un jour pour obtenir la date de demain
           const tomorrow = new Date(now);

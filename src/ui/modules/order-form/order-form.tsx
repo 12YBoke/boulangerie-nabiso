@@ -64,6 +64,12 @@ export const OrderForm = ({ customers, users }: Props) => {
     defaultValue: "ORDER",
   });
 
+  const date = useWatch({
+    control: form.control,
+    name: "dateordered",
+    defaultValue: new Date(),
+  });
+
   const customerid = useWatch({
     control: form.control,
     name: "customerid",
@@ -146,6 +152,8 @@ export const OrderForm = ({ customers, users }: Props) => {
       amountdelivered,
     } = values;
 
+    console.log(values);
+
     const addOrder = await fetch(`/api/order`, {
       method: "POST",
       credentials: "include",
@@ -202,8 +210,8 @@ export const OrderForm = ({ customers, users }: Props) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="relative flex flex-col gap-8"
       >
-        <Container className="flex flex-row gap-4 w-full">
-          <Container className="flex flex-col gap-8 basis-1/3 border p-8 rounded-lg">
+        <Container className="flex flex-row gap-8 w-full">
+          <Container className="flex flex-col gap-8 basis-1/3 border p-4 rounded-lg">
             <Typography variant="title-sm">Type de la commande</Typography>
             <Container>
               <InputFieldRadio
@@ -220,7 +228,7 @@ export const OrderForm = ({ customers, users }: Props) => {
               />
             </Container>
           </Container>
-          <Container className="flex flex-col justify-between basis-2/3 border p-8 rounded-lg h-[78vh]">
+          <Container className="flex flex-col justify-between basis-2/3 border p-4 rounded-lg gap-8">
             <Container className="flex flex-col gap-8">
               <Typography variant="title-sm">Détails de la commande</Typography>
               {type === "ORDER" ? (

@@ -44,12 +44,12 @@ export default async function Home() {
 
   return (
     <main>
-      <Container className="flex flex-col gap-4 pb-12">
-        <Typography variant="title-base" className="text-primary-Default">
-          Commandes
-        </Typography>
+      <Container className="pb-8">
+        <Typography variant="title-lg">Commandes</Typography>
       </Container>
-      <OrderForm customers={customersForSelect!} users={user!} />
+      <Container>
+        <OrderForm customers={customersForSelect!} users={user!} />
+      </Container>
     </main>
   );
 }

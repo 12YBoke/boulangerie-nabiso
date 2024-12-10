@@ -131,14 +131,29 @@ export const Filter = ({ data }: Props) => {
     );
   };
 
-  console.log(
-    filteredData
-      .filter((data) => {
-        return data.deliveries.length > 0;
-      })
-      .map((data) => data.deliveries)
-      .flat()
-  );
+  const filteredDataWithIsDate = filteredData.map((order) => ({
+    id: order.id,
+    amount: order.amount,
+    amountPaid: order.amountPaid,
+    amountToBeDelivered: order.amountToBeDelivered,
+    voucher: order.voucher,
+    CustomerId: order.CustomerId,
+    voucherPaid: order.voucherPaid,
+    dateOrdered: order.dateOrdered,
+    type: order.type,
+    name: order.name,
+    typeLabel: order.typeLabel,
+    deliveries: order.deliveries,
+    arraydeliveries: order.arraydeliveries,
+    totaldelivered: order.totaldelivered,
+    cardId: order.cardId,
+    cardNumber: order.cardNumber,
+    customerId: order.customerId,
+    userId: order.userId,
+    isDate:
+      format(order.dateOrdered, "yyyy-MM-dd") ===
+      format(selectedDate, "yyyy-MM-dd"),
+  }));
 
   return (
     <Container>
@@ -149,7 +164,7 @@ export const Filter = ({ data }: Props) => {
           </Container>
           <Container className="flex flex-row gap-2 items-center">
             <Typography>Date</Typography>
-            <Typography className="bg-primary-200 p-2 rounded-lg text-primary-800">
+            <Typography className="bg-primary-100 p-2 rounded-lg text-primary-800">
               {format(selectedDate, "dd-MM-yyyy", { locale: fr })}
             </Typography>
           </Container>
@@ -157,7 +172,7 @@ export const Filter = ({ data }: Props) => {
             <Container
               className="
           grid grid-cols-3 gap-4 
-          *:bg-primary-200 *:flex *:flex-col *:gap-4 *:p-4 *:rounded-lg *:w-full
+          *:bg-primary-100 *:flex *:flex-col *:gap-4 *:p-4 *:rounded-lg *:w-full
           "
             >
               <Container className="flex flex-col gap-2">
@@ -240,12 +255,19 @@ export const Filter = ({ data }: Props) => {
                       .filter((data) => {
                         return data.deliveries.length === 0;
                       })
-                      .filter((data) => {
-                        return data.type === "ORDER";
-                      })
                       .reduce((acc, curr) => {
-                        return acc + (curr.amount || 0);
+                        return acc + (curr.voucherPaid || 0);
                       }, 0) +
+                      filteredData
+                        .filter((data) => {
+                          return data.deliveries.length === 0;
+                        })
+                        .filter((data) => {
+                          return data.type === "ORDER";
+                        })
+                        .reduce((acc, curr) => {
+                          return acc + (curr.amount || 0);
+                        }, 0) +
                       filteredData
                         .filter((data) => {
                           return data.deliveries.length === 0;
@@ -274,11 +296,11 @@ export const Filter = ({ data }: Props) => {
           grid grid-cols-4 gap-4 *:flex *:flex-col *:gap-4 *:p-4 *:rounded-lg *:w-full
           "
             >
-              <Container className="flex flex-col gap-2 bg-emerald-100">
-                <Typography className="text-emerald-800">
+              <Container className="flex flex-col gap-2 bg-amber-100">
+                <Typography className="text-amber-800">
                   Nombre de commande
                 </Typography>
-                <Typography variant="title-lg" className="text-emerald-800">
+                <Typography variant="title-lg" className="text-amber-800">
                   {
                     filteredData.filter((data) => {
                       return (
@@ -289,11 +311,11 @@ export const Filter = ({ data }: Props) => {
                   }
                 </Typography>
               </Container>
-              <Container className="flex flex-col gap-2 bg-emerald-100">
-                <Typography className="text-emerald-800">
+              <Container className="flex flex-col gap-2 bg-amber-100">
+                <Typography className="text-amber-800">
                   Commandes avec carte
                 </Typography>
-                <Typography variant="title-lg" className="text-emerald-800">
+                <Typography variant="title-lg" className="text-amber-800">
                   {
                     filteredData
                       .filter((data) => {
@@ -308,11 +330,11 @@ export const Filter = ({ data }: Props) => {
                   }
                 </Typography>
               </Container>
-              <Container className="flex flex-col gap-2 bg-emerald-100">
-                <Typography className="text-emerald-800">
+              <Container className="flex flex-col gap-2 bg-amber-100">
+                <Typography className="text-amber-800">
                   Commandes sans carte
                 </Typography>
-                <Typography variant="title-lg" className="text-emerald-800">
+                <Typography variant="title-lg" className="text-amber-800">
                   {
                     filteredData
                       .filter((data) => {
@@ -399,9 +421,9 @@ export const Filter = ({ data }: Props) => {
                   onClick={() => handleDateClick(day)}
                   variant={"ghost"}
                   className={clsx(
-                    "h-4 w-4 p-4 hover:bg-primary-Default hover:text-white",
+                    "h-4 w-4 p-4 hover:bg-primary-500 hover:text-white",
                     selectedDate?.toDateString() === day.toDateString() &&
-                      "bg-primary-Default text-white", // Fond bleu pour la date sélectionnée
+                      "bg-primary-500 text-white", // Fond bleu pour la date sélectionnée
                     !isDayPresent(day) &&
                       "bg-white text-black hover:bg-white hover:text-black"
                   )}
@@ -414,7 +436,7 @@ export const Filter = ({ data }: Props) => {
                   <span
                     className={clsx(
                       "h-2 w-2 rounded-full",
-                      !orderByDay(day) ? "bg-neutral-200" : "bg-primary-Default"
+                      !orderByDay(day) ? "bg-neutral-200" : "bg-primary-500"
                     )}
                   ></span>
                 </Container>
@@ -424,7 +446,7 @@ export const Filter = ({ data }: Props) => {
         </Container>
       </Container>
       <Container>
-        <DataTable columns={columns} data={filteredData} />
+        <DataTable columns={columns} data={filteredDataWithIsDate} />
       </Container>
     </Container>
   );

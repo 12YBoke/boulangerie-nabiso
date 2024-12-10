@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   FormControl,
@@ -7,7 +7,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/shadcnui/components/ui/form"
+} from "@/shadcnui/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -16,19 +16,19 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/shadcnui/components/ui/select"
-import { Options } from "@/types/options"
-import { Container } from "../container/container"
-import clsx from "clsx"
+} from "@/shadcnui/components/ui/select";
+import { Options } from "@/types/options";
+import { Container } from "../container/container";
+import clsx from "clsx";
 
 interface Props {
-  control: any,
-  name: string,
-  label?: string,
-  placeholder: string,
-  description?: string,
-  options: Options[]
-  children?: React.ReactNode
+  control: any;
+  name: string;
+  label?: string;
+  placeholder: string;
+  description?: string;
+  options: Options[];
+  children?: React.ReactNode;
 }
 
 export const InputFieldSelect = ({
@@ -38,7 +38,7 @@ export const InputFieldSelect = ({
   placeholder,
   description,
   options,
-  children
+  children,
 }: Props) => {
   return (
     <FormField
@@ -46,52 +46,40 @@ export const InputFieldSelect = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          {
-            label ?
-            <FormLabel>{label}</FormLabel>
-            :
-            null
-          }
-          <Select onValueChange={field.onChange} defaultValue={field.value} name={name}>
+          {label ? <FormLabel>{label}</FormLabel> : null}
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+            name={name}
+          >
             <FormControl>
               <SelectTrigger
-                className={clsx(
-                  "rounded-lg focus:ring-primary-Default",
-                )}
+                className={clsx("rounded-lg focus:ring-primary-500")}
               >
                 <Container className="w-full relative flex  items-center">
-                  {
-                    children?
-                      children
-                    :
-                    null
-                  }
-                  <Container
-                    className={clsx(
-                      children? "pl-8 pr-4" : "",
-                    )}
-                  >
-                    <SelectValue 
-                      placeholder={placeholder}
-                    />
+                  {children ? children : null}
+                  <Container className={clsx(children ? "pl-8 pr-4" : "")}>
+                    <SelectValue placeholder={placeholder} />
                   </Container>
                 </Container>
               </SelectTrigger>
             </FormControl>
             <SelectContent className="max-h-[40vh] overflow-auto rounded-lg bg-white">
-              {
-                options.map(({value, label}) => 
-                  <SelectItem key={value} value={value!} className="focus:bg-primary-50">{label}</SelectItem>
-                )
-              }
+              {options.map(({ value, label }) => (
+                <SelectItem
+                  key={value}
+                  value={value!}
+                  className="focus:bg-primary-50"
+                >
+                  {label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
-          <FormDescription>
-            {description}
-          </FormDescription>
+          <FormDescription>{description}</FormDescription>
           <FormMessage />
         </FormItem>
       )}
     />
-  )
-}
+  );
+};

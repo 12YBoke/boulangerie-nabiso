@@ -32,7 +32,7 @@ interface Props {
   };
 }
 
-export const UpdateOrderForm = ({ order }: Props) => {
+export const UpdateOrderWithoutForm = ({ order }: Props) => {
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, startLoading, stopLoading] = UseLoading();
@@ -47,7 +47,7 @@ export const UpdateOrderForm = ({ order }: Props) => {
       type: order.type,
       amountdelivered: order.amountToBeDelivered!,
       dateordered: order.dateOrdered!,
-      customerid: order.CustomerId || "",
+      customerid: order.CustomerId!,
       name: order.name!,
     },
   });
@@ -221,25 +221,23 @@ export const UpdateOrderForm = ({ order }: Props) => {
                     placeholder={"Nom du client"}
                   />
                 </Container>
-                <Container className="flex flex-row gap-2">
-                  <Container>
-                    <InputField
-                      placeholder="Montant de la commande"
-                      control={form.control}
-                      name="amount"
-                      type={"number"}
-                      label="Montant de la commande"
-                    />
-                  </Container>
-                  <Container>
-                    <InputField
-                      placeholder="Montant à livrer"
-                      control={form.control}
-                      name="amountdelivered"
-                      type={"number"}
-                      label="Montant à livrer"
-                    />
-                  </Container>
+                <Container>
+                  <InputField
+                    placeholder="Montant de la commande"
+                    control={form.control}
+                    name="amount"
+                    type={"number"}
+                    label="Montant de la commande"
+                  />
+                </Container>
+                <Container>
+                  <InputField
+                    placeholder="Montant à livrer"
+                    control={form.control}
+                    name="amountdelivered"
+                    type={"number"}
+                    label="Montant à livrer"
+                  />
                 </Container>
               </Container>
             )}

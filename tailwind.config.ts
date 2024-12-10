@@ -1,11 +1,11 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -20,59 +20,82 @@ const config: Config = {
       colors: {
         // tango
         primary: {
-          50: '#f5f6f9',
-          100: '#e7eaf2',
-          200: '#d5dae8',
-          300: '#b9c2d7',
-          400: '#97a4c3',
-          Default: '#7d89b4',
-          600: '#6b73a5',
-          700: '#5f6596',
-          800: '#595c87',
-          900: '#444764',
-          950: '#2d2e3e',
+          50: "#fffbeb",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#fbbf24",
+          500: "#f59e0b",
+          600: "#d97706",
+          700: "#b45309",
+          800: "#92400e",
+          900: "#78350f",
+          950: "#451a03",
         },
-        destructive: '#ff0035',
+        destructive: "#ff0035",
         // carnation
-        accent: '#f2414c',
-        white : '#ffffff',
-        black : '#000',
-        white_powder : '#fdfdfd'
+        accent: "#f2414c",
+        white: "#ffffff",
+        black: "#000",
+        white_powder: "#fdfdfd",
       },
       fontSize: {
-        'display': ['4rem', {
-          lineHeight: '100%',
-          fontWeight: '700'
-        }],
-        'title-lg': ['1.5rem', {
-          lineHeight: '100%',
-          fontWeight: '700'
-        }],
-        'title-base': ['1.2rem', {
-          lineHeight: '100%',
-          fontWeight: '700'
-        }],
-        'title-sm': ['1rem', {
-          lineHeight: '100%',
-          fontWeight: '700'
-        }],
-        'title-xs': ['0.75rem', {
-          lineHeight: '100%',
-          fontWeight: '600'
-        }],
-        'body-lg': ['1.2rem', {
-          lineHeight: '100%',
-          fontWeight: '400'
-        }],
-        'body-base': ['1rem', {
-          lineHeight: '100%',
-          fontWeight: '400'
-
-        }],
-        'body-sm': ['0.75rem', {
-          lineHeight: '100%',
-          fontWeight: '400'
-        }],
+        display: [
+          "4rem",
+          {
+            lineHeight: "100%",
+            fontWeight: "700",
+          },
+        ],
+        "title-lg": [
+          "1.5rem",
+          {
+            lineHeight: "100%",
+            fontWeight: "700",
+          },
+        ],
+        "title-base": [
+          "1.2rem",
+          {
+            lineHeight: "100%",
+            fontWeight: "700",
+          },
+        ],
+        "title-sm": [
+          "1rem",
+          {
+            lineHeight: "100%",
+            fontWeight: "700",
+          },
+        ],
+        "title-xs": [
+          "0.75rem",
+          {
+            lineHeight: "100%",
+            fontWeight: "600",
+          },
+        ],
+        "body-lg": [
+          "1.2rem",
+          {
+            lineHeight: "100%",
+            fontWeight: "400",
+          },
+        ],
+        "body-base": [
+          "1rem",
+          {
+            lineHeight: "100%",
+            fontWeight: "400",
+          },
+        ],
+        "body-sm": [
+          "0.75rem",
+          {
+            lineHeight: "100%",
+            fontWeight: "400",
+          },
+        ],
       },
       keyframes: {
         "accordion-down": {
@@ -91,5 +114,5 @@ const config: Config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
-export default config
+};
+export default config;

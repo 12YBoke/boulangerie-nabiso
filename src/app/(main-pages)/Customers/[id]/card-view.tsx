@@ -31,7 +31,7 @@ interface Props {
       CustomerId: string | null;
       userId: string;
       amountToBeDelivered: number | null;
-      type: "ORDER" | "CASH_SALE" | "CHARGE" | "DONATION" | "DAMAGE";
+      type: "ORDER" | "CASH_SALE" | "CHARGE" | "DONATION" | "DAMAGE" | "BURN";
       name: string | null;
     }[];
   }[];
@@ -41,7 +41,7 @@ export const CardView = ({ card }: Props) => {
   const [cardSelectedId, setCardSelectedId] = useState<string | null>(null);
 
   return (
-    <Container className="w-full h-[78vh] flex flex-row gap-4">
+    <Container className="w-full flex flex-row gap-2">
       <Container className="w-[20%] rounded-lg flex flex-col gap-4">
         <ScrollArea className="h-full pr-4 whitespace-nowrap rounded-lg">
           <Container className="flex flex-col gap-2">
@@ -49,8 +49,8 @@ export const CardView = ({ card }: Props) => {
               <div
                 key={id}
                 className={clsx(
-                  "cursor-pointer flex flex-row justify-between items-center gap-2 p-2 rounded-lg bg-white border-2 hover:border-primary-300 animate",
-                  cardSelectedId === id ? "border-primary-Default" : ""
+                  "cursor-pointer flex flex-row justify-between items-center gap-2 p-2 rounded-lg bg-white border-2 hover:border-primary-100 animate",
+                  cardSelectedId === id ? "border-primary-500" : ""
                 )}
                 onClick={() => setCardSelectedId(id)}
               >
@@ -62,8 +62,8 @@ export const CardView = ({ card }: Props) => {
                     className={clsx(
                       "p-1 rounded-full animate",
                       cardStatus === "ACTIVE"
-                        ? "bg-primary-Default"
-                        : "bg-emerald-500"
+                        ? "bg-primary-500"
+                        : "bg-amber-500"
                     )}
                   >
                     {cardStatus === "ACTIVE" ? (
@@ -76,7 +76,7 @@ export const CardView = ({ card }: Props) => {
                     className={clsx(
                       "p-1 rounded-full animate",
                       paymentStatus === "PAID"
-                        ? "bg-emerald-500"
+                        ? "bg-amber-500"
                         : "bg-primary-50"
                     )}
                   >
@@ -94,10 +94,12 @@ export const CardView = ({ card }: Props) => {
           data={card.find(({ id }) => id === cardSelectedId)?.orders || []}
         />
         <Container className="flex flex-col gap-4">
-          <Container className="rounded-lg p-4 flex flex-row gap-4 justify-between bg-primary-Default">
+          <Container className="rounded-lg p-4 flex flex-row gap-4 justify-between bg-primary-100">
             <Container className="flex flex-col gap-2">
-              <Typography className="text-white">Total commande</Typography>
-              <Typography variant="title-sm" className="text-white">
+              <Typography className="text-primary-800">
+                Total commande
+              </Typography>
+              <Typography variant="title-sm" className="text-primary-800">
                 {FormatNumberWithCurrency(
                   card
                     .find(({ id }) => id === cardSelectedId)
@@ -109,8 +111,8 @@ export const CardView = ({ card }: Props) => {
               </Typography>
             </Container>
             <Container className="flex flex-col gap-2">
-              <Typography className="text-white">Commission</Typography>
-              <Typography variant="title-sm" className="text-white">
+              <Typography className="text-primary-800">Commission</Typography>
+              <Typography variant="title-sm" className="text-primary-800">
                 {FormatNumberWithCurrency(
                   (card
                     .find(({ id }) => id === cardSelectedId)
@@ -122,8 +124,8 @@ export const CardView = ({ card }: Props) => {
               </Typography>
             </Container>
             <Container className="flex flex-col gap-2">
-              <Typography className="text-white">B.P.</Typography>
-              <Typography variant="title-sm" className="text-white">
+              <Typography className="text-primary-800">B.P.</Typography>
+              <Typography variant="title-sm" className="text-primary-800">
                 {FormatNumberWithCurrency(
                   card
                     .find(({ id }) => id === cardSelectedId)
@@ -135,8 +137,8 @@ export const CardView = ({ card }: Props) => {
               </Typography>
             </Container>
             <Container className="flex flex-col gap-2">
-              <Typography className="text-white">B.P.P.</Typography>
-              <Typography variant="title-sm" className="text-white">
+              <Typography className="text-primary-800">B.P.P.</Typography>
+              <Typography variant="title-sm" className="text-primary-800">
                 {FormatNumberWithCurrency(
                   card
                     .find(({ id }) => id === cardSelectedId)
@@ -148,8 +150,8 @@ export const CardView = ({ card }: Props) => {
               </Typography>
             </Container>
             <Container className="flex flex-col gap-2">
-              <Typography className="text-white">B.P.T.</Typography>
-              <Typography variant="title-sm" className="text-white">
+              <Typography className="text-primary-800">B.P.T.</Typography>
+              <Typography variant="title-sm" className="text-primary-800">
                 {FormatNumberWithCurrency(
                   (card
                     .find(({ id }) => id === cardSelectedId)
@@ -167,8 +169,8 @@ export const CardView = ({ card }: Props) => {
               </Typography>
             </Container>
             <Container className="flex flex-col gap-2">
-              <Typography className="text-white">Net à payer</Typography>
-              <Typography variant="title-sm" className="text-green-300">
+              <Typography className="text-primary-800">Net à payer</Typography>
+              <Typography variant="title-sm" className="text-amber-800">
                 {FormatNumberWithCurrency(
                   cardSelectedId
                     ? (card

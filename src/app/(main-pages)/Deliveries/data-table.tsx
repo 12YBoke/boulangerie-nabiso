@@ -75,7 +75,7 @@ export function DataTable<TData, TValue>({
                   .getColumn("cardNumber")
                   ?.setFilterValue(event.target.value)
               }
-              className="w-full lg:w-auto rounded-lg focus:ring-primary-Default"
+              className="w-full lg:w-auto rounded-lg focus:ring-primary-500"
               type="number"
             />
             <Input
@@ -86,7 +86,7 @@ export function DataTable<TData, TValue>({
               onChange={(event) =>
                 table.getColumn("typeLabel")?.setFilterValue(event.target.value)
               }
-              className="w-full lg:w-auto rounded-lg focus:ring-primary-Default"
+              className="w-full lg:w-auto rounded-lg focus:ring-primary-500"
             />
           </div>
         </div>

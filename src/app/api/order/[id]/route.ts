@@ -43,7 +43,7 @@ export async function PATCH(
       voucher: voucher,
       voucherPaid: voucherpaid,
       dateOrdered: dateordered,
-      CustomerId: customerid,
+      CustomerId: type === "ORDER" ? customerid : null,
       name: name,
       type: type,
       amountToBeDelivered: amountdelivered,

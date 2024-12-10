@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import prisma from "@/lib/prisma";
 import { Customer, columns } from "./columns";
 import { DataTable } from "./data-table";
@@ -34,6 +35,7 @@ export default async function Home() {
     select: {
       id: true,
       extensionId: true,
+      extension: true,
     },
   });
 
@@ -41,9 +43,31 @@ export default async function Home() {
 
   return (
     <main className="w-full flex flex-col">
-      <Container className="w-full h-full flex flex-col gap-4 rounded">
+      <Container className="w-full h-full flex flex-col gap-8 rounded">
         <Typography variant="title-lg">Liste des clients</Typography>
-        <DataTable columns={columns} data={data} userData={userData} />
+        <Container className="flex flex-row gap-8 w-full">
+          <Container className="flex flex-col gap-4 w-[24%]">
+            <Container className="bg-primary-100 p-4 gap-4 flex flex-col rounded-lg">
+              <Typography className="text-primary-800">
+                Nom de l'extension
+              </Typography>
+              <Typography variant="title-lg" className="text-primary-800">
+                {userData[0].extension.name}
+              </Typography>
+            </Container>
+            <Container className="bg-primary-100 p-4 gap-4 flex flex-col rounded-lg">
+              <Typography className="text-primary-800">
+                Nombre de cartes
+              </Typography>
+              <Typography variant="title-lg" className="text-primary-800">
+                {data.length}
+              </Typography>
+            </Container>
+          </Container>
+          <Container className="w-[76%]">
+            <DataTable columns={columns} data={data} userData={userData} />
+          </Container>
+        </Container>
       </Container>
     </main>
   );

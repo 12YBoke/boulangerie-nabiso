@@ -82,7 +82,7 @@ export const ValidatePayment = ({
           "text-body-base p-2 cursor-pointer animate flex flex-row items-center text-white rounded-lg animate",
           disabled
             ? "bg-gray-300 cursor-not-allowed"
-            : "bg-primary-Default hover:bg-primary-600"
+            : "bg-primary-500 hover:bg-primary-600"
         )}
       >
         Valider le paiement

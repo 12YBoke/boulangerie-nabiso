@@ -65,7 +65,7 @@ export const InputField = ({
                   disabled={disabled}
                   placeholder={placeholder}
                   className={clsx(
-                    "resize-none rounded-lg h-48 focus:ring-primary-Default w-full",
+                    "resize-none rounded-lg h-48 focus:ring-primary-500 w-full",
                     children ? "px-12" : ""
                   )}
                   {...field}
@@ -74,7 +74,7 @@ export const InputField = ({
                 <Input
                   disabled={disabled}
                   className={clsx(
-                    "rounded-lg focus:ring-primary-Default w-full",
+                    "rounded-lg focus:ring-primary-500 w-full",
                     children ? "px-12" : ""
                   )}
                   placeholder={placeholder}

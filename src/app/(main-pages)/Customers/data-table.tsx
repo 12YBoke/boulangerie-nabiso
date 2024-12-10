@@ -77,7 +77,7 @@ export function DataTable<TData, TValue>({
   return (
     <Dialog>
       <div>
-        <div className="flex py-4 flex-col gap-4 md:flex-row justify-between">
+        <div className="flex pb-4 flex-col gap-4 md:flex-row justify-between">
           <div className="flex gap-4 flex-row">
             <Input
               placeholder="Filtrez par N° du client"
@@ -91,7 +91,7 @@ export function DataTable<TData, TValue>({
                   .getColumn("customerNumber")
                   ?.setFilterValue(event.target.value)
               }
-              className="w-full lg:w-auto rounded-lg focus:ring-primary-Default"
+              className="w-full lg:w-auto rounded-lg focus:ring-primary-500"
               type="number"
             />
             <Input
@@ -102,11 +102,11 @@ export function DataTable<TData, TValue>({
               onChange={(event) =>
                 table.getColumn("name")?.setFilterValue(event.target.value)
               }
-              className="w-full lg:w-auto rounded-lg focus:ring-primary-Default"
+              className="w-full lg:w-auto rounded-lg focus:ring-primary-500"
             />
           </div>
           <DialogTrigger asChild>
-            <span className="flex flex-row py-2 px-4 cursor-pointer justify-center items-center bg-primary-Default animate rounded-lg hover:bg-primary-600 w-full md:w-auto text-white">
+            <span className="flex flex-row py-2 px-4 cursor-pointer justify-center items-center bg-primary-500 animate rounded-lg hover:bg-primary-600 w-full md:w-auto text-white">
               <UserPlus className="mr-2 h-6 w-6" />
               Ajouter un client
             </span>

@@ -1,6 +1,6 @@
 import { _OrderTypes } from "@/types/_order-types";
 
-export const OrderTypes : _OrderTypes[] = [
+export const OrderTypes: _OrderTypes[] = [
   {
     value: "ORDER",
     label: "Commande",
@@ -20,5 +20,9 @@ export const OrderTypes : _OrderTypes[] = [
   {
     value: "DAMAGE",
     label: "Foutus",
+  },
+  {
+    value: "BURN",
+    label: "Brulé",
   },
 ];

@@ -12,10 +12,12 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
       amount: true,
       amountPaid: true,
       amountToBeDelivered: true,
+      voucher: true,
       voucherPaid: true,
       dateOrdered: true,
       type: true,
       name: true,
+      CustomerId: true,
       deliveries: {
         select: {
           id: true,
@@ -34,6 +36,11 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
           customerNumber: true,
         },
       },
+      user: {
+        select: {
+          id: true,
+        },
+      },
     },
     orderBy: {
       dateOrdered: "desc",
@@ -45,6 +52,8 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
     amount: order.amount,
     amountPaid: order.amountPaid,
     amountToBeDelivered: order.amountToBeDelivered,
+    voucher: order.voucher,
+    CustomerId: order.CustomerId,
     voucherPaid: order.voucherPaid,
     dateOrdered: order.dateOrdered,
     type: order.type,
@@ -58,8 +67,11 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
         ? "Charge"
         : order.type === "DONATION"
         ? "Don"
-        : "Endommagé",
+        : order.type === "DAMAGE"
+        ? "Endommagé"
+        : "Brulé",
     deliveries: order.deliveries,
+    arraydeliveries: order.deliveries,
     totaldelivered: order.deliveries.reduce(
       (acc, delivery) => acc + (delivery.amountDelivered || 0),
       0
@@ -67,6 +79,8 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
     cardId: order.card ? order.card.id : null,
     cardNumber: order.customer ? order.customer.customerNumber : null,
     customerId: order.customer ? order.customer.id : null,
+    userId: order.user.id,
+    isDate: false,
   }));
 
   return orders;
