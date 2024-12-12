@@ -152,8 +152,6 @@ export const OrderForm = ({ customers, users }: Props) => {
       amountdelivered,
     } = values;
 
-    console.log(values);
-
     const addOrder = await fetch(`/api/order`, {
       method: "POST",
       credentials: "include",

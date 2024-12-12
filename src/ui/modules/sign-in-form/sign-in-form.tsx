@@ -51,12 +51,11 @@ export const SignInForm = ({ extensions }: Props) => {
       redirect: false,
     });
 
-    if (loginRespose?.status === 200) {
+    if (loginRespose?.error === null) {
       toast({
         title: "Connexion réussie",
         description: `Content de vous revoir !`,
       });
-      console.log(extensionid);
       stopLoading();
       setExtensionId(extensionid);
       router.push("/");

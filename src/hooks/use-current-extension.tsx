@@ -9,7 +9,5 @@ export function useCurrentExtension() {
     (state) => state.extensionId
   );
 
-  console.log("extensionId", extensionId);
-
   return extensionId;
 }

@@ -98,7 +98,6 @@ export default async function Home() {
 
   const dataGroupByYearAndMonth = groupAndAggregateByYear(orders);
 
-  console.log(dataGroupByYearAndMonth);
   return (
     <main>
       <AnnualChart data={dataGroupByYearAndMonth} />
