@@ -6,6 +6,8 @@ interface MonthlyData {
   totalAmountWithCard: number;
   totalAmountWithoutCard: number;
   orderNumberRegistered: number;
+  orderNumberRegisteredWithCard: number;
+  orderNumberRegisteredWithoutCard: number;
 }
 
 export function groupAndAggregateByYear(
@@ -44,6 +46,8 @@ export function groupAndAggregateByYear(
           totalAmountWithCard: 0,
           totalAmountWithoutCard: 0,
           orderNumberRegistered: 0,
+          orderNumberRegisteredWithCard: 0,
+          orderNumberRegisteredWithoutCard: 0,
         }));
 
       const monthEntryIndex = acc[year].findIndex(
@@ -64,6 +68,10 @@ export function groupAndAggregateByYear(
         (item.type !== "ORDER" && item.amount) || 0;
 
       if (item) acc[year][monthEntryIndex].orderNumberRegistered++;
+      if (item.type === "ORDER")
+        acc[year][monthEntryIndex].orderNumberRegisteredWithCard++;
+      if (item.type != "ORDER")
+        acc[year][monthEntryIndex].orderNumberRegisteredWithoutCard++;
 
       return acc;
     },
