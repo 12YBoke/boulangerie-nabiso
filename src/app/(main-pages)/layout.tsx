@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Container } from "@/ui/components/container/container";
 import { AsideNav } from "@/ui/modules/aside-nav/aside-nav";
+import prisma from "@/lib/prisma";
 
 export default async function MainRoutesLayout({
   children,
