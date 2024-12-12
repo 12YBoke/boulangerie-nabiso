@@ -108,15 +108,25 @@ export const columns: ColumnDef<Deliveries>[] = [
         <span
           className={clsx(
             "text-body-base px-2 py-1 rounded-lg",
-            delivery.type === "ORDER"
-              ? delivery.totaldelivered === delivery.amount ||
-                delivery.totaldelivered === 0
+            delivery.isDate
+              ? delivery.type === "ORDER"
+                ? delivery.totaldelivered === delivery.amount ||
+                  delivery.totaldelivered === 0
+                  ? "bg-amber-100 text-amber-800"
+                  : "bg-red-200 text-red-800"
+                : delivery.totaldelivered === delivery.amountToBeDelivered ||
+                  delivery.totaldelivered === 0
                 ? "bg-amber-100 text-amber-800"
                 : "bg-red-200 text-red-800"
+              : delivery.type === "ORDER"
+              ? delivery.totaldelivered === delivery.amount ||
+                delivery.totaldelivered === 0
+                ? "text-amber-500"
+                : "text-red-500"
               : delivery.totaldelivered === delivery.amountToBeDelivered ||
                 delivery.totaldelivered === 0
-              ? "bg-amber-100 text-amber-800"
-              : "bg-red-200 text-red-800"
+              ? "text-amber-500"
+              : "text-red-500"
           )}
         >
           {delivery.type === "ORDER"

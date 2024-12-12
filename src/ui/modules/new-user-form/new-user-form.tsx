@@ -240,14 +240,17 @@ export const NewUserForm = ({ extensions }: Props) => {
         </Container>
         <Container className="flex flex-row justify-between items-center">
           <Button type="submit" className="w-full" isLoading={isLoading}>
-            S'inscrire
+            Ajouter
           </Button>
         </Container>
         <Container>
-          <Typography variant="body-sm" className="text-neutral-500">
-            Vous avez un compte ?{" "}
-            <Link href={"/sign-in"} className="text-primary-500 text-title-xs">
-              Connectez vous
+          <Typography className="text-neutral-500">
+            Retourner à l'{" "}
+            <Link
+              href={"/"}
+              className="text-primary-800 p-1 bg-primary-100 rounded-lg hover:bg-primary-200"
+            >
+              accueil
             </Link>
           </Typography>
         </Container>

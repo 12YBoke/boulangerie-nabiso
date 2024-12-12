@@ -229,6 +229,23 @@ export const OrderForm = ({ customers, users }: Props) => {
             </Container>
           </Container>
           <Container className="flex flex-col justify-between basis-2/3 border p-4 rounded-lg gap-8">
+            <Container className="flex">
+              <Container className="p-2 bg-primary-100 rounded-lg">
+                <Typography variant="title-lg" className="text-primary-800">
+                  {type === "ORDER"
+                    ? "Commande"
+                    : type === "CASH_SALE"
+                    ? "Ventre cash"
+                    : type === "CHARGE"
+                    ? "Charge"
+                    : type === "DONATION"
+                    ? "Don"
+                    : type === "DAMAGE"
+                    ? "Foutus"
+                    : "Brulés"}
+                </Typography>
+              </Container>
+            </Container>
             <Container className="flex flex-col gap-8">
               <Typography variant="title-sm">Détails de la commande</Typography>
               {type === "ORDER" ? (

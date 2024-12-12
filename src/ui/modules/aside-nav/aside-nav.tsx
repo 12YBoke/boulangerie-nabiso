@@ -3,13 +3,18 @@ import { AsideActiveLink } from "../../components/aside-active-link/aside-active
 import { AsideRoutes } from "@/routes/routes";
 import { Typography } from "@/ui/components/typography/typography";
 import {
+  AddUserButton,
   SignOutButton,
   UserCard,
 } from "@/ui/components/auth-button/auth-button";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 
-export const AsideNav = async () => {
+interface Props {
+  user: { id: string; extensionId: string; role: "ADMIN" | "USER" }[];
+}
+
+export const AsideNav = async ({ user }: Props) => {
   const session = await auth();
 
   const extensions = await prisma.extension.findMany({});
@@ -44,10 +49,16 @@ export const AsideNav = async () => {
             ))
           )}
         </Container>
+        {}
       </Container>
-      <Container className="p-4 flex flex-col items-center gap-4">
+      <Container className="p-4 flex flex-col items-center gap-2">
         <UserCard name={session?.user?.name!} extensions={extensions} />
-        <SignOutButton className="w-full bg-red-200 hover:bg-red-300 text-red-800 hover:text-red-900" />
+        <AddUserButton
+          user={user}
+          extensions={extensions}
+          className="w-full flex justify-start p-2"
+        />
+        <SignOutButton className="w-full bg-red-100 hover:bg-red-200 hover:text-red-800 flex justify-start p-2" />
       </Container>
     </Container>
   );

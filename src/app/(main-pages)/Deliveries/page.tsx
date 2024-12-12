@@ -68,7 +68,7 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
         : order.type === "DONATION"
         ? "Don"
         : order.type === "DAMAGE"
-        ? "Endommagé"
+        ? "Foutu"
         : "Brulé",
     deliveries: order.deliveries,
     arraydeliveries: order.deliveries,

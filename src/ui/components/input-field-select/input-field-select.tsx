@@ -20,6 +20,7 @@ import {
 import { Options } from "@/types/options";
 import { Container } from "../container/container";
 import clsx from "clsx";
+import { useState } from "react";
 
 interface Props {
   control: any;
@@ -40,6 +41,8 @@ export const InputFieldSelect = ({
   options,
   children,
 }: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <FormField
       control={control}
@@ -48,15 +51,20 @@ export const InputFieldSelect = ({
         <FormItem>
           {label ? <FormLabel>{label}</FormLabel> : null}
           <Select
-            onValueChange={field.onChange}
+            onValueChange={(value) => {
+              field.onChange(value);
+              setIsOpen(false); // Ferme le menu après sélection
+            }}
             defaultValue={field.value}
             name={name}
+            open={isOpen} // Contrôle l'état ouvert/fermé
+            onOpenChange={(open) => setIsOpen(open)} // Met à jour l'état
           >
             <FormControl>
               <SelectTrigger
                 className={clsx("rounded-lg focus:ring-primary-500")}
               >
-                <Container className="w-full relative flex  items-center">
+                <Container className="w-full relative flex items-center">
                   {children ? children : null}
                   <Container className={clsx(children ? "pl-8 pr-4" : "")}>
                     <SelectValue placeholder={placeholder} />

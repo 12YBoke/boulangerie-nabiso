@@ -79,10 +79,10 @@ export const ValidatePayment = ({
       <DialogTrigger
         disabled={disabled}
         className={clsx(
-          "text-body-base p-2 cursor-pointer animate flex flex-row items-center text-white rounded-lg animate",
+          "text-body-base p-2 cursor-pointer animate flex flex-row items-center rounded-lg animate",
           disabled
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-primary-500 hover:bg-primary-600"
+            ? "bg-gray-300 cursor-not-allowed text-white"
+            : "bg-primary-100 hover:bg-primary-200 text-primary-800"
         )}
       >
         Valider le paiement

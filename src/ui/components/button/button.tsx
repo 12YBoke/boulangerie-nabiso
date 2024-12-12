@@ -55,12 +55,8 @@ export const Button = ({
   if (outline === "default") {
     switch (variant) {
       case "primary": //Default
-        colorStyles = "bg-primary-500 hover:bg-primary-400";
-        txt_colorStyles = "text-white";
-        break;
-      case "secondary":
-        colorStyles = "bg-secondary-500 hover:bg-secondary-400";
-        txt_colorStyles = "text-white";
+        colorStyles = "bg-primary-100 hover:bg-primary-200";
+        txt_colorStyles = "text-primary-800";
         break;
     }
   } else {
@@ -69,11 +65,6 @@ export const Button = ({
         colorStyles =
           "bg-white hover:text-primary-500 hover:bg-white border-white hover:border-primary-500 border-2";
         txt_colorStyles = "text-primary-500";
-        break;
-      case "secondary":
-        colorStyles =
-          "bg-gray-50 hover:text-secondary-500 hover:bg-white border-white border-secondary-500 border-2";
-        txt_colorStyles = "text-secondary-500";
         break;
     }
   }

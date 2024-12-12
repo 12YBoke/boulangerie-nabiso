@@ -148,7 +148,7 @@ export const CloseCard = ({
                 <Button
                   buttonType="action"
                   disabled={disabled}
-                  className="bg-red-500 hover:bg-red-600"
+                  className="bg-red-500 hover:bg-red-600 text-white"
                   isLoading={isLoading}
                   action={closeCard}
                 >

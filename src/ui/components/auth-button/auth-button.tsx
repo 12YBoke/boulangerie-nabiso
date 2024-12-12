@@ -3,7 +3,7 @@
 
 import useExtensionIdStore from "@/store/extension-id-store";
 import { Button } from "../button/button";
-import { LogIn, LogOut, UserCircle2, Warehouse } from "lucide-react";
+import { LogIn, LogOut, UserCircle2, UserPlus, Warehouse } from "lucide-react";
 import { signOut } from "next-auth/react";
 import React from "react";
 import { Container } from "../container/container";
@@ -17,6 +17,7 @@ interface Props {
     id: string;
     name: string;
   }[];
+  user?: { id: string; extensionId: string; role: "ADMIN" | "USER" }[];
 }
 
 export const UserCard = ({ name, extensions }: Props) => {
@@ -29,14 +30,14 @@ export const UserCard = ({ name, extensions }: Props) => {
     : null;
 
   return (
-    <Container className="bg-primary-100 w-full p-4 text-primary-800 rounded-lg flex flex-col gap-1">
+    <Container className="bg-black w-full text-white p-4 rounded-lg flex flex-col gap-1">
       <Container className="flex flex-row justify-center items-center">
         <Container className="w-full">
           <Typography variant="title-sm">{name}</Typography>
         </Container>
       </Container>
       <Container className="flex flex-row justify-center items-center">
-        <Container className="w-full text-amber-800">
+        <Container className="w-full">
           <Typography variant="body-sm">{currentExtension?.name}</Typography>
         </Container>
       </Container>
@@ -72,7 +73,46 @@ export const SignOutButton = ({ className }: Props) => {
       }}
       className={className}
     >
-      <span className="flex-row items-center flex">Déconnexion</span>
+      <span className="flex-row flex items-center">
+        <LogOut className="mr-4 h-5 w-5" />
+        Déconnexion
+      </span>
     </Button>
+  );
+};
+
+export const AddUserButton = ({ className, extensions, user }: Props) => {
+  const extensionId = useStore(
+    useExtensionIdStore,
+    (state) => state.extensionId
+  );
+
+  const currentExtension = extensionId
+    ? extensions?.find((extension) => extension.id === extensionId)
+    : null;
+
+  let connectedUser;
+
+  if (currentExtension)
+    connectedUser = user?.filter((item) => {
+      return item.extensionId === currentExtension?.id;
+    })[0];
+
+  return (
+    <>
+      {extensionId && connectedUser && connectedUser.role === "ADMIN" && (
+        <Button
+          variant="primary"
+          buttonType="link"
+          baseUrl="/new-user"
+          className={className}
+        >
+          <span className="flex-row flex items-center">
+            <UserPlus className="mr-4 h-5 w-5" />
+            Ajouter un agent
+          </span>
+        </Button>
+      )}
+    </>
   );
 };

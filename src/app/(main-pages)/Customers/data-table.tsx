@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
             />
           </div>
           <DialogTrigger asChild>
-            <span className="flex flex-row py-2 px-4 cursor-pointer justify-center items-center bg-primary-500 animate rounded-lg hover:bg-primary-600 w-full md:w-auto text-white">
+            <span className="flex flex-row py-2 px-4 cursor-pointer justify-center items-center bg-primary-100 animate rounded-lg hover:bg-primary-200 w-full md:w-auto text-primary-800">
               <UserPlus className="mr-2 h-6 w-6" />
               Ajouter un client
             </span>

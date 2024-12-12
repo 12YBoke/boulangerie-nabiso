@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { eachDayOfInterval, endOfMonth, format } from "date-fns";
 import { useEffect, useState } from "react";
 import { addMonths, subMonths } from "date-fns";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { _DeliveryTypes } from "@/types/_delivery-types";
@@ -177,23 +177,26 @@ export const Filter = ({ data }: Props) => {
             >
               <Container className="flex flex-col gap-2">
                 <Typography className="text-primary-800">
-                  Total montant payé
+                  Total montant entrée
                 </Typography>
                 <Typography variant="title-lg" className="text-primary-800">
                   {FormatNumberWithCurrency(
-                    filteredData
-                      .filter((data) => {
-                        return data.type === "ORDER";
-                      })
-                      .filter((data) => {
-                        return (
-                          format(data.dateOrdered!, "yyyy-MM-dd") ===
-                          format(selectedDate, "yyyy-MM-dd")
-                        );
-                      })
-                      .reduce((acc, curr) => {
-                        return acc + (curr.amountPaid || 0);
-                      }, 0) +
+                    filteredData.reduce((acc, curr) => {
+                      return acc + (curr.voucherPaid || 0);
+                    }, 0) +
+                      filteredData
+                        .filter((data) => {
+                          return data.type === "ORDER";
+                        })
+                        .filter((data) => {
+                          return (
+                            format(data.dateOrdered!, "yyyy-MM-dd") ===
+                            format(selectedDate, "yyyy-MM-dd")
+                          );
+                        })
+                        .reduce((acc, curr) => {
+                          return acc + (curr.amountPaid || 0);
+                        }, 0) +
                       filteredData
                         .filter((data) => {
                           return data.type != "ORDER";
@@ -255,19 +258,12 @@ export const Filter = ({ data }: Props) => {
                       .filter((data) => {
                         return data.deliveries.length === 0;
                       })
+                      .filter((data) => {
+                        return data.type === "ORDER";
+                      })
                       .reduce((acc, curr) => {
-                        return acc + (curr.voucherPaid || 0);
+                        return acc + (curr.amount || 0);
                       }, 0) +
-                      filteredData
-                        .filter((data) => {
-                          return data.deliveries.length === 0;
-                        })
-                        .filter((data) => {
-                          return data.type === "ORDER";
-                        })
-                        .reduce((acc, curr) => {
-                          return acc + (curr.amount || 0);
-                        }, 0) +
                       filteredData
                         .filter((data) => {
                           return data.deliveries.length === 0;
@@ -374,7 +370,7 @@ export const Filter = ({ data }: Props) => {
               variant={"ghost"}
               className="hover:bg-neutral-100"
             >
-              <ArrowLeft />
+              <ChevronLeft />
             </Button>
             <Typography variant="title-base">
               {months.find((x) => x.id === "" + month + "")?.name || ""} {year}
@@ -384,7 +380,7 @@ export const Filter = ({ data }: Props) => {
               variant={"ghost"}
               className="hover:bg-neutral-100"
             >
-              <ArrowRight />
+              <ChevronRight />
             </Button>
           </Container>
           <Container className="grid grid-cols-7">
@@ -421,9 +417,9 @@ export const Filter = ({ data }: Props) => {
                   onClick={() => handleDateClick(day)}
                   variant={"ghost"}
                   className={clsx(
-                    "h-4 w-4 p-4 hover:bg-primary-500 hover:text-white",
+                    "h-4 w-4 p-4 hover:bg-primary-100 hover:text-primary-800",
                     selectedDate?.toDateString() === day.toDateString() &&
-                      "bg-primary-500 text-white", // Fond bleu pour la date sélectionnée
+                      "bg-primary-100 text-primary-800", // Fond bleu pour la date sélectionnée
                     !isDayPresent(day) &&
                       "bg-white text-black hover:bg-white hover:text-black"
                   )}
@@ -436,7 +432,7 @@ export const Filter = ({ data }: Props) => {
                   <span
                     className={clsx(
                       "h-2 w-2 rounded-full",
-                      !orderByDay(day) ? "bg-neutral-200" : "bg-primary-500"
+                      !orderByDay(day) ? "bg-neutral-200" : "bg-primary-400"
                     )}
                   ></span>
                 </Container>

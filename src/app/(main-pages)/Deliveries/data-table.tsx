@@ -25,6 +25,8 @@ import {
 import { Typography } from "@/ui/components/typography/typography";
 import { Input } from "@/shadcnui/components/ui/input";
 import { Dialog } from "@/shadcnui/components/ui/dialog";
+import { Button } from "@/ui/components/button/button";
+import { MoveLeft, MoveRight } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -141,6 +143,26 @@ export function DataTable<TData, TValue>({
               )}
             </TableBody>
           </Table>
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="ghost"
+            outline="outline"
+            buttonType="action"
+            action={async () => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="text-black rounded-lg cursor-pointer"
+            Icon={MoveLeft}
+          />
+          <Button
+            variant="ghost"
+            outline="outline"
+            buttonType="action"
+            action={async () => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="text-black rounded-lg cursor-pointer"
+            Icon={MoveRight}
+          />
         </div>
       </div>
     </Dialog>

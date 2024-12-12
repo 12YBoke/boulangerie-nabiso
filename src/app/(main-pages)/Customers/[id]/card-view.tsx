@@ -4,7 +4,13 @@ import { ScrollArea } from "@/shadcnui/components/ui/scroll-area";
 import { Container } from "@/ui/components/container/container";
 import { Typography } from "@/ui/components/typography/typography";
 import clsx from "clsx";
-import { CircleCheck, CirclePlay, CircleX, CreditCard } from "lucide-react";
+import {
+  CircleCheck,
+  CirclePlay,
+  CircleX,
+  CreditCard,
+  Play,
+} from "lucide-react";
 import { useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
@@ -43,31 +49,33 @@ export const CardView = ({ card }: Props) => {
   return (
     <Container className="w-full flex flex-row gap-2">
       <Container className="w-[20%] rounded-lg flex flex-col gap-4">
-        <ScrollArea className="h-full pr-4 whitespace-nowrap rounded-lg">
+        <ScrollArea className="h-[80vh] pr-4 whitespace-nowrap rounded-lg">
           <Container className="flex flex-col gap-2">
             {card.map(({ id, cardNumber, cardStatus, paymentStatus }) => (
               <div
                 key={id}
                 className={clsx(
-                  "cursor-pointer flex flex-row justify-between items-center gap-2 p-2 rounded-lg bg-white border-2 hover:border-primary-100 animate",
-                  cardSelectedId === id ? "border-primary-500" : ""
+                  "cursor-pointer flex flex-row justify-between items-center gap-2 p-2 rounded-lg border-2 hover:border-primary-100 animate",
+                  cardSelectedId === id
+                    ? "border-primary-100 bg-primary-100"
+                    : ""
                 )}
                 onClick={() => setCardSelectedId(id)}
               >
                 <Container>
-                  <Typography>Carte {cardNumber}</Typography>
+                  <Typography className="text-primary-800">
+                    Carte {cardNumber}
+                  </Typography>
                 </Container>
                 <Container className="flex flex-row gap-1">
                   <Container
                     className={clsx(
                       "p-1 rounded-full animate",
-                      cardStatus === "ACTIVE"
-                        ? "bg-primary-500"
-                        : "bg-amber-500"
+                      cardStatus === "ACTIVE" ? "" : "bg-green-500"
                     )}
                   >
                     {cardStatus === "ACTIVE" ? (
-                      <CirclePlay size={20} className="text-white" />
+                      <Play size={20} className="text-green-500" />
                     ) : (
                       <CircleCheck size={20} className="text-white" />
                     )}
@@ -76,7 +84,7 @@ export const CardView = ({ card }: Props) => {
                     className={clsx(
                       "p-1 rounded-full animate",
                       paymentStatus === "PAID"
-                        ? "bg-amber-500"
+                        ? "bg-green-500"
                         : "bg-primary-50"
                     )}
                   >
@@ -176,9 +184,10 @@ export const CardView = ({ card }: Props) => {
                     ? (card
                         .find(({ id }) => id === cardSelectedId)
                         ?.orders.reduce(
-                          (order, orders) => order + orders.amount!,
+                          (order, orders) => order + (orders.amount || 0),
                           0
-                        ) || 0) -
+                        ) || 0) *
+                        0.27 -
                         ((card
                           .find(({ id }) => id === cardSelectedId)
                           ?.orders.reduce(
