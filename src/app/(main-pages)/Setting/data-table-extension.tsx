@@ -23,7 +23,7 @@ import {
 } from "@/shadcnui/components/ui/table";
 
 import { Button } from "@/ui/components/button/button";
-import { MoveLeft, MoveRight, Plus, UserPlus } from "lucide-react";
+import { HousePlus, MoveLeft, MoveRight } from "lucide-react";
 import { Typography } from "@/ui/components/typography/typography";
 import { Input } from "@/shadcnui/components/ui/input";
 import {
@@ -34,21 +34,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shadcnui/components/ui/dialog";
-import { AddCustomerForm } from "@/ui/modules/add-customer-form/add-customer-form";
+import { AddExtensionForm } from "@/ui/modules/add-extension-form/add-extension-form";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  userData: {
-    id: string;
-    extensionId: string;
-  }[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  userData,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -80,22 +75,7 @@ export function DataTable<TData, TValue>({
         <div className="flex pb-4 flex-col gap-4 md:flex-row justify-between">
           <div className="flex gap-4 flex-row">
             <Input
-              placeholder="Filtrez par N° du client"
-              value={
-                (table
-                  .getColumn("customerNumber")
-                  ?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table
-                  .getColumn("customerNumber")
-                  ?.setFilterValue(event.target.value)
-              }
-              className="w-full lg:w-auto rounded-lg focus:ring-primary-500"
-              type="number"
-            />
-            <Input
-              placeholder="Filtrez par nom du client"
+              placeholder="Filtrez par nom d'extension"
               value={
                 (table.getColumn("name")?.getFilterValue() as string) ?? ""
               }
@@ -107,8 +87,8 @@ export function DataTable<TData, TValue>({
           </div>
           <DialogTrigger asChild>
             <span className="flex flex-row py-2 px-4 cursor-pointer justify-center items-center bg-primary-100 animate rounded-lg hover:bg-primary-200 w-full md:w-auto text-primary-800">
-              <UserPlus className="mr-2 h-6 w-6" />
-              Ajouter un client
+              <HousePlus className="mr-2 h-6 w-6" />
+              Ajouter une extension
             </span>
           </DialogTrigger>
         </div>
@@ -157,7 +137,7 @@ export function DataTable<TData, TValue>({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    Aucun client trouvé
+                    Aucune extension trouvée
                   </TableCell>
                 </TableRow>
               )}
@@ -188,12 +168,12 @@ export function DataTable<TData, TValue>({
       <DialogContent>
         <DialogHeader className="flex flex-col gap-4">
           <DialogTitle>
-            <Typography variant="title-lg">Ajouter un client</Typography>
+            <Typography variant="title-lg">Ajouter une extension</Typography>
           </DialogTitle>
           <DialogDescription className="h-full w-full">
-            Ajoutez un client à votre liste
+            Ajoutez une extension à votre liste
           </DialogDescription>
-          <AddCustomerForm userData={userData} />
+          <AddExtensionForm />
         </DialogHeader>
       </DialogContent>
     </Dialog>

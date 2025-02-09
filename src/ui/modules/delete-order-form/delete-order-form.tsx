@@ -60,7 +60,7 @@ export const DeleteOrderForm = ({ id }: Props) => {
           Icon={Trash}
           buttonType="action"
           action={handleDelete}
-          className="bg-red-500 hover:bg-red-600"
+          className="bg-red-500 hover:bg-red-600 text-white"
         >
           Supprimer
         </Button>

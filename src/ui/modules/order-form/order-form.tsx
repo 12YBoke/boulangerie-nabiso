@@ -239,8 +239,8 @@ export const OrderForm = ({ customers, users }: Props) => {
                     : type === "DONATION"
                     ? "Don"
                     : type === "DAMAGE"
-                    ? "Foutus"
-                    : "Brulés"}
+                    ? "Foutu"
+                    : "Brulé"}
                 </Typography>
               </Container>
             </Container>

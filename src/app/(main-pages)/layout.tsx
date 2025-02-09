@@ -15,14 +15,21 @@ export default async function MainRoutesLayout({
     redirect("/sign-in");
   }
 
-  const user = await prisma?.user.findMany({
+  const user = await prisma?.user.findUnique({
     where: {
-      name: session?.user?.name!,
+      id: session?.user?.id!,
     },
     select: {
       id: true,
       extensionId: true,
       role: true,
+      name: true,
+      extension: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
   });
 

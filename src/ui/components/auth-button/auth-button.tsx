@@ -3,42 +3,36 @@
 
 import useExtensionIdStore from "@/store/extension-id-store";
 import { Button } from "../button/button";
-import { LogIn, LogOut, UserCircle2, UserPlus, Warehouse } from "lucide-react";
+import { LogIn, LogOut, UserPlus } from "lucide-react";
 import { signOut } from "next-auth/react";
 import React from "react";
 import { Container } from "../container/container";
 import { Typography } from "../typography/typography";
-import useStore from "@/hooks/useStore";
-
 interface Props {
   className?: string;
-  name?: string;
-  extensions?: {
+  user?: {
     id: string;
     name: string;
-  }[];
-  user?: { id: string; extensionId: string; role: "ADMIN" | "USER" }[];
+    extensionId: string;
+    role: "ADMIN" | "USER";
+    extension?: {
+      id: string;
+      name: string;
+    };
+  };
 }
 
-export const UserCard = ({ name, extensions }: Props) => {
-  const extensionId = useStore(
-    useExtensionIdStore,
-    (state) => state.extensionId
-  );
-  const currentExtension = extensionId
-    ? extensions?.find((extension) => extension.id === extensionId)
-    : null;
-
+export const UserCard = ({ user }: Props) => {
   return (
     <Container className="bg-black w-full text-white p-4 rounded-lg flex flex-col gap-1">
       <Container className="flex flex-row justify-center items-center">
         <Container className="w-full">
-          <Typography variant="title-sm">{name}</Typography>
+          <Typography variant="title-sm">{user!.name}</Typography>
         </Container>
       </Container>
       <Container className="flex flex-row justify-center items-center">
         <Container className="w-full">
-          <Typography variant="body-sm">{currentExtension?.name}</Typography>
+          <Typography variant="body-sm">{user!.extension?.name}</Typography>
         </Container>
       </Container>
     </Container>
@@ -81,26 +75,10 @@ export const SignOutButton = ({ className }: Props) => {
   );
 };
 
-export const AddUserButton = ({ className, extensions, user }: Props) => {
-  const extensionId = useStore(
-    useExtensionIdStore,
-    (state) => state.extensionId
-  );
-
-  const currentExtension = extensionId
-    ? extensions?.find((extension) => extension.id === extensionId)
-    : null;
-
-  let connectedUser;
-
-  if (currentExtension)
-    connectedUser = user?.filter((item) => {
-      return item.extensionId === currentExtension?.id;
-    })[0];
-
+export const AddUserButton = ({ user, className }: Props) => {
   return (
     <>
-      {extensionId && connectedUser && connectedUser.role === "ADMIN" && (
+      {user && user.role === "ADMIN" && (
         <Button
           variant="primary"
           buttonType="link"

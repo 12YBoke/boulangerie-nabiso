@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
 import { groupAndAggregateByYear } from "@/lib/group-and-aggregate-by-year";
 import { AnnualChart } from "@/ui/modules/annual-chart/annual-chart";
+import { calculateGlobalCardMetrics } from "@/lib/calculate-global-card-metrics";
 
 export default async function Home() {
   const session = await auth();
@@ -60,6 +61,37 @@ export default async function Home() {
     },
   });
 
+  console.log(ordersData);
+
+  const cards = await prisma?.card.findMany({
+    where: { extensionId: extensionId! },
+    select: {
+      id: true,
+      cardStatus: true,
+      paymentStatus: true,
+      cardNumber: true,
+      customerId: true,
+      extensionId: true,
+      dateCreated: true,
+      orders: {
+        select: {
+          id: true,
+          amount: true,
+          amountPaid: true,
+          voucher: true,
+          voucherPaid: true,
+          dateOrdered: true,
+        },
+        orderBy: {
+          dateOrdered: "desc",
+        },
+      },
+    },
+    orderBy: {
+      cardNumber: "desc",
+    },
+  });
+
   const orders = ordersData.map((order) => ({
     id: order.id,
     amount: order.amount,
@@ -97,10 +129,11 @@ export default async function Home() {
   }));
 
   const dataGroupByYearAndMonth = groupAndAggregateByYear(orders);
+  const cardsMetric = calculateGlobalCardMetrics(cards);
 
   return (
     <main>
-      <AnnualChart data={dataGroupByYearAndMonth} />
+      <AnnualChart data={dataGroupByYearAndMonth} cards={cardsMetric} />
     </main>
   );
 }

@@ -3,7 +3,7 @@ import { Sheet, SheetTrigger } from "@/shadcnui/components/ui/sheet";
 import { Container } from "@/ui/components/container/container";
 import { Typography } from "@/ui/components/typography/typography";
 import { ArrowDownRight, Plus } from "lucide-react";
-import { AddCashFlow } from "../add-cash-flow/add-cash-flow";
+import { AddCashFlow } from "../add-financial-flow-form/add-financial-flow-form";
 
 export const Disburse = () => {
   return (

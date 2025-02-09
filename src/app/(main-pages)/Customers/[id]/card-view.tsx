@@ -5,6 +5,7 @@ import { Container } from "@/ui/components/container/container";
 import { Typography } from "@/ui/components/typography/typography";
 import clsx from "clsx";
 import {
+  Check,
   CircleCheck,
   CirclePlay,
   CircleX,
@@ -55,10 +56,8 @@ export const CardView = ({ card }: Props) => {
               <div
                 key={id}
                 className={clsx(
-                  "cursor-pointer flex flex-row justify-between items-center gap-2 p-2 rounded-lg border-2 hover:border-primary-100 animate",
-                  cardSelectedId === id
-                    ? "border-primary-100 bg-primary-100"
-                    : ""
+                  "cursor-pointer flex flex-row justify-between items-center gap-2 p-2 rounded-lg border-2 hover:border-primary-50 animate",
+                  cardSelectedId === id ? "border-primary-50 bg-primary-50" : ""
                 )}
                 onClick={() => setCardSelectedId(id)}
               >
@@ -71,24 +70,31 @@ export const CardView = ({ card }: Props) => {
                   <Container
                     className={clsx(
                       "p-1 rounded-full animate",
-                      cardStatus === "ACTIVE" ? "" : "bg-green-500"
+                      cardStatus === "ACTIVE" ? "" : "bg-black"
                     )}
                   >
                     {cardStatus === "ACTIVE" ? (
-                      <Play size={20} className="text-green-500" />
+                      <Play
+                        size={20}
+                        fill="currentColor"
+                        className="text-black"
+                      />
                     ) : (
-                      <CircleCheck size={20} className="text-white" />
+                      <Check size={20} className="text-white" />
                     )}
                   </Container>
                   <Container
                     className={clsx(
                       "p-1 rounded-full animate",
-                      paymentStatus === "PAID"
-                        ? "bg-green-500"
-                        : "bg-primary-50"
+                      paymentStatus === "PAID" ? "bg-black" : ""
                     )}
                   >
-                    <CreditCard size={20} className="text-white" />
+                    <CreditCard
+                      size={20}
+                      className={clsx(
+                        paymentStatus === "PAID" ? "text-white" : "text-black"
+                      )}
+                    />
                   </Container>
                 </Container>
               </div>

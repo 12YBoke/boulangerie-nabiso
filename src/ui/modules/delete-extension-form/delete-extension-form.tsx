@@ -12,14 +12,14 @@ interface Props {
   name: string;
 }
 
-export const DeleteCustomerForm = ({ id, name }: Props) => {
+export const DeleteExtensionForm = ({ id, name }: Props) => {
   const [isLoading, startLoading, stopLoading] = UseLoading();
   const router = useRouter();
   const { toast } = useToast();
 
   const handleDelete = async () => {
     startLoading();
-    const delete_customer = await fetch(`/api/customer/${id}`, {
+    const delete_customer = await fetch(`/api/extension/${id}`, {
       method: "DELETE",
     });
 
@@ -28,7 +28,7 @@ export const DeleteCustomerForm = ({ id, name }: Props) => {
         title: "Supprimé",
         description: (
           <Typography variant="body-sm">
-            L'employé a été supprimé avec succès
+            L'extension a été supprimé avec succès
           </Typography>
         ),
       });
@@ -55,7 +55,7 @@ export const DeleteCustomerForm = ({ id, name }: Props) => {
       <Typography>
         Êtes-vous sûr de vouloir supprimer "
         <span className="text-title-sm text-black">{name}</span>" de la liste
-        des clients ?
+        des extensions ?
       </Typography>
       <Container>
         <Button

@@ -20,6 +20,7 @@ model User {
   accounts    Account[]
   sessions    Session[]
   orders      Orders[]
+  financialFlow FinancialFlow[]
  
   @@unique(name: "loginData", fields: [name, extensionId])
 }
@@ -94,6 +95,23 @@ model Customer {
   @@unique([customerNumber, extensionId])
 }
 
+model FinancialFlow {
+  id            String     @id @default(cuid())
+  amount        Float
+  reason        String
+  agentId       String
+  extensionId   String
+  date          DateTime   @default(now())
+  flowType      FlowType
+  agent         User       @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  extension     Extension  @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+}
+
+enum FlowType {
+  INCOME
+  EXPENSE
+}
+
 model Deliveries {
   id             String   @id  @default(cuid())
   orderId        String
@@ -105,9 +123,11 @@ model Deliveries {
 model Extension {
   id       String     @id   @default(cuid())
   name     String
+  rate     Float      @default(27)
   card     Card[]
   customer Customer[]
   User     User[]
+  financialFlow FinancialFlow[]
 }
 
 model Orders {

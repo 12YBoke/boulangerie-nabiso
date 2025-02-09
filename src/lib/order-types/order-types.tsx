@@ -11,15 +11,15 @@ export const OrderTypes: _OrderTypes[] = [
   },
   {
     value: "CHARGE",
-    label: "Charges",
+    label: "Charge",
   },
   {
     value: "DONATION",
-    label: "Dons",
+    label: "Don",
   },
   {
     value: "DAMAGE",
-    label: "Foutus",
+    label: "Foutu",
   },
   {
     value: "BURN",

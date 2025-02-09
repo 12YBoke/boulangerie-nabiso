@@ -31,6 +31,15 @@ export const RegisterFormFieldsType = z.object({
     .max(50),
 });
 
+export const UpdateUserFormFieldsType = z.object({
+  name: z
+    .string()
+    .min(2, {
+      message: "Votre nom d'utilisateur doit avoir au moin 2 caracteres.",
+    })
+    .max(50),
+});
+
 export const LoginFormFieldsType = z.object({
   name: z
     .string()
@@ -110,4 +119,19 @@ export const AmountDeliveredFormFieldsType = z.object({
   amountdelivered: z
     .number()
     .min(1, { message: "Le montant livré doit être supérieur ou égal à 1." }),
+});
+
+export const AddCashFlowFormFieldsType = z.object({
+  amount: z
+    .number()
+    .min(0, { message: "Le montant doit être supérieur ou égal à 0." }),
+  reason: z.string(),
+  flowType: z.enum(["INCOME", "EXPENSE"]),
+});
+
+export const AddExtensionFormFieldsType = z.object({
+  name: z.string(),
+  rate: z.number().min(0, {
+    message: "Le taux de commission doit être supérieur ou égal à 0.",
+  }),
 });

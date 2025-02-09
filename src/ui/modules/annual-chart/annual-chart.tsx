@@ -31,11 +31,40 @@ interface Props {
       orderNumberRegisteredWithoutCard: number;
     }[]
   >;
+  cards: Record<
+    number,
+    {
+      month: string;
+      totalCommand: number;
+      commission: number;
+      bp: number;
+      bpp: number;
+      bpt: number;
+      netToPay: number;
+      accountsUsed: number;
+      activeCards: number;
+      paidCards: number;
+    }[]
+  >;
 }
 
-export const AnnualChart = ({ data }: Props) => {
+export const AnnualChart = ({ data, cards }: Props) => {
   const arrayOfYears = Object.keys(data);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [metrics, setMetrics] = useState<
+    {
+      month: string;
+      totalCommand: number;
+      commission: number;
+      bp: number;
+      bpp: number;
+      bpt: number;
+      netToPay: number;
+      accountsUsed: number;
+      activeCards: number;
+      paidCards: number;
+    }[]
+  >(cards[selectedYear]);
 
   const [chartData, setChartData] = useState<
     {
@@ -48,6 +77,12 @@ export const AnnualChart = ({ data }: Props) => {
       orderNumberRegisteredWithoutCard: number;
     }[]
   >(data[selectedYear]);
+
+  const metricConfig = {
+    totalCommand: {
+      label: "Total commande",
+    },
+  } satisfies ChartConfig;
 
   const chartConfig = {
     totalAmount: {
@@ -155,7 +190,8 @@ export const AnnualChart = ({ data }: Props) => {
 
   useEffect(() => {
     setChartData(data[selectedYear]);
-  }, [data, selectedYear]);
+    setMetrics(cards[selectedYear]);
+  }, [cards, data, selectedYear]);
 
   return (
     <Container className="flex flex-col gap-8">
@@ -187,32 +223,38 @@ export const AnnualChart = ({ data }: Props) => {
             <Container className="basis-2/3 flex flex-col gap-2">
               <Typography>Montant généré</Typography>
               <Typography variant="title-lg" className="text-primary-800">
-                {FormatNumberWithCurrency(
-                  chartData.reduce(
-                    (acc, curr) => acc + (curr.totalAmount || 0),
-                    0
-                  )
-                )}
+                {chartData
+                  ? FormatNumberWithCurrency(
+                      chartData.reduce(
+                        (acc, curr) => acc + (curr.totalAmount || 0),
+                        0
+                      )
+                    )
+                  : 0}
               </Typography>
             </Container>
             <Container className="basis-1/3 flex flex-col gap-2 items-end">
               <Typography>
                 Avec carte :{" "}
-                {FormatNumberWithCurrency(
-                  chartData.reduce(
-                    (acc, curr) => acc + (curr.totalAmountWithCard || 0),
-                    0
-                  )
-                )}
+                {chartData
+                  ? FormatNumberWithCurrency(
+                      chartData.reduce(
+                        (acc, curr) => acc + (curr.totalAmountWithCard || 0),
+                        0
+                      )
+                    )
+                  : 0}
               </Typography>
               <Typography>
                 Sans carte :{" "}
-                {FormatNumberWithCurrency(
-                  chartData.reduce(
-                    (acc, curr) => acc + (curr.totalAmountWithoutCard || 0),
-                    0
-                  )
-                )}
+                {chartData
+                  ? FormatNumberWithCurrency(
+                      chartData.reduce(
+                        (acc, curr) => acc + (curr.totalAmountWithoutCard || 0),
+                        0
+                      )
+                    )
+                  : 0}
               </Typography>
             </Container>
           </Container>
@@ -253,34 +295,40 @@ export const AnnualChart = ({ data }: Props) => {
           </ChartContainer>
         </Container>
       </Container>
-      <Container className="flex flex-row gap-8 p-8 border rounded-lg">
+      <Container className="flex flex-row gap-8">
         <Container className="basis-2/3 p-8 bg-primary-100 rounded-lg">
           <Container className="flex flex-row justify-between w-full">
             <Container className="basis-2/3 flex flex-col gap-2">
               <Typography>Nombre de commande</Typography>
               <Typography variant="title-lg" className="text-primary-800">
-                {chartData.reduce(
-                  (acc, curr) => acc + (curr.orderNumberRegistered || 0),
-                  0
-                )}
+                {chartData
+                  ? chartData.reduce(
+                      (acc, curr) => acc + (curr.orderNumberRegistered || 0),
+                      0
+                    )
+                  : 0}
               </Typography>
             </Container>
             <Container className="basis-1/2 flex flex-col gap-2 items-end">
               <Typography>
                 Avec carte :{" "}
-                {chartData.reduce(
-                  (acc, curr) =>
-                    acc + (curr.orderNumberRegisteredWithCard || 0),
-                  0
-                )}
+                {chartData
+                  ? chartData.reduce(
+                      (acc, curr) =>
+                        acc + (curr.orderNumberRegisteredWithCard || 0),
+                      0
+                    )
+                  : 0}
               </Typography>
               <Typography>
                 Sans carte :{" "}
-                {chartData.reduce(
-                  (acc, curr) =>
-                    acc + (curr.orderNumberRegisteredWithoutCard || 0),
-                  0
-                )}
+                {chartData
+                  ? chartData.reduce(
+                      (acc, curr) =>
+                        acc + (curr.orderNumberRegisteredWithoutCard || 0),
+                      0
+                    )
+                  : 0}
               </Typography>
             </Container>
           </Container>

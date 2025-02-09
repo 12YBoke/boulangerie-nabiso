@@ -9,16 +9,22 @@ import {
 } from "@/ui/components/auth-button/auth-button";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { id } from "date-fns/locale";
 
 interface Props {
-  user: { id: string; extensionId: string; role: "ADMIN" | "USER" }[];
+  user: {
+    id: string;
+    name: string;
+    extensionId: string;
+    role: "ADMIN" | "USER";
+    extension: {
+      id: string;
+      name: string;
+    };
+  };
 }
 
 export const AsideNav = async ({ user }: Props) => {
-  const session = await auth();
-
-  const extensions = await prisma.extension.findMany({});
-
   return (
     <Container className="h-full w-full flex flex-col justify-between">
       <Container className="flex flex-col gap-4">
@@ -52,12 +58,8 @@ export const AsideNav = async ({ user }: Props) => {
         {}
       </Container>
       <Container className="p-4 flex flex-col items-center gap-2">
-        <UserCard name={session?.user?.name!} extensions={extensions} />
-        <AddUserButton
-          user={user}
-          extensions={extensions}
-          className="w-full flex justify-start p-2"
-        />
+        <UserCard user={user} />
+        <AddUserButton user={user} className="w-full flex justify-start p-2" />
         <SignOutButton className="w-full bg-red-100 hover:bg-red-200 hover:text-red-800 flex justify-start p-2" />
       </Container>
     </Container>

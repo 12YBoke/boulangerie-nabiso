@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Extension" ADD COLUMN     "rate" DOUBLE PRECISION NOT NULL DEFAULT 27;

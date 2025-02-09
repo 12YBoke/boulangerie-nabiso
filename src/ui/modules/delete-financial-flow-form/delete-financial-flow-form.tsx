@@ -9,17 +9,16 @@ import { Trash } from "lucide-react";
 
 interface Props {
   id: string;
-  name: string;
 }
 
-export const DeleteCustomerForm = ({ id, name }: Props) => {
+export const DeleteFinancialFlowForm = ({ id }: Props) => {
   const [isLoading, startLoading, stopLoading] = UseLoading();
   const router = useRouter();
   const { toast } = useToast();
 
   const handleDelete = async () => {
     startLoading();
-    const delete_customer = await fetch(`/api/customer/${id}`, {
+    const delete_customer = await fetch(`/api/financialFlow/${id}`, {
       method: "DELETE",
     });
 
@@ -53,9 +52,8 @@ export const DeleteCustomerForm = ({ id, name }: Props) => {
   return (
     <Container className="flex flex-col gap-4">
       <Typography>
-        Êtes-vous sûr de vouloir supprimer "
-        <span className="text-title-sm text-black">{name}</span>" de la liste
-        des clients ?
+        Êtes-vous sûr de vouloir supprimer cette transaction de la liste des
+        transactions ?
       </Typography>
       <Container>
         <Button
