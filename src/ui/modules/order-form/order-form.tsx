@@ -21,12 +21,16 @@ import { OrderTypes } from "@/lib/order-types/order-types";
 import { InputFieldDate } from "@/ui/components/input-field-date/input-field-date";
 import useStore from "@/hooks/useStore";
 import useExtensionIdStore from "@/store/extension-id-store";
+import { jsPDF } from "jspdf";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 
 interface Props {
   customers: Options[];
   users: {
     id: string;
     extensionId: string;
+    role: "USER" | "ADMIN";
   }[];
 }
 
@@ -138,6 +142,31 @@ export const OrderForm = ({ customers, users }: Props) => {
     return () => subscription.unsubscribe();
   }, [form]);
 
+  const tokenOrder = (
+    idOrder: string,
+    id: any,
+    amount: number,
+    bp: number,
+    date: string
+  ) => {
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: [50, 50],
+    });
+
+    doc.setFontSize(10);
+    doc.text("Boulangerie na biso", 25, 5, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("N° " + id, 25, 15, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("" + amount + " Fc", 25, 25, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("BP " + bp + " Fc", 25, 35, { align: "center" });
+    doc.text("" + date, 25, 45, { align: "center" });
+    doc.save("Commande/" + date + "/" + idOrder + ".pdf");
+  };
+
   async function onSubmit(values: z.infer<typeof OrdersFormFieldsType>) {
     startLoading();
     const {
@@ -174,6 +203,8 @@ export const OrderForm = ({ customers, users }: Props) => {
     });
 
     if (addOrder.status === 200) {
+      const order = await addOrder.json();
+      console.log();
       toast({
         title: "Commande ajoutée",
         description: (
@@ -183,6 +214,16 @@ export const OrderForm = ({ customers, users }: Props) => {
         ),
       });
       stopLoading();
+      tokenOrder(
+        order.orderId,
+        customerid
+          ? customers.filter((customer) => customer.value === customerid)[0]
+              .customerNumber
+          : name,
+        amount,
+        voucher,
+        format(dateordered, "dd-MM-yyyy", { locale: fr })
+      );
       form.reset();
       router.refresh();
     } else {
@@ -201,7 +242,6 @@ export const OrderForm = ({ customers, users }: Props) => {
     }
     router.refresh();
   }
-
   return (
     <Form {...form}>
       <form
@@ -223,6 +263,7 @@ export const OrderForm = ({ customers, users }: Props) => {
                 control={form.control}
                 name={"dateordered"}
                 label={"Date de la commande"}
+                role={currentUser ? currentUser.role : undefined}
               />
             </Container>
           </Container>

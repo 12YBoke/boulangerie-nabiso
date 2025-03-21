@@ -45,13 +45,25 @@ export default async function Home({ params }: { params: { id: string } }) {
     },
   });
 
+  const extension = await prisma.extension.findUnique({
+    where: {
+      id: customer?.extensionId,
+    },
+    select: {
+      rate: true,
+    },
+  });
+
   return (
     <main className="w-full flex flex-col">
       <Container className="w-full flex flex-col gap-8 rounded">
         <Container className="flex flex-row gap-4 items-center">
           <Typography variant="title-lg">{customer?.name}</Typography>
+          <Typography className="text-neutral-500">
+            (Taux de commission : {extension?.rate || 27 / 100}%)
+          </Typography>
         </Container>
-        <CardView card={customer?.card!} />
+        <CardView card={customer?.card!} rate={extension?.rate || 27} />
       </Container>
     </main>
   );

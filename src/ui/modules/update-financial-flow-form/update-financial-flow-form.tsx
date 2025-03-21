@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { AddCashFlowFormFieldsType } from "@/types/forms";
 import { InputField } from "@/ui/components/input-field/input-field";
 import { InputFieldSelect } from "@/ui/components/input-field-select/input-field-select";
+import { InputFieldDate } from "@/ui/components/input-field-date/input-field-date";
 
 interface Props {
   financialFlow: {
@@ -42,6 +43,7 @@ export const UpdateFinancialFlowForm = ({ financialFlow }: Props) => {
       flowType: financialFlow.flowType,
       amount: financialFlow.amount,
       reason: financialFlow.reason,
+      date: financialFlow.date,
     },
   });
 
@@ -49,7 +51,7 @@ export const UpdateFinancialFlowForm = ({ financialFlow }: Props) => {
 
   useEffect(() => {
     const updated: boolean =
-      watchedValues.flowType === financialFlow.flowType &&
+      watchedValues.date === financialFlow.date &&
       watchedValues.amount === financialFlow.amount &&
       watchedValues.reason.trim() === financialFlow.reason;
 
@@ -58,10 +60,10 @@ export const UpdateFinancialFlowForm = ({ financialFlow }: Props) => {
 
   async function onSubmit(values: z.infer<typeof AddCashFlowFormFieldsType>) {
     startLoading();
-    const { amount, reason, flowType } = values;
+    const { amount, reason, date } = values;
 
     const updatefinancialflow = await fetch(
-      `/api/financialflow/${financialFlow.id}`,
+      `/api/financialFlow/${financialFlow.id}`,
       {
         method: "PATCH",
         credentials: "include",
@@ -71,7 +73,7 @@ export const UpdateFinancialFlowForm = ({ financialFlow }: Props) => {
         body: JSON.stringify({
           amount,
           reason,
-          flowType,
+          date,
         }),
       }
     );
@@ -110,24 +112,34 @@ export const UpdateFinancialFlowForm = ({ financialFlow }: Props) => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Container className="flex flex-col gap-4">
           <Container className="w-full">
-            <Container className="w-full">
-              <InputFieldSelect
-                placeholder="Type de transaction"
+            <Container>
+              <InputFieldDate
                 control={form.control}
-                name="flowType"
-                options={[
-                  { value: "INCOME", label: "Revenu" },
-                  { value: "EXPENSE", label: "Dépense" },
-                ]}
+                name={"date"}
+                label={"Date de la transaction"}
               />
             </Container>
-            <Container className="w-full">
-              <InputField
-                placeholder="Montant"
-                control={form.control}
-                name="amount"
-                type="number"
-              />
+            <Container className="w-full flex flex-row gap-4">
+              <Container className="basis-1/2">
+                <InputFieldSelect
+                  disabled
+                  placeholder="Type de transaction"
+                  control={form.control}
+                  name="flowType"
+                  options={[
+                    { value: "INCOME", label: "Revenu" },
+                    { value: "EXPENSE", label: "Dépense" },
+                  ]}
+                />
+              </Container>
+              <Container className="basis-1/2">
+                <InputField
+                  placeholder="Montant"
+                  control={form.control}
+                  name="amount"
+                  type="number"
+                />
+              </Container>
             </Container>
             <Container className="w-full">
               <InputField

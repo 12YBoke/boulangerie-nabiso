@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     userid,
   } = await req.json();
 
-  await prisma.orders.create({
+  const order = await prisma.orders.create({
     data: {
       cardId: cardid,
       amount: amount,
@@ -32,5 +32,7 @@ export async function POST(req: Request) {
     },
   });
 
-  return NextResponse.json({ status: 200 });
+  const orderId = order.id;
+
+  return NextResponse.json({ orderId, status: 200 });
 }

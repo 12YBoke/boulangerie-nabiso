@@ -77,44 +77,16 @@ export const NewUserForm = ({ extensions }: Props) => {
 
       if (registration.status === 200) {
         toast({
-          title: "Bienvenue !",
+          title: "Succès",
           description: (
             <Typography variant="body-sm">
-              Vos informations ont correctement été enregistré
+              Les informations de l'utilisateur ont correctement été enregistré
             </Typography>
           ),
         });
-
-        const loginRespose = await signIn("credentials", {
-          name: name,
-          extensionId: extensionid,
-          password: password,
-          redirect: false,
-        });
-
-        if (loginRespose?.status === 200) {
-          toast({
-            title: "Connexion réussie",
-            description: "Content de vous revoir !",
-          });
-          stopLoading();
-          router.refresh();
-          stopLoading();
-          setExtensionId(extensionid);
-          router.push("/");
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Une erreur est survenue",
-            description: (
-              <Typography variant="body-sm">
-                Votre nom d'utilisateur ou votre mot de passe a été saisi
-                incorrectement. Veuillez réessayer.
-              </Typography>
-            ),
-          });
-          stopLoading();
-        }
+        form.reset();
+        stopLoading();
+        router.refresh();
       } else {
         toast({
           variant: "destructive",

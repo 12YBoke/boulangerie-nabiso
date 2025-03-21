@@ -187,12 +187,22 @@ export const columns: ColumnDef<Deliveries>[] = [
     },
   },
   {
-    id: "actions",
+    id: "seeAction",
     cell: ({ row }) => {
       const delivery = row.original;
       return (
         <Container className="flex flex-row gap-2 justify-end">
           <See delivery={delivery} />
+        </Container>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const delivery = row.original;
+      return (
+        <Container className="flex flex-row gap-2 justify-end">
           <Update order={delivery} />
           <Delete id={delivery.id} />
         </Container>

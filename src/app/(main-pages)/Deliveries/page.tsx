@@ -96,6 +96,8 @@ export default async function Home() {
     select: {
       id: true,
       extensionId: true,
+      extension: true,
+      role: true,
     },
   });
 
@@ -104,7 +106,7 @@ export default async function Home() {
   return (
     <main className="w-full flex flex-col">
       <Container className="w-full h-full flex flex-col gap-4 rounded">
-        <Filter data={data} />
+        <Filter data={data} userData={userData} />
       </Container>
     </main>
   );

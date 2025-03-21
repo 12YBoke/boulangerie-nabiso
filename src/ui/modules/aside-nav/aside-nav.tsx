@@ -25,6 +25,11 @@ interface Props {
 }
 
 export const AsideNav = async ({ user }: Props) => {
+  const filteredAsideRoutes =
+    user.role === "USER"
+      ? AsideRoutes.filter((route) => route.title !== "Administration")
+      : AsideRoutes;
+
   return (
     <Container className="h-full w-full flex flex-col justify-between">
       <Container className="flex flex-col gap-4">
@@ -33,7 +38,7 @@ export const AsideNav = async ({ user }: Props) => {
           <Typography variant="title-lg">NA BISO</Typography>
         </Container>
         <Container className="px-4">
-          {AsideRoutes.map(({ children }) =>
+          {filteredAsideRoutes.map(({ children }) =>
             children!.map(({ title, baseUrl, Icon }) => (
               <Container key={title}>
                 <Typography
@@ -55,7 +60,6 @@ export const AsideNav = async ({ user }: Props) => {
             ))
           )}
         </Container>
-        {}
       </Container>
       <Container className="p-4 flex flex-col items-center gap-2">
         <UserCard user={user} />

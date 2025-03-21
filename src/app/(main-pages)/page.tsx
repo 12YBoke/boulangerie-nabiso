@@ -61,8 +61,6 @@ export default async function Home() {
     },
   });
 
-  console.log(ordersData);
-
   const cards = await prisma?.card.findMany({
     where: { extensionId: extensionId! },
     select: {

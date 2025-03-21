@@ -20,7 +20,7 @@ export async function PATCH(
 ) {
   const data = await req.json();
 
-  await prisma.customer.update({
+  await prisma.financialFlow.update({
     where: {
       id: id,
     },

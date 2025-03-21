@@ -30,6 +30,7 @@ interface Props {
   description?: string;
   options: Options[];
   children?: React.ReactNode;
+  disabled?: boolean;
 }
 
 export const InputFieldSelect = ({
@@ -40,6 +41,7 @@ export const InputFieldSelect = ({
   description,
   options,
   children,
+  disabled,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,6 +65,7 @@ export const InputFieldSelect = ({
             <FormControl>
               <SelectTrigger
                 className={clsx("rounded-lg focus:ring-primary-500")}
+                disabled={disabled}
               >
                 <Container className="w-full relative flex items-center">
                   {children ? children : null}

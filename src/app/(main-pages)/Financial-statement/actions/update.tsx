@@ -9,9 +9,6 @@ import {
 } from "@/shadcnui/components/ui/dialog";
 import { Typography } from "@/ui/components/typography/typography";
 import { UpdateFinancialFlowForm } from "@/ui/modules/update-financial-flow-form/update-financial-flow-form";
-import clsx from "clsx";
-import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
-import { Container } from "@/ui/components/container/container";
 
 import { Pen, Trash } from "lucide-react";
 

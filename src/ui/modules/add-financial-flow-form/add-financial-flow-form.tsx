@@ -13,16 +13,18 @@ import { Button } from "@/ui/components/button/button";
 import { useToast } from "@/shadcnui/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import UseLoading from "@/hooks/use-loading";
-import { ListOrdered, Smartphone, User, UserPlus } from "lucide-react";
-import useExtensionIdStore from "@/store/extension-id-store";
-import useStore from "@/hooks/useStore";
+import { UserPlus } from "lucide-react";
 import { InputFieldSelect } from "@/ui/components/input-field-select/input-field-select";
+import { InputFieldDate } from "@/ui/components/input-field-date/input-field-date";
 
 interface Props {
-  userData: {
-    id: string;
-    extensionId: string;
-  }[];
+  userData:
+    | {
+        id: string;
+        extensionId: string;
+        role: "ADMIN" | "USER";
+      }
+    | undefined;
 }
 
 export const AddCashFlowForm = ({ userData }: Props) => {
@@ -35,21 +37,13 @@ export const AddCashFlowForm = ({ userData }: Props) => {
       amount: 0,
       reason: "",
       flowType: undefined,
+      date: new Date(),
     },
   });
 
-  const extensionid = useStore(
-    useExtensionIdStore,
-    (state) => state.extensionId
-  );
-
-  const filterUser = userData.filter(
-    (user) => user.extensionId === extensionid
-  );
-
   async function onSubmit(values: z.infer<typeof AddCashFlowFormFieldsType>) {
     startLoading();
-    const { amount, reason, flowType } = values;
+    const { amount, reason, flowType, date } = values;
 
     const addCashFlow = await fetch(`/api/financialFlow`, {
       method: "POST",
@@ -61,8 +55,9 @@ export const AddCashFlowForm = ({ userData }: Props) => {
         amount,
         reason,
         flowType,
-        agentId: filterUser[0].id,
-        userfilteredextensionid: filterUser[0].extensionId,
+        date,
+        agentId: userData?.id,
+        userfilteredextensionid: userData?.extensionId,
       }),
     });
 
@@ -76,6 +71,7 @@ export const AddCashFlowForm = ({ userData }: Props) => {
         ),
       });
       stopLoading();
+      form.reset();
       router.refresh();
     } else {
       toast({
@@ -99,24 +95,40 @@ export const AddCashFlowForm = ({ userData }: Props) => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Container className="flex flex-col gap-4">
           <Container className="w-full">
-            <Container className="w-full">
-              <InputFieldSelect
-                placeholder="Type de transaction"
+            <Container>
+              <InputFieldDate
                 control={form.control}
-                name="flowType"
-                options={[
-                  { value: "INCOME", label: "Revenu" },
-                  { value: "EXPENSE", label: "Dépense" },
-                ]}
+                name={"date"}
+                label={"Date de la transaction"}
+                role={
+                  userData
+                    ? userData.role
+                      ? userData.role
+                      : undefined
+                    : undefined
+                }
               />
             </Container>
-            <Container className="w-full">
-              <InputField
-                placeholder="Montant"
-                control={form.control}
-                name="amount"
-                type="number"
-              />
+            <Container className="w-full flex flex-row gap-4">
+              <Container className="basis-1/2">
+                <InputFieldSelect
+                  placeholder="Type de transaction"
+                  control={form.control}
+                  name="flowType"
+                  options={[
+                    { value: "INCOME", label: "Revenu" },
+                    { value: "EXPENSE", label: "Dépense" },
+                  ]}
+                />
+              </Container>
+              <Container className="basis-1/2">
+                <InputField
+                  placeholder="Montant"
+                  control={form.control}
+                  name="amount"
+                  type="number"
+                />
+              </Container>
             </Container>
             <Container className="w-full">
               <InputField

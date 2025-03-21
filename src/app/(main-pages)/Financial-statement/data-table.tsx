@@ -11,6 +11,7 @@ import {
   useReactTable,
   SortingState,
   getSortedRowModel,
+  VisibilityState,
 } from "@tanstack/react-table";
 
 import {
@@ -36,17 +37,20 @@ import {
 } from "@/shadcnui/components/ui/dialog";
 import { AddCashFlowForm } from "@/ui/modules/add-financial-flow-form/add-financial-flow-form";
 import { Container } from "@/ui/components/container/container";
-
+import { useEffect } from "react";
 interface DataTableProps<
   TData extends { flowType: "INCOME" | "EXPENSE" },
   TValue
 > {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  userData: {
-    id: string;
-    extensionId: string;
-  }[];
+  userData:
+    | {
+        id: string;
+        extensionId: string;
+        role: "ADMIN" | "USER";
+      }
+    | undefined;
 }
 
 export function DataTable<
@@ -58,10 +62,22 @@ export function DataTable<
     []
   );
 
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+
+  // Add this effect to update columnVisibility when userData changes
+  useEffect(() => {
+    if (userData && userData.role) {
+      setColumnVisibility({
+        actions: userData.role === "USER" ? false : true,
+      });
+    }
+  }, [userData]);
+
   const [dataFiltered, setDataFiltered] = React.useState<TData[]>(data);
   const [type, setType] = React.useState<"INCOME" | "EXPENSE" | null>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (type) {
       setDataFiltered(data.filter((d) => d.flowType === type));
     } else {
@@ -96,7 +112,9 @@ export function DataTable<
     state: {
       sorting,
       columnFilters,
+      columnVisibility,
     },
+    onColumnVisibilityChange: setColumnVisibility,
     initialState: {
       pagination: {
         pageSize: 5,

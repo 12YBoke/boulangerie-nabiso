@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import prisma from "@/lib/prisma";
-import { FinancialFlow, columns } from "./columns";
-import { DataTable } from "./data-table";
+import { FinancialFlow } from "./columns";
 import { Container } from "@/ui/components/container/container";
-import { Typography } from "@/ui/components/typography/typography";
 import { auth } from "@/auth";
+import { Filter } from "./filter";
+import { getAmountOrdersGenerated } from "@/app/api/get-amount-orders-generated/get-amount-orders-generated";
 
 async function getData(extensionId: string): Promise<FinancialFlow[]> {
   const financialFlow = await prisma?.financialFlow.findMany({
@@ -47,20 +47,24 @@ export default async function Home() {
       id: true,
       extensionId: true,
       extension: true,
+      role: true,
     },
   });
 
   const data = await getData(userData[0].extensionId!);
 
+  const amountOrdersGenerated = await getAmountOrdersGenerated(
+    userData[0].extensionId!
+  );
+
   return (
     <main className="w-full flex flex-col">
-      <Container className="w-full h-full flex flex-col gap-8 rounded">
-        <Typography variant="title-lg">Liste des transactions</Typography>
-        <Container className="flex flex-row gap-8 w-full">
-          <Container className="w-full">
-            <DataTable columns={columns} data={data} userData={userData} />
-          </Container>
-        </Container>
+      <Container className="w-full">
+        <Filter
+          data={data}
+          userData={userData}
+          amountOrdersGenerated={amountOrdersGenerated}
+        />
       </Container>
     </main>
   );

@@ -12,12 +12,19 @@ import { DataTable } from "./data-table";
 import { _DeliveryTypes } from "@/types/_delivery-types";
 import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
 import { fr } from "date-fns/locale";
+import useExtensionIdStore from "@/store/extension-id-store";
+import useStore from "@/hooks/useStore";
 
 interface Props {
   data: _DeliveryTypes[];
+  userData: {
+    id: string;
+    extensionId: string;
+    role: "ADMIN" | "USER";
+  }[];
 }
 
-export const Filter = ({ data }: Props) => {
+export const Filter = ({ data, userData }: Props) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date()); // Initialise avec la date actuelle
   const [filteredData, setFilteredData] = useState<_DeliveryTypes[]>([]);
@@ -154,6 +161,12 @@ export const Filter = ({ data }: Props) => {
       format(order.dateOrdered, "yyyy-MM-dd") ===
       format(selectedDate, "yyyy-MM-dd"),
   }));
+  const extensionid = useStore(
+    useExtensionIdStore,
+    (state) => state.extensionId
+  );
+
+  const filterUser = userData.find((user) => user.extensionId === extensionid);
 
   return (
     <Container>
@@ -177,9 +190,9 @@ export const Filter = ({ data }: Props) => {
             >
               <Container className="flex flex-col gap-2">
                 <Typography className="text-primary-800">
-                  Total montant entrée
+                  Total montant entré
                 </Typography>
-                <Typography variant="title-lg" className="text-primary-800">
+                <Typography variant="title-base" className="text-primary-800">
                   {FormatNumberWithCurrency(
                     filteredData.reduce((acc, curr) => {
                       return acc + (curr.voucherPaid || 0);
@@ -217,7 +230,7 @@ export const Filter = ({ data }: Props) => {
                 <Typography className="text-primary-800">
                   Total commande
                 </Typography>
-                <Typography variant="title-lg" className="text-primary-800">
+                <Typography variant="title-base" className="text-primary-800">
                   {FormatNumberWithCurrency(
                     filteredData
                       .filter((data) => {
@@ -252,7 +265,7 @@ export const Filter = ({ data }: Props) => {
                 <Typography className="text-primary-800">
                   Total livraison
                 </Typography>
-                <Typography variant="title-lg" className="text-primary-800">
+                <Typography variant="title-base" className="text-primary-800">
                   {FormatNumberWithCurrency(
                     filteredData
                       .filter((data) => {
@@ -296,7 +309,7 @@ export const Filter = ({ data }: Props) => {
                 <Typography className="text-amber-800">
                   Nombre de commande
                 </Typography>
-                <Typography variant="title-lg" className="text-amber-800">
+                <Typography variant="title-base" className="text-amber-800">
                   {
                     filteredData.filter((data) => {
                       return (
@@ -311,7 +324,7 @@ export const Filter = ({ data }: Props) => {
                 <Typography className="text-amber-800">
                   Commandes avec carte
                 </Typography>
-                <Typography variant="title-lg" className="text-amber-800">
+                <Typography variant="title-base" className="text-amber-800">
                   {
                     filteredData
                       .filter((data) => {
@@ -330,7 +343,7 @@ export const Filter = ({ data }: Props) => {
                 <Typography className="text-amber-800">
                   Commandes sans carte
                 </Typography>
-                <Typography variant="title-lg" className="text-amber-800">
+                <Typography variant="title-base" className="text-amber-800">
                   {
                     filteredData
                       .filter((data) => {
@@ -349,7 +362,7 @@ export const Filter = ({ data }: Props) => {
                 <Typography className="text-red-800">
                   Commandes précédentes
                 </Typography>
-                <Typography variant="title-lg" className="text-red-800">
+                <Typography variant="title-base" className="text-red-800">
                   {
                     filteredData.filter((data) => {
                       return (
@@ -442,7 +455,11 @@ export const Filter = ({ data }: Props) => {
         </Container>
       </Container>
       <Container>
-        <DataTable columns={columns} data={filteredDataWithIsDate} />
+        <DataTable
+          columns={columns}
+          data={filteredDataWithIsDate}
+          userData={filterUser}
+        />
       </Container>
     </Container>
   );

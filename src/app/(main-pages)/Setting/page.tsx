@@ -7,6 +7,7 @@ import { DataTable as DataTableUser } from "./data-table-user";
 import { Container } from "@/ui/components/container/container";
 import { Typography } from "@/ui/components/typography/typography";
 import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 async function getExtension(): Promise<Extension[]> {
   const extensions = await prisma?.extension.findMany({
@@ -59,8 +60,13 @@ export default async function Home() {
       id: true,
       extensionId: true,
       extension: true,
+      role: true,
     },
   });
+
+  if (userData[0].role === "USER") {
+    redirect("/");
+  }
 
   const dataExtension = await getExtension();
 

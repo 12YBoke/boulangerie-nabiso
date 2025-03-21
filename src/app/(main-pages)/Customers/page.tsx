@@ -5,7 +5,6 @@ import { DataTable } from "./data-table";
 import { Container } from "@/ui/components/container/container";
 import { Typography } from "@/ui/components/typography/typography";
 import { auth } from "@/auth";
-import { useCurrentExtension } from "@/hooks/use-current-extension";
 
 async function getData(extensionId: string): Promise<Customer[]> {
   const customers = await prisma?.customer.findMany({

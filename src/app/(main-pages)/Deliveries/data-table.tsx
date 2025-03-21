@@ -11,6 +11,7 @@ import {
   useReactTable,
   SortingState,
   getSortedRowModel,
+  VisibilityState,
 } from "@tanstack/react-table";
 
 import {
@@ -26,21 +27,40 @@ import { Typography } from "@/ui/components/typography/typography";
 import { Input } from "@/shadcnui/components/ui/input";
 import { Dialog } from "@/shadcnui/components/ui/dialog";
 import { Button } from "@/ui/components/button/button";
+import { useEffect } from "react";
 import { MoveLeft, MoveRight } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  userData:
+    | {
+        id: string;
+        extensionId: string;
+        role: "ADMIN" | "USER";
+      }
+    | undefined;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  userData,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  useEffect(() => {
+    if (userData && userData.role) {
+      setColumnVisibility({
+        actions: userData.role === "USER" ? false : true,
+      });
+    }
+  }, [userData]);
+
   const table = useReactTable({
     data,
     columns,
@@ -53,6 +73,7 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
+      columnVisibility,
     },
     initialState: {
       pagination: {

@@ -95,7 +95,7 @@ export const columns: ColumnDef<FinancialFlow>[] = [
     },
   },
   {
-    id: "actions",
+    id: "seeAction",
     cell: ({ row }) => {
       const financialFlow = row.original;
 
@@ -104,6 +104,17 @@ export const columns: ColumnDef<FinancialFlow>[] = [
           <Container>
             <See financialFlow={financialFlow} />
           </Container>
+        </Container>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const financialFlow = row.original;
+
+      return (
+        <Container className="flex flex-row gap-2 justify-end">
           <Container>
             <Update financialFlow={financialFlow} />
           </Container>

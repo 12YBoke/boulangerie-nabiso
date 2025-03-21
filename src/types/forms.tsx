@@ -127,6 +127,7 @@ export const AddCashFlowFormFieldsType = z.object({
     .min(0, { message: "Le montant doit être supérieur ou égal à 0." }),
   reason: z.string(),
   flowType: z.enum(["INCOME", "EXPENSE"]),
+  date: z.date(),
 });
 
 export const AddExtensionFormFieldsType = z.object({

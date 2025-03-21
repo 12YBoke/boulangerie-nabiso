@@ -28,6 +28,7 @@ export default async function Home() {
     label: record.customerNumber + " - " + record.name,
     value: record.id,
     currentCard: record.card[0]?.id,
+    customerNumber: record.customerNumber,
   }));
 
   const session = await auth();
@@ -39,6 +40,7 @@ export default async function Home() {
     select: {
       id: true,
       extensionId: true,
+      role: true,
     },
   });
 

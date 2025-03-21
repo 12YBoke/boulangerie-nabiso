@@ -27,6 +27,8 @@ interface Props {
   label: string;
   description?: string;
   placeholder?: string;
+  role?: "ADMIN" | "USER";
+  disabled?: boolean;
 }
 
 export const InputFieldDate = ({
@@ -35,6 +37,8 @@ export const InputFieldDate = ({
   label,
   description,
   placeholder = "Selectionnez une date",
+  role,
+  disabled,
 }: Props) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false); // État pour contrôler l'ouverture du popover
 
@@ -50,7 +54,7 @@ export const InputFieldDate = ({
             open={isPopoverOpen}
             onOpenChange={setIsPopoverOpen} // Synchroniser l'état avec le popover
           >
-            <PopoverTrigger asChild>
+            <PopoverTrigger asChild disabled={disabled}>
               <FormControl>
                 <Button
                   variant={"outline"}
@@ -84,7 +88,8 @@ export const InputFieldDate = ({
                   const tomorrow = new Date(today);
                   tomorrow.setDate(today.getDate() + 1); // Ajouter un jour à today
 
-                  const minDate = new Date("2020-01-01");
+                  const minDate =
+                    role === "USER" ? today : new Date("2020-01-01");
                   minDate.setHours(0, 0, 0, 0); // Normaliser la date minimale
 
                   const currentDate = new Date(date);

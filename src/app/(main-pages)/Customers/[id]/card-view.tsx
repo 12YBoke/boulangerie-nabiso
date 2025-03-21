@@ -20,6 +20,7 @@ import { CloseCard } from "@/ui/modules/close-card/close-card";
 import { ValidatePayment } from "@/ui/modules/validate-payment/validate-payment";
 
 interface Props {
+  rate: number;
   card: {
     id: string;
     cardNumber: number;
@@ -44,7 +45,7 @@ interface Props {
   }[];
 }
 
-export const CardView = ({ card }: Props) => {
+export const CardView = ({ card, rate }: Props) => {
   const [cardSelectedId, setCardSelectedId] = useState<string | null>(null);
 
   return (
@@ -133,7 +134,8 @@ export const CardView = ({ card }: Props) => {
                     ?.orders.reduce(
                       (order, orders) => order + (orders.amount || 0),
                       0
-                    ) || 0) * 0.27
+                    ) || 0) *
+                    (rate / 100)
                 )}
               </Typography>
             </Container>
@@ -193,7 +195,7 @@ export const CardView = ({ card }: Props) => {
                           (order, orders) => order + (orders.amount || 0),
                           0
                         ) || 0) *
-                        0.27 -
+                        (rate / 100) -
                         ((card
                           .find(({ id }) => id === cardSelectedId)
                           ?.orders.reduce(
