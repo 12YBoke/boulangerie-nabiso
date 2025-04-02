@@ -204,7 +204,6 @@ export const OrderForm = ({ customers, users }: Props) => {
 
     if (addOrder.status === 200) {
       const order = await addOrder.json();
-      console.log();
       toast({
         title: "Commande ajoutée",
         description: (

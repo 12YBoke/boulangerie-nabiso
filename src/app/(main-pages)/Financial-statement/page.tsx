@@ -20,6 +20,15 @@ async function getData(extensionId: string): Promise<FinancialFlow[]> {
           name: true,
         },
       },
+      agentSalary: {
+        select: {
+          id: true,
+          dailySalary: true,
+          missingTotal: true,
+          missingRemaining: true,
+          missingRemoved: true,
+        },
+      },
     },
     orderBy: {
       date: "desc",
@@ -33,6 +42,7 @@ async function getData(extensionId: string): Promise<FinancialFlow[]> {
     date: flow.date,
     flowType: flow.flowType,
     agent: flow.agent.name,
+    agentSalary: flow.agentSalary,
   }));
 }
 

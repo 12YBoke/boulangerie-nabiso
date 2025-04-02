@@ -96,15 +96,26 @@ model Customer {
 }
 
 model FinancialFlow {
-  id            String     @id @default(cuid())
+  id            String        @id @default(cuid())
   amount        Float
   reason        String
   agentId       String
   extensionId   String
-  date          DateTime   @default(now())
+  date          DateTime      @default(now())
+  agentSalaryId String?
   flowType      FlowType
-  agent         User       @relation(fields: [agentId], references: [id], onDelete: Cascade)
-  extension     Extension  @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+  agent         User          @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  extension     Extension     @relation(fields: [extensionId], references: [id], onDelete: Cascade)
+  agentSalary   AgentSalary?  @relation(fields: [agentSalaryId], references: [id], onDelete: Cascade)
+}
+
+model AgentSalary {
+  id                String      @id @default(cuid())
+  dailySalary       Float?
+  missingTotal      Float?
+  missingRemoved    Float?
+  missingRemaining  Float?
+  financialFlow     FinancialFlow[]
 }
 
 enum FlowType {

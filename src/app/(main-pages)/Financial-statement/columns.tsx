@@ -6,8 +6,6 @@ import { Typography } from "@/ui/components/typography/typography";
 import { See } from "./actions/see";
 import { Delete } from "./actions/delete";
 import { Update } from "./actions/update";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 import clsx from "clsx";
 import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
 
@@ -20,24 +18,16 @@ export type FinancialFlow = {
   date: Date;
   flowType: "INCOME" | "EXPENSE";
   agent: string;
+  agentSalary: {
+    id: string;
+    dailySalary: number | null;
+    missingTotal: number | null;
+    missingRemoved: number | null;
+    missingRemaining: number | null;
+  } | null;
 };
 
 export const columns: ColumnDef<FinancialFlow>[] = [
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => {
-      const financialFlow = row.original;
-
-      return (
-        <Container>
-          <Typography>
-            {format(financialFlow.date, "dd-MM-yyyy", { locale: fr })}
-          </Typography>
-        </Container>
-      );
-    },
-  },
   {
     accessorKey: "flowType",
     header: "Type",
@@ -59,7 +49,11 @@ export const columns: ColumnDef<FinancialFlow>[] = [
                 financialFlow.flowType === "EXPENSE" && "text-red-600"
               )}
             >
-              {financialFlow.flowType === "INCOME" ? "Revenu" : "Dépense"}
+              {!financialFlow.agentSalary
+                ? financialFlow.flowType === "INCOME"
+                  ? "Revenu"
+                  : "Dépense"
+                : "Salaire"}
             </Typography>
           </Container>
         </Container>
@@ -82,6 +76,21 @@ export const columns: ColumnDef<FinancialFlow>[] = [
     },
   },
   {
+    accessorKey: "reason",
+    header: "Raison",
+    cell: ({ row }) => {
+      const financialFlow = row.original;
+
+      return (
+        <Container>
+          <Typography className="line-clamp-1 text-neutral-500 w-[24rem]">
+            {financialFlow.reason}
+          </Typography>
+        </Container>
+      );
+    },
+  },
+  {
     accessorKey: "agent",
     header: "Agent",
     cell: ({ row }) => {
@@ -89,7 +98,9 @@ export const columns: ColumnDef<FinancialFlow>[] = [
 
       return (
         <Container>
-          <Typography>{financialFlow.agent}</Typography>
+          <Typography className="line-clamp-1">
+            {financialFlow.agent}
+          </Typography>
         </Container>
       );
     },

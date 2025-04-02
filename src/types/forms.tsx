@@ -130,6 +130,18 @@ export const AddCashFlowFormFieldsType = z.object({
   date: z.date(),
 });
 
+export const AddSalaryPaymentFormFieldsType = z.object({
+  amount: z
+    .number()
+    .min(0, { message: "Le montant doit être supérieur ou égal à 0." }),
+  reason: z.string(),
+  date: z.date(),
+  dailySalary: z.number(),
+  missingTotal: z.number(),
+  missingRemoved: z.number(),
+  missingRemaining: z.number(),
+});
+
 export const AddExtensionFormFieldsType = z.object({
   name: z.string(),
   rate: z.number().min(0, {

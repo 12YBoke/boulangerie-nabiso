@@ -5,7 +5,7 @@ export async function DELETE(
   req: Request,
   { params: { id } }: { params: { id: string } }
 ) {
-  await prisma.financialFlow.delete({
+  await prisma.agentSalary.delete({
     where: {
       id: id,
     },
@@ -20,17 +20,12 @@ export async function PATCH(
 ) {
   const data = await req.json();
 
-  const response = await prisma.financialFlow.update({
+  await prisma.agentSalary.update({
     where: {
       id: id,
     },
     data: data,
-    select: {
-      agentSalaryId: true,
-    },
   });
 
-  const agentId = response.agentSalaryId;
-
-  return NextResponse.json({ agentId, status: 200 });
+  return NextResponse.json({ status: 200 });
 }

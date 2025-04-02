@@ -20,6 +20,7 @@ import {
   PopoverTrigger,
 } from "@/shadcnui/components/ui/popover";
 import { Button } from "@/shadcnui/components/ui/button";
+import { Typography } from "../typography/typography";
 
 interface Props {
   control: any;
@@ -48,8 +49,11 @@ export const InputFieldDate = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <br />
+          <FormLabel>
+            <Typography variant="title-sm" className="">
+              {label}
+            </Typography>
+          </FormLabel>
           <Popover
             open={isPopoverOpen}
             onOpenChange={setIsPopoverOpen} // Synchroniser l'état avec le popover

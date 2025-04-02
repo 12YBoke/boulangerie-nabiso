@@ -5,4 +5,11 @@ export interface _FinancialFlowTypes {
   date: Date;
   flowType: "INCOME" | "EXPENSE";
   agent: string;
+  agentSalary: {
+    id: string;
+    dailySalary: number | null;
+    missingTotal: number | null;
+    missingRemoved: number | null;
+    missingRemaining: number | null;
+  } | null;
 }

@@ -90,8 +90,8 @@ export const See = ({ financialFlow }: Props) => {
               <Typography variant="body-sm" className="text-black/50">
                 Raison
               </Typography>
-              <ScrollArea className="border rounded-lg h-40 overflow-hidden">
-                <Container className="p-4">
+              <ScrollArea className="rounded-lg h-40 overflow-hidden">
+                <Container className="">
                   <Typography className="whitespace-pre-wrap">
                     {financialFlow.reason}
                   </Typography>

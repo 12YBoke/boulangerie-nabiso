@@ -8,12 +8,14 @@ import { useEffect, useState } from "react";
 import { addMonths, subMonths } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { columns } from "./columns";
+import { columnsAgent } from "./columns-agent";
 import { DataTable } from "./data-table";
 import { fr } from "date-fns/locale";
 import { _FinancialFlowTypes } from "@/types/_financial-flow-types";
 import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
 import useExtensionIdStore from "@/store/extension-id-store";
 import useStore from "@/hooks/useStore";
+import { DataTableAgent } from "./data-table-agent";
 
 interface Props {
   data: _FinancialFlowTypes[];
@@ -240,6 +242,7 @@ export const Filter = ({ data, userData, amountOrdersGenerated }: Props) => {
     agent: flow.agent,
     isDate:
       format(flow.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd"),
+    agentSalary: flow.agentSalary,
   }));
 
   const extensionid = useStore(
@@ -533,6 +536,13 @@ export const Filter = ({ data, userData, amountOrdersGenerated }: Props) => {
           columns={columns}
           userData={filterUser}
           data={filteredDataWithIsDate}
+        />
+      </Container>
+      <Container>
+        <DataTableAgent
+          columns={columnsAgent}
+          userData={filterUser}
+          data={filteredDataWithIsDate.filter((data) => data.agentSalary)}
         />
       </Container>
     </Container>
