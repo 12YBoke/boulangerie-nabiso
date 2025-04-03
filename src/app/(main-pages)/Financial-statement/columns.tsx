@@ -25,6 +25,10 @@ export type FinancialFlow = {
     missingRemoved: number | null;
     missingRemaining: number | null;
   } | null;
+  cardPayment: {
+    id: string;
+    customerNumber: number;
+  } | null;
 };
 
 export const columns: ColumnDef<FinancialFlow>[] = [

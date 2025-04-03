@@ -30,7 +30,7 @@ export async function PATCH(
     },
   });
 
-  const agentId = response.agentSalaryId;
+  const agentSalaryId = response.agentSalaryId;
 
-  return NextResponse.json({ agentId, status: 200 });
+  return NextResponse.json({ agentSalaryId, status: 200 });
 }

@@ -16,6 +16,7 @@ import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
 import useExtensionIdStore from "@/store/extension-id-store";
 import useStore from "@/hooks/useStore";
 import { DataTableAgent } from "./data-table-agent";
+import { DataTableCard } from "./data-table-card";
 
 interface Props {
   data: _FinancialFlowTypes[];
@@ -243,6 +244,7 @@ export const Filter = ({ data, userData, amountOrdersGenerated }: Props) => {
     isDate:
       format(flow.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd"),
     agentSalary: flow.agentSalary,
+    cardPayment: flow.cardPayment,
   }));
 
   const extensionid = useStore(
@@ -545,6 +547,13 @@ export const Filter = ({ data, userData, amountOrdersGenerated }: Props) => {
           data={filteredDataWithIsDate.filter((data) => data.agentSalary)}
         />
       </Container>
+      {/* <Container>
+        <DataTableCard
+          columns={columnsAgent}
+          userData={filterUser}
+          data={filteredDataWithIsDate.filter((data) => data.cardPayment)}
+        />
+      </Container> */}
     </Container>
   );
 };

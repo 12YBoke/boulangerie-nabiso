@@ -78,9 +78,9 @@ export const UpdateSalaryPaymentForm = ({ salaryPayment }: Props) => {
 
     if (updatefinancialflow.status === 200) {
       const financialFlow = await updatefinancialflow.json();
-      console.log(dailySalary, missingTotal, missingRemoved, missingRemaining);
+
       const updateSalaryPayment = await fetch(
-        `/api/salaryPayment/${financialFlow.agentId}`,
+        `/api/salaryPayment/${financialFlow.agentSalaryId}`,
         {
           method: "PATCH",
           credentials: "include",

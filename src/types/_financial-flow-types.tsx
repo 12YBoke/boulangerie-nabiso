@@ -12,4 +12,8 @@ export interface _FinancialFlowTypes {
     missingRemoved: number | null;
     missingRemaining: number | null;
   } | null;
+  cardPayment: {
+    id: string;
+    customerNumber: number;
+  } | null;
 }

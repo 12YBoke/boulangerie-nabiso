@@ -3,7 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Container } from "@/ui/components/container/container";
 import { Typography } from "@/ui/components/typography/typography";
-import { Update } from "./actions/update";
 import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
 import { UpdateAgent } from "./actions/update-agent";
 
@@ -22,6 +21,10 @@ export type FinancialFlow = {
     missingTotal: number | null;
     missingRemoved: number | null;
     missingRemaining: number | null;
+  } | null;
+  cardPayment?: {
+    id: string;
+    customerNumber: number;
   } | null;
 };
 

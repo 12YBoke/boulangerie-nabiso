@@ -103,10 +103,12 @@ model FinancialFlow {
   extensionId   String
   date          DateTime      @default(now())
   agentSalaryId String?
+  cardPaymentId String?
   flowType      FlowType
   agent         User          @relation(fields: [agentId], references: [id], onDelete: Cascade)
   extension     Extension     @relation(fields: [extensionId], references: [id], onDelete: Cascade)
   agentSalary   AgentSalary?  @relation(fields: [agentSalaryId], references: [id], onDelete: Cascade)
+  cardPayment   CardPayment? @relation(fields: [cardPaymentId], references: [id], onDelete: Cascade)
 }
 
 model AgentSalary {
@@ -115,6 +117,12 @@ model AgentSalary {
   missingTotal      Float?
   missingRemoved    Float?
   missingRemaining  Float?
+  financialFlow     FinancialFlow[]
+}
+
+model CardPayment {
+  id              String      @id @default(cuid())
+  customerNumber  Int
   financialFlow     FinancialFlow[]
 }
 
