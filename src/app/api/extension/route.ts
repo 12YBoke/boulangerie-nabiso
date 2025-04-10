@@ -4,12 +4,12 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const data = await req.json();
 
-  await prisma.extension.create({
+  const result = await prisma.extension.create({
     data: data,
     select: {
       id: true,
     },
   });
 
-  return NextResponse.json({ status: 200 });
+  return NextResponse.json({ result, status: 200 });
 }

@@ -14,6 +14,7 @@ import { useToast } from "@/shadcnui/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import UseLoading from "@/hooks/use-loading";
 import { HousePlus } from "lucide-react";
+import { saltPassword } from "@/lib/password-to-salt";
 
 export const AddExtensionForm = () => {
   const router = useRouter();
@@ -44,16 +45,38 @@ export const AddExtensionForm = () => {
     });
 
     if (addExtension.status === 200) {
-      toast({
-        title: "Succès",
-        description: (
-          <Typography variant="body-sm">
-            L'extension a été enregistrée avec succès.
-          </Typography>
-        ),
+      const extension = await addExtension.json();
+      console.log(extension.result);
+      const saltedPassword = saltPassword("Default password");
+      const hash = saltedPassword.hash;
+      const salt = saltedPassword.salt;
+      const registration = await fetch(`/api/user`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: "Default admin",
+          extensionid: extension.result.id,
+          hash,
+          salt,
+        }),
       });
-      stopLoading();
-      router.refresh();
+
+      if (registration.status === 200) {
+        toast({
+          title: "Succès",
+          description: (
+            <Typography variant="body-sm">
+              L'extension a été enregistrée avec succès.
+            </Typography>
+          ),
+        });
+        stopLoading();
+        router.refresh();
+      } else {
+      }
     } else {
       toast({
         variant: "destructive",
