@@ -3,6 +3,7 @@ import { SignInForm } from "@/ui/modules/sign-in-form/sign-in-form";
 import prisma from "@/lib/prisma";
 import { BgImg } from "@/ui/components/bg-img/bg-img";
 import Bread from "../../../../public/bread.jpg";
+
 export default async function Home() {
   const extensions = await prisma.extension.findMany();
 
@@ -10,6 +11,8 @@ export default async function Home() {
     label: record.name,
     value: record.id,
   }));
+
+  console.log(extensionsForSelect);
 
   return (
     <Container className="flex flex-col md:flex-row h-[100dvh] justify-center items-center">

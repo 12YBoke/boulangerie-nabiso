@@ -61,6 +61,7 @@ export const AddExtensionForm = () => {
           extensionid: extension.result.id,
           hash,
           salt,
+          role: "ADMIN",
         }),
       });
 
