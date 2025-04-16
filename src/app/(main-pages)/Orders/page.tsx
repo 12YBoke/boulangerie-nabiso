@@ -5,7 +5,21 @@ import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 
 export default async function Home() {
+  const session = await auth();
+
+  const user = await prisma?.user.findMany({
+    where: {
+      name: session?.user?.name!,
+    },
+    select: {
+      id: true,
+      extensionId: true,
+      role: true,
+    },
+  });
+
   const customers = await prisma.customer.findMany({
+    where: { extensionId: user[0].extensionId! },
     select: {
       id: true,
       name: true,
@@ -30,19 +44,6 @@ export default async function Home() {
     currentCard: record.card[0]?.id,
     customerNumber: record.customerNumber,
   }));
-
-  const session = await auth();
-
-  const user = await prisma?.user.findMany({
-    where: {
-      name: session?.user?.name!,
-    },
-    select: {
-      id: true,
-      extensionId: true,
-      role: true,
-    },
-  });
 
   return (
     <main>
