@@ -7,20 +7,13 @@ import Bread from "../../../../public/bread.jpg";
 export default async function Home() {
   const extensions = await prisma.extension.findMany();
 
-  const extensionsForSelect = extensions?.map((record) => ({
-    label: record.name,
-    value: record.id,
-  }));
-
-  console.log(extensionsForSelect);
-
   return (
     <Container className="flex flex-col md:flex-row h-[100dvh] justify-center items-center">
       <Container className="basis-1/2 flex justify-center items-center h-full">
         <BgImg src={Bread} alt={"bread"} className="w-full h-full" />
       </Container>
       <Container className="basis-1/2 flex justify-center items-center">
-        <SignInForm extensions={extensionsForSelect} />
+        <SignInForm extensions={extensions} />
       </Container>
     </Container>
   );

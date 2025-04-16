@@ -21,7 +21,11 @@ import useExtensionIdStore from "@/store/extension-id-store";
 import { InputFieldSelect } from "@/ui/components/input-field-select/input-field-select";
 
 interface Props {
-  extensions: Options[];
+  extensions: {
+    id: string;
+    name: string;
+    rate: number;
+  }[];
 }
 
 export const SignInForm = ({ extensions }: Props) => {
@@ -36,6 +40,11 @@ export const SignInForm = ({ extensions }: Props) => {
       name: "",
     },
   });
+
+  const extensionsForSelect = extensions?.map((record) => ({
+    label: record.name,
+    value: record.id,
+  }));
 
   const setExtensionId = useExtensionIdStore((state) => state.setExtensionId);
 
@@ -152,7 +161,7 @@ export const SignInForm = ({ extensions }: Props) => {
               control={form.control}
               name={"extensionid"}
               placeholder={"Selectionnez votre extension"}
-              options={extensions}
+              options={extensionsForSelect}
             >
               {StoreIcon()}
             </InputFieldSelect>
