@@ -36,7 +36,7 @@ export const AddCashFlowForm = ({ userData }: Props) => {
     defaultValues: {
       amount: 0,
       reason: "",
-      flowType: undefined,
+      flowType: "INCOME", // Set a default value from your options
       date: new Date(),
     },
   });
@@ -71,7 +71,12 @@ export const AddCashFlowForm = ({ userData }: Props) => {
         ),
       });
       stopLoading();
-      form.reset();
+      form.reset({
+        amount: 0,
+        reason: "",
+        flowType: flowType,
+        date: new Date(),
+      });
       router.refresh();
     } else {
       toast({
@@ -85,7 +90,6 @@ export const AddCashFlowForm = ({ userData }: Props) => {
         ),
       });
       router.refresh();
-      stopLoading();
     }
     router.refresh();
   }
