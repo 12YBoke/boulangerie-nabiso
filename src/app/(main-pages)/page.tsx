@@ -3,11 +3,26 @@ import { auth } from "@/auth";
 import { groupAndAggregateByYear } from "@/lib/group-and-aggregate-by-year";
 import { AnnualChart } from "@/ui/modules/annual-chart/annual-chart";
 import { calculateGlobalCardMetrics } from "@/lib/calculate-global-card-metrics";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth();
 
-  console.log("session", session);
+  const user = await prisma?.user.findMany({
+    where: {
+      name: session?.user?.name!,
+      extensionId: session?.user.extensionId!,
+    },
+    select: {
+      id: true,
+      extensionId: true,
+      role: true,
+    },
+  });
+
+  if (user[0].role === "USER") {
+    redirect("/Deliveries");
+  }
 
   const ordersData = await prisma?.orders.findMany({
     where: { user: { extensionId: session?.user.extensionId! } },

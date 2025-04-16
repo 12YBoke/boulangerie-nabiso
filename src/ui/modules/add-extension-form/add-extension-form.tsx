@@ -46,7 +46,6 @@ export const AddExtensionForm = () => {
 
     if (addExtension.status === 200) {
       const extension = await addExtension.json();
-      console.log(extension.result);
       const saltedPassword = saltPassword("Default password");
       const hash = saltedPassword.hash;
       const salt = saltedPassword.salt;

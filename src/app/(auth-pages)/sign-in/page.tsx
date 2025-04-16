@@ -6,7 +6,6 @@ import Bread from "../../../../public/bread.jpg";
 
 export default async function Home() {
   const extensions = await prisma.extension.findMany();
-  console.log(extensions);
   return (
     <Container className="flex flex-col md:flex-row h-[100dvh] justify-center items-center">
       <Container className="basis-1/2 flex justify-center items-center h-full">

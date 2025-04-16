@@ -38,8 +38,6 @@ export default async function Home() {
     },
   });
 
-  console.log("customers", customers);
-
   const customersForSelect = customers?.map((record) => ({
     label: record.customerNumber + " - " + record.name,
     value: record.id,
