@@ -101,7 +101,7 @@ model FinancialFlow {
   reason        String
   agentId       String
   extensionId   String
-  date          DateTime      @default(now())
+  date          DateTime      
   agentSalaryId String?
   cardPaymentId String?
   flowType      FlowType

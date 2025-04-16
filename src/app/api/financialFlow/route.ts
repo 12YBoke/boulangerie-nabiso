@@ -9,6 +9,7 @@ export async function POST(req: Request) {
     agentId,
     userfilteredextensionid,
     agentSalaryId,
+    date,
   } = await req.json();
 
   const response = await prisma.financialFlow.create({
@@ -18,6 +19,7 @@ export async function POST(req: Request) {
       flowType: flowType,
       agentId: agentId,
       extensionId: userfilteredextensionid,
+      date: date,
       agentSalaryId,
     },
     select: {
