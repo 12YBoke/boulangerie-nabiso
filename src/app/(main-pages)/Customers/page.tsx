@@ -30,11 +30,13 @@ export default async function Home() {
   const userData = await prisma.user.findMany({
     where: {
       id: session!.user!.id,
+      extensionId: session?.user.extensionId,
     },
     select: {
       id: true,
       extensionId: true,
       extension: true,
+      role: true,
     },
   });
 
@@ -64,7 +66,7 @@ export default async function Home() {
             </Container>
           </Container>
           <Container className="w-[76%]">
-            <DataTable columns={columns} data={data} userData={userData} />
+            <DataTable columns={columns} data={data} userData={userData[0]} />
           </Container>
         </Container>
       </Container>

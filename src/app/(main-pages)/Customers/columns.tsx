@@ -62,7 +62,7 @@ export const columns: ColumnDef<Customer>[] = [
     header: "Téléphone",
   },
   {
-    id: "actions",
+    id: "action",
     cell: ({ row }) => {
       const customer = row.original;
 
@@ -71,6 +71,17 @@ export const columns: ColumnDef<Customer>[] = [
           <Container>
             <See customer={customer} />
           </Container>
+        </Container>
+      );
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const customer = row.original;
+
+      return (
+        <Container className="flex flex-row gap-2 justify-end">
           <Container>
             <Update customer={customer} />
           </Container>

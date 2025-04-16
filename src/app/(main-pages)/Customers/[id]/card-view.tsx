@@ -43,9 +43,14 @@ interface Props {
       name: string | null;
     }[];
   }[];
+  userData: {
+    id: string;
+    extensionId: string;
+    role: "ADMIN" | "USER";
+  };
 }
 
-export const CardView = ({ card, rate }: Props) => {
+export const CardView = ({ card, rate, userData }: Props) => {
   const [cardSelectedId, setCardSelectedId] = useState<string | null>(null);
 
   return (
@@ -106,6 +111,7 @@ export const CardView = ({ card, rate }: Props) => {
       <Container className="w-[80%] flex flex-col gap-2 justify-between ">
         <DataTable
           columns={columns}
+          userData={userData}
           data={card.find(({ id }) => id === cardSelectedId)?.orders || []}
         />
         <Container className="flex flex-col gap-4">

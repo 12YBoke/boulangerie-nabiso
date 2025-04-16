@@ -11,6 +11,7 @@ import {
   useReactTable,
   SortingState,
   getSortedRowModel,
+  VisibilityState,
 } from "@tanstack/react-table";
 
 import {
@@ -21,6 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/shadcnui/components/ui/table";
+import { useEffect } from "react";
 
 import { Button } from "@/ui/components/button/button";
 import { MoveLeft, MoveRight, Plus, UserPlus } from "lucide-react";
@@ -42,7 +44,8 @@ interface DataTableProps<TData, TValue> {
   userData: {
     id: string;
     extensionId: string;
-  }[];
+    role: "ADMIN" | "USER";
+  };
 }
 
 export function DataTable<TData, TValue>({
@@ -54,6 +57,17 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+
+  useEffect(() => {
+    if (userData && userData.role) {
+      setColumnVisibility({
+        actions: userData.role === "USER" ? false : true,
+      });
+    }
+  }, [userData]);
   const table = useReactTable({
     data,
     columns,
@@ -66,6 +80,7 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
+      columnVisibility,
     },
     initialState: {
       pagination: {
@@ -193,7 +208,7 @@ export function DataTable<TData, TValue>({
           <DialogDescription className="h-full w-full">
             Ajoutez un client à votre liste
           </DialogDescription>
-          <AddCustomerForm userData={userData} />
+          <AddCustomerForm userData={userData!} />
         </DialogHeader>
       </DialogContent>
     </Dialog>

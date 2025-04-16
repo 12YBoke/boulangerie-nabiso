@@ -102,7 +102,7 @@ export const columns: ColumnDef<FinancialFlow>[] = [
 
       return (
         <Container>
-          <Typography className="line-clamp-1">
+          <Typography className="line-clamp-2">
             {financialFlow.agent}
           </Typography>
         </Container>

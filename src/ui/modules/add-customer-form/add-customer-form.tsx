@@ -21,7 +21,8 @@ interface Props {
   userData: {
     id: string;
     extensionId: string;
-  }[];
+    role: "ADMIN" | "USER";
+  };
 }
 
 export const AddCustomerForm = ({ userData }: Props) => {
@@ -36,15 +37,6 @@ export const AddCustomerForm = ({ userData }: Props) => {
       customernumber: 0,
     },
   });
-
-  const extensionid = useStore(
-    useExtensionIdStore,
-    (state) => state.extensionId
-  );
-
-  const filterUser = userData.filter(
-    (user) => user.extensionId === extensionid
-  );
 
   async function onSubmit(
     values: z.infer<typeof RegisterCustomersFormFieldsType>
@@ -62,8 +54,8 @@ export const AddCustomerForm = ({ userData }: Props) => {
         name,
         phonenumber,
         customernumber,
-        userfilteredid: filterUser[0].id,
-        userfilteredextensionid: filterUser[0].extensionId,
+        userfilteredid: userData.id,
+        userfilteredextensionid: userData.extensionId,
       }),
     });
 
@@ -79,7 +71,7 @@ export const AddCustomerForm = ({ userData }: Props) => {
         body: JSON.stringify({
           cardnumber: 0,
           customerid: data.customerId,
-          extensionid: filterUser[0].extensionId,
+          extensionid: userData.extensionId,
         }),
       });
 
