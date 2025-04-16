@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/generated/client"
 }
 
 datasource db {
@@ -13,7 +14,7 @@ model User {
   salt        String
   createdAt   DateTime   @default(now())
   extensionId String
-  role        Role       @default(USER)
+  role        Role
   password    String
   customer    Customer[]
   extension   Extension  @relation(fields: [extensionId], references: [id], onDelete: Cascade)

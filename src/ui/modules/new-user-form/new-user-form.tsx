@@ -69,7 +69,7 @@ export const NewUserForm = ({ extensions }: Props) => {
           extensionid,
           hash,
           salt,
-          role: "ADMIN",
+          role: "USER",
         }),
       });
 

@@ -38,7 +38,7 @@ export default async function Home() {
     },
   });
 
-  const data = await getData(userData[0].extensionId!);
+  const data = await getData(session?.user.extensionId!);
 
   return (
     <main className="w-full flex flex-col">

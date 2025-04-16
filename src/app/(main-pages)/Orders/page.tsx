@@ -19,7 +19,7 @@ export default async function Home() {
   });
 
   const customers = await prisma.customer.findMany({
-    where: { extensionId: user[0].extensionId! },
+    where: { extensionId: session?.user.extensionId! },
     select: {
       id: true,
       name: true,
@@ -37,6 +37,8 @@ export default async function Home() {
       customerNumber: "asc",
     },
   });
+
+  console.log("customers", customers);
 
   const customersForSelect = customers?.map((record) => ({
     label: record.customerNumber + " - " + record.name,

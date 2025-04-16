@@ -4,11 +4,23 @@ import Credentials from "next-auth/providers/credentials";
 import { verifyPassword } from "./lib/password-to-salt";
 import prisma from "@/lib/prisma";
 
+// Extend the Session type to include extensionId
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      extensionId: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
   },
-  adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
       credentials: {
@@ -60,11 +72,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         // User is available during sign-in
         token.id = user.id;
+        // Access extensionId from loginData or cast user to any as a temporary solution
+        token.extensionId = (user as any).extensionId;
       }
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id as string;
+      session.user.extensionId = token.extensionId as string;
       return session;
     },
   },

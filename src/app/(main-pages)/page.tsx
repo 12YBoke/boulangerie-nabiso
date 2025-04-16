@@ -7,20 +7,10 @@ import { calculateGlobalCardMetrics } from "@/lib/calculate-global-card-metrics"
 export default async function Home() {
   const session = await auth();
 
-  const userData = await prisma.user.findMany({
-    where: {
-      id: session!.user!.id,
-    },
-    select: {
-      id: true,
-      extensionId: true,
-    },
-  });
-
-  const extensionId = userData[0].extensionId;
+  console.log("session", session);
 
   const ordersData = await prisma?.orders.findMany({
-    where: { user: { extensionId: extensionId! } },
+    where: { user: { extensionId: session?.user.extensionId! } },
     select: {
       id: true,
       amount: true,
@@ -62,7 +52,7 @@ export default async function Home() {
   });
 
   const cards = await prisma?.card.findMany({
-    where: { extensionId: extensionId! },
+    where: { extensionId: session?.user.extensionId! },
     select: {
       id: true,
       cardStatus: true,

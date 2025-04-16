@@ -70,7 +70,7 @@ export default async function Home() {
 
   const dataExtension = await getExtension();
 
-  const dataUser = await getUser(userData[0].extensionId!);
+  const dataUser = await getUser(session?.user.extensionId!);
 
   return (
     <main className="w-full flex flex-col gap-16">
