@@ -77,19 +77,23 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const user = row.original;
       return (
-        <Container className="flex flex-row gap-2 justify-end">
-          <Container>
-            <Update user={user} />
-          </Container>
-          <Container>
-            <ToggleRole user={user} />
-          </Container>
-          {user.role === "ADMIN" ? null : (
-            <Container>
-              <Delete id={user.id} name={user.name} />
+        <>
+          {user.name != "Default admin" && (
+            <Container className="flex flex-row gap-2 justify-end">
+              <Container>
+                <Update user={user} />
+              </Container>
+              <Container>
+                <ToggleRole user={user} />
+              </Container>
+              {user.role === "ADMIN" ? null : (
+                <Container>
+                  <Delete id={user.id} name={user.name} />
+                </Container>
+              )}
             </Container>
           )}
-        </Container>
+        </>
       );
     },
   },
