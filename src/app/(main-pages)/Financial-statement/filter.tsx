@@ -16,7 +16,6 @@ import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
 import useExtensionIdStore from "@/store/extension-id-store";
 import useStore from "@/hooks/useStore";
 import { DataTableAgent } from "./data-table-agent";
-import { DataTableCard } from "./data-table-card";
 
 interface Props {
   data: _FinancialFlowTypes[];

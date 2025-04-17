@@ -148,3 +148,11 @@ export const AddExtensionFormFieldsType = z.object({
     message: "Le taux de commission doit être supérieur ou égal à 0.",
   }),
 });
+
+export const AddStockFormFieldsType = z.object({
+  name: z.string(),
+  startingStock: z.string(),
+  dayProduction: z.string(),
+  endingStock: z.string(),
+  date: z.date(),
+});

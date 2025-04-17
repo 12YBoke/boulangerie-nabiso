@@ -6,15 +6,14 @@ import { Form } from "@/shadcnui/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { AddCashFlowFormFieldsType } from "@/types/forms";
+import { AddStockFormFieldsType } from "@/types/forms";
 import { InputField } from "@/ui/components/input-field/input-field";
 import { Typography } from "@/ui/components/typography/typography";
 import { Button } from "@/ui/components/button/button";
 import { useToast } from "@/shadcnui/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import UseLoading from "@/hooks/use-loading";
-import { UserPlus } from "lucide-react";
-import { InputFieldSelect } from "@/ui/components/input-field-select/input-field-select";
+import { Plus } from "lucide-react";
 import { InputFieldDate } from "@/ui/components/input-field-date/input-field-date";
 
 interface Props {
@@ -27,54 +26,57 @@ interface Props {
     | undefined;
 }
 
-export const AddCashFlowForm = ({ userData }: Props) => {
+export const AddStockForm = ({ userData }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, startLoading, stopLoading] = UseLoading();
-  const form = useForm<z.infer<typeof AddCashFlowFormFieldsType>>({
-    resolver: zodResolver(AddCashFlowFormFieldsType),
+  const form = useForm<z.infer<typeof AddStockFormFieldsType>>({
+    resolver: zodResolver(AddStockFormFieldsType),
     defaultValues: {
-      amount: 0,
-      reason: "",
-      flowType: "INCOME", // Set a default value from your options
+      name: "",
+      startingStock: "",
+      endingStock: "",
+      dayProduction: "",
       date: new Date(),
     },
   });
 
-  async function onSubmit(values: z.infer<typeof AddCashFlowFormFieldsType>) {
+  async function onSubmit(values: z.infer<typeof AddStockFormFieldsType>) {
     startLoading();
-    const { amount, reason, flowType, date } = values;
+    const { name, startingStock, endingStock, dayProduction, date } = values;
 
-    const addCashFlow = await fetch(`/api/financialFlow`, {
+    const addStock = await fetch(`/api/stock`, {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        amount,
-        reason,
-        flowType,
+        name,
+        startingStock,
+        endingStock,
+        dayProduction,
         date,
-        agentId: userData?.id,
+        userId: userData?.id,
         userfilteredextensionid: userData?.extensionId,
       }),
     });
 
-    if (addCashFlow.status === 200) {
+    if (addStock.status === 200) {
       toast({
         title: "Succès",
         description: (
           <Typography variant="body-sm">
-            La transaction a été enregistrée avec succès.
+            Le rapport a été enregistrée avec succès.
           </Typography>
         ),
       });
       stopLoading();
       form.reset({
-        amount: 0,
-        reason: "",
-        flowType: flowType,
+        name: "",
+        startingStock: "",
+        endingStock: "",
+        dayProduction: "",
         date: new Date(),
       });
       router.refresh();
@@ -84,8 +86,8 @@ export const AddCashFlowForm = ({ userData }: Props) => {
         title: "Erreur !",
         description: (
           <Typography variant="body-sm">
-            Une erreur est survenue durant l'enregistrement de la transaction.
-            Veuillez recommencer l'opération.
+            Une erreur est survenue durant l'enregistrement du rapport. Veuillez
+            recommencer l'opération.
           </Typography>
         ),
       });
@@ -101,52 +103,54 @@ export const AddCashFlowForm = ({ userData }: Props) => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Container className="flex flex-col gap-4">
           <Container className="w-full">
-            <Container>
-              <InputFieldDate
-                control={form.control}
-                name={"date"}
-                label={"Date de la transaction"}
-                role={
-                  userData
-                    ? userData.role
-                      ? userData.role
-                      : undefined
-                    : undefined
-                }
-              />
-            </Container>
             <Container className="w-full flex flex-row gap-4">
               <Container className="basis-1/2">
-                <InputFieldSelect
-                  placeholder="Type de transaction"
+                <InputFieldDate
                   control={form.control}
-                  name="flowType"
-                  options={[
-                    { value: "INCOME", label: "Revenu" },
-                    { value: "EXPENSE", label: "Dépense" },
-                  ]}
+                  name={"date"}
+                  label={"Date de la transaction"}
+                  role={
+                    userData
+                      ? userData.role
+                        ? userData.role
+                        : undefined
+                      : undefined
+                  }
                 />
               </Container>
               <Container className="basis-1/2">
                 <InputField
-                  placeholder="Montant"
+                  label="Nom du produit"
+                  placeholder="Nom du produit"
                   control={form.control}
-                  name="amount"
-                  type="number"
+                  name="name"
                 />
               </Container>
             </Container>
-            <Container className="w-full">
-              <InputField
-                placeholder="Raison de la transaction"
-                control={form.control}
-                name="reason"
-                type="textarea"
-              />
-            </Container>
+          </Container>
+          <Container>
+            <InputField
+              placeholder="Stock de départ"
+              control={form.control}
+              name="startingStock"
+            />
+          </Container>
+          <Container>
+            <InputField
+              placeholder="Production du jour"
+              control={form.control}
+              name="dayProduction"
+            />
+          </Container>
+          <Container>
+            <InputField
+              placeholder="Stock final"
+              control={form.control}
+              name="endingStock"
+            />
           </Container>
           <Container className="w-full">
-            <Button Icon={UserPlus} type="submit" isLoading={isLoading}>
+            <Button Icon={Plus} type="submit" isLoading={isLoading}>
               Ajouter
             </Button>
           </Container>

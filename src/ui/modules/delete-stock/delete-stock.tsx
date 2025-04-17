@@ -11,14 +11,14 @@ interface Props {
   id: string;
 }
 
-export const DeleteFinancialFlowForm = ({ id }: Props) => {
+export const DeleteStock = ({ id }: Props) => {
   const [isLoading, startLoading, stopLoading] = UseLoading();
   const router = useRouter();
   const { toast } = useToast();
 
   const handleDelete = async () => {
     startLoading();
-    const delete_customer = await fetch(`/api/financialFlow/${id}`, {
+    const delete_customer = await fetch(`/api/stock/${id}`, {
       method: "DELETE",
     });
 
@@ -27,7 +27,7 @@ export const DeleteFinancialFlowForm = ({ id }: Props) => {
         title: "Supprimé",
         description: (
           <Typography variant="body-sm">
-            La transaction a été supprimée avec succès.
+            Le rapport a été supprimé avec succès.
           </Typography>
         ),
       });
@@ -40,7 +40,7 @@ export const DeleteFinancialFlowForm = ({ id }: Props) => {
         description: (
           <Typography variant="body-sm">
             Une erreur est survenue durant le processus de suppression. Veuillez
-            récommencer.
+            récommencer. stock
           </Typography>
         ),
       });
@@ -52,8 +52,8 @@ export const DeleteFinancialFlowForm = ({ id }: Props) => {
   return (
     <Container className="flex flex-col gap-4">
       <Typography>
-        Êtes-vous sûr de vouloir supprimer cette transaction de la liste des
-        transactions ?
+        Êtes-vous sûr de vouloir supprimer ce rapport de la liste des rapports
+        de stock ?
       </Typography>
       <Container>
         <Button

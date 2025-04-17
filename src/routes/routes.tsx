@@ -1,60 +1,76 @@
 import { AppLinks } from "@/types/app-links";
-import { BookUser, CandlestickChart, Coins, Landmark, PackageCheck, PackageOpen, Presentation, Settings, Shield, Zap } from "lucide-react";
+import {
+  BookUser,
+  CandlestickChart,
+  Coins,
+  Landmark,
+  PackageCheck,
+  PackageOpen,
+  Presentation,
+  Settings,
+  Shield,
+  Zap,
+} from "lucide-react";
 
 export const AsideRoutes: AppLinks[] = [
   {
-    title: 'Dashboard',
+    title: "Dashboard",
     children: [
       {
-        title: 'Tableau de bord',
-        baseUrl: '/',
-        Icon: Presentation
-      }
-    ]
+        title: "Tableau de bord",
+        baseUrl: "/",
+        Icon: Presentation,
+      },
+    ],
   },
   {
-    title: 'Activités',
+    title: "Activités",
     children: [
       {
-        title: 'Commandes',
-        baseUrl: '/Orders',
-        Icon: Coins
+        title: "Commandes",
+        baseUrl: "/Orders",
+        Icon: Coins,
       },
       {
-        title: 'Livraisons',
-        baseUrl: '/Deliveries',
-        Icon: PackageCheck
+        title: "Livraisons",
+        baseUrl: "/Deliveries",
+        Icon: PackageCheck,
       },
-    ]
+    ],
   },
   {
-    title: 'Gestion des cartes',
+    title: "Gestion des cartes",
     children: [
       {
-        title: 'Clients',
-        baseUrl: '/Customers',
-        Icon: BookUser
+        title: "Clients",
+        baseUrl: "/Customers",
+        Icon: BookUser,
       },
-    ]
+    ],
   },
   {
-    title: 'Finances',
+    title: "Finances",
     children: [
       {
-        title: 'Etat financier',
-        baseUrl: '/Financial-statement',
-        Icon: CandlestickChart
+        title: "Etat financier",
+        baseUrl: "/Financial-statement",
+        Icon: CandlestickChart,
       },
-    ]
+      {
+        title: "Stock",
+        baseUrl: "/Stock",
+        Icon: PackageOpen,
+      },
+    ],
   },
   {
-    title: 'Administration',
+    title: "Administration",
     children: [
       {
-        title: 'Configuration',
-        baseUrl: '/Setting',
-        Icon: Settings
-      }
-    ]
+        title: "Configuration",
+        baseUrl: "/Setting",
+        Icon: Settings,
+      },
+    ],
   },
-]
+];
