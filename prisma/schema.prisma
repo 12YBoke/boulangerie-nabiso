@@ -118,6 +118,7 @@ model Stock {
   name          String
   startingStock String
   endingStock   String
+  income        String?
   dayProduction String
   date          DateTime
   userId        String

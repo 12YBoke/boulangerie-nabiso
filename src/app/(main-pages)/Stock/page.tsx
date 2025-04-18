@@ -15,6 +15,7 @@ async function getData(extensionId: string): Promise<Stock[]> {
       endingStock: true,
       date: true,
       dayProduction: true,
+      income: true,
       user: {
         select: {
           name: true,
@@ -33,6 +34,7 @@ async function getData(extensionId: string): Promise<Stock[]> {
     date: s.date,
     endingStock: s.endingStock,
     agent: s.user.name,
+    income: s.income,
     dayProduction: s.dayProduction,
   }));
 }

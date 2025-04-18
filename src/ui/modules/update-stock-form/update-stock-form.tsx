@@ -24,6 +24,7 @@ interface Props {
     endingStock: string;
     date: Date;
     dayProduction: string;
+    income?: string | null;
     agent: string;
   };
 }
@@ -39,13 +40,15 @@ export const UpdateStockForm = ({ stock }: Props) => {
       startingStock: stock.startingStock,
       endingStock: stock.endingStock,
       dayProduction: stock.dayProduction,
+      income: stock.income || "",
       date: stock.date ? new Date(stock.date) : new Date(),
     },
   });
 
   async function onSubmit(values: z.infer<typeof AddStockFormFieldsType>) {
     startLoading();
-    const { name, startingStock, endingStock, dayProduction, date } = values;
+    const { name, startingStock, endingStock, dayProduction, date, income } =
+      values;
 
     const updateStock = await fetch(`/api/stock/${stock.id}`, {
       method: "PATCH",
@@ -58,6 +61,7 @@ export const UpdateStockForm = ({ stock }: Props) => {
         startingStock,
         endingStock,
         dayProduction,
+        income,
         date,
       }),
     });
@@ -111,26 +115,37 @@ export const UpdateStockForm = ({ stock }: Props) => {
               </Container>
             </Container>
           </Container>
-          <Container>
-            <InputField
-              placeholder="Stock de départ"
-              control={form.control}
-              name="startingStock"
-            />
+          <Container className="w-full flex flex-row gap-4">
+            <Container className="basis-1/2">
+              <InputField
+                placeholder="Stock de départ"
+                control={form.control}
+                name="startingStock"
+              />
+            </Container>
+            <Container className="basis-1/2">
+              <InputField
+                placeholder="Entrée"
+                control={form.control}
+                name="income"
+              />
+            </Container>
           </Container>
-          <Container>
-            <InputField
-              placeholder="Production du jour"
-              control={form.control}
-              name="dayProduction"
-            />
-          </Container>
-          <Container>
-            <InputField
-              placeholder="Stock final"
-              control={form.control}
-              name="endingStock"
-            />
+          <Container className="w-full flex flex-row gap-4">
+            <Container className="basis-1/2">
+              <InputField
+                placeholder="Production du jour"
+                control={form.control}
+                name="dayProduction"
+              />
+            </Container>
+            <Container className="basis-1/2">
+              <InputField
+                placeholder="Stock final"
+                control={form.control}
+                name="endingStock"
+              />
+            </Container>
           </Container>
           <Container className="w-full">
             <Button Icon={Pencil} type="submit" isLoading={isLoading}>

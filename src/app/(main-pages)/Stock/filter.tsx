@@ -20,6 +20,7 @@ interface Props {
     startingStock: string;
     endingStock: string;
     date: Date;
+    income?: string | null;
     dayProduction: string;
     agent: string;
   }[];
@@ -40,6 +41,7 @@ export const Filter = ({ data, userData }: Props) => {
       startingStock: string;
       endingStock: string;
       date: Date;
+      income?: string | null;
       dayProduction: string;
       agent: string;
     }[]
@@ -110,6 +112,7 @@ export const Filter = ({ data, userData }: Props) => {
       date: Date;
       dayProduction: string;
       agent: string;
+      income?: string | null;
     }[] = data.filter(
       (s) => s.date && format(s.date, "yyyy-MM-dd") === formattedDate
     ); // Type Guard pour éliminer les `null`
@@ -136,6 +139,7 @@ export const Filter = ({ data, userData }: Props) => {
     endingStock: s.endingStock,
     agent: s.agent,
     dayProduction: s.dayProduction,
+    income: s.income,
     isDate: format(s.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd"),
   }));
 

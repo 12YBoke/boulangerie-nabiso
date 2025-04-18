@@ -18,6 +18,7 @@ export type Stock = {
   endingStock: string;
   date: Date;
   dayProduction: string;
+  income?: string | null;
   agent: string;
 };
 
@@ -42,6 +43,18 @@ export const columns: ColumnDef<Stock>[] = [
       return (
         <Container className="flex">
           <Typography>{stock.startingStock}</Typography>
+        </Container>
+      );
+    },
+  },
+  {
+    accessorKey: "income",
+    header: "Entrée",
+    cell: ({ row }) => {
+      const stock = row.original;
+      return (
+        <Container className="flex">
+          <Typography>{stock.income}</Typography>
         </Container>
       );
     },

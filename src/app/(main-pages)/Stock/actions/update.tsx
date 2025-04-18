@@ -20,6 +20,7 @@ interface Props {
     endingStock: string;
     date: Date;
     dayProduction: string;
+    income?: string | null;
     agent: string;
   };
 }

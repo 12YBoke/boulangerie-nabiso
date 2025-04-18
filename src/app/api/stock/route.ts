@@ -10,6 +10,7 @@ export async function POST(req: Request) {
     userfilteredextensionid,
     endingStock,
     date,
+    income,
   } = await req.json();
 
   const response = await prisma.stock.create({
@@ -18,6 +19,7 @@ export async function POST(req: Request) {
       startingStock: startingStock,
       dayProduction: dayProduction,
       userId: userId,
+      income: income,
       extensionId: userfilteredextensionid,
       date: date,
       endingStock: endingStock,

@@ -155,4 +155,5 @@ export const AddStockFormFieldsType = z.object({
   dayProduction: z.string(),
   endingStock: z.string(),
   date: z.date(),
+  income: z.string().optional(),
 });
