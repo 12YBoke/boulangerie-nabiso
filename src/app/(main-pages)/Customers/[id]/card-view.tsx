@@ -294,8 +294,6 @@ export const CardView = ({ card, rate, userData }: Props) => {
                       : card.find(({ id }) => id === cardSelectedId)
                           ?.paymentStatus === "PAID"
                       ? true
-                      : userData.role === "USER"
-                      ? true
                       : false
                   }
                 />
