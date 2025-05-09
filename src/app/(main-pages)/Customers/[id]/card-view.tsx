@@ -221,7 +221,11 @@ export const CardView = ({ card, rate, userData }: Props) => {
               </Typography>
             </Container>
           </Container>
-          <Container className="flex flex-row p-4 rounded-lg border justify-between">
+          <Container
+            className={clsx(
+              "flex flex-row p-4 rounded-lg border justify-between"
+            )}
+          >
             <Container className="flex flex-row gap-4 justify-center items-center">
               <Container className="flex flex-col gap-2">
                 <Typography>Status de la carte</Typography>
@@ -250,6 +254,8 @@ export const CardView = ({ card, rate, userData }: Props) => {
                       ? true
                       : card.find(({ id }) => id === cardSelectedId)
                           ?.cardStatus === "CLOSED"
+                      ? true
+                      : userData.role === "USER"
                       ? true
                       : false
                   }
@@ -287,6 +293,8 @@ export const CardView = ({ card, rate, userData }: Props) => {
                       ? true
                       : card.find(({ id }) => id === cardSelectedId)
                           ?.paymentStatus === "PAID"
+                      ? true
+                      : userData.role === "USER"
                       ? true
                       : false
                   }

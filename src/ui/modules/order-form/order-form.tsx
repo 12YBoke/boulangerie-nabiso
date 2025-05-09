@@ -54,7 +54,7 @@ export const OrderForm = ({ customers, users }: Props) => {
       amountpaid: 0,
       voucher: 0,
       voucherpaid: 0,
-      dateordered: new Date(),
+      dateordered: undefined,
       customerid: "",
       name: "",
       type: "ORDER",

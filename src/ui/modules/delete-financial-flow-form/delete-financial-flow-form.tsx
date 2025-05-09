@@ -6,6 +6,15 @@ import { Container } from "@/ui/components/container/container";
 import { Button } from "@/ui/components/button/button";
 import { Typography } from "@/ui/components/typography/typography";
 import { Trash } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/shadcnui/components/ui/dialog";
+import { useState } from "react";
 
 interface Props {
   id: string;
@@ -15,6 +24,7 @@ export const DeleteFinancialFlowForm = ({ id }: Props) => {
   const [isLoading, startLoading, stopLoading] = UseLoading();
   const router = useRouter();
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
 
   const handleDelete = async () => {
     startLoading();
@@ -32,6 +42,7 @@ export const DeleteFinancialFlowForm = ({ id }: Props) => {
         ),
       });
       stopLoading();
+      setOpen(false); // Fermer la dialog après succès
       router.refresh();
     } else {
       toast({
@@ -50,22 +61,43 @@ export const DeleteFinancialFlowForm = ({ id }: Props) => {
   };
 
   return (
-    <Container className="flex flex-col gap-4">
-      <Typography>
-        Êtes-vous sûr de vouloir supprimer cette transaction de la liste des
-        transactions ?
-      </Typography>
-      <Container>
-        <Button
-          isLoading={isLoading}
-          Icon={Trash}
-          buttonType="action"
-          action={handleDelete}
-          className="bg-red-500 hover:bg-red-600 text-white"
-        >
-          Supprimer
-        </Button>
-      </Container>
-    </Container>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger
+        asChild
+        className="cursor-pointer hover:bg-red-100 animate flex flex-row items-center text-red-500 rounded-full bg-red-50"
+      >
+        <span className="p-2">
+          <Trash className="h-5 w-5" />
+        </span>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader className="flex flex-col gap-4">
+          <DialogTitle>
+            <Typography variant="title-lg">Suppression</Typography>
+          </DialogTitle>
+          <DialogDescription className="h-full w-full">
+            Vous étes sur le point de supprimer les informations de cette
+            transaction.
+          </DialogDescription>
+          <Container className="flex flex-col gap-4">
+            <Typography>
+              Êtes-vous sûr de vouloir supprimer cette transaction de la liste
+              des transactions ?
+            </Typography>
+            <Container>
+              <Button
+                isLoading={isLoading}
+                Icon={Trash}
+                buttonType="action"
+                action={handleDelete}
+                className="bg-red-500 hover:bg-red-600 text-white"
+              >
+                Supprimer
+              </Button>
+            </Container>
+          </Container>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
   );
 };
