@@ -36,7 +36,7 @@ export const AddSalaryPaymentForm = ({ userData }: Props) => {
     defaultValues: {
       amount: 0,
       reason: "",
-      date: new Date(),
+      date: undefined,
       dailySalary: 0,
       missingTotal: 0,
       missingRemoved: 0,

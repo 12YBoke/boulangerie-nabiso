@@ -37,7 +37,7 @@ export const AddStockForm = ({ userData }: Props) => {
       startingStock: "",
       endingStock: "",
       dayProduction: "",
-      date: new Date(),
+      date: undefined,
       income: "",
     },
   });
@@ -81,7 +81,7 @@ export const AddStockForm = ({ userData }: Props) => {
         endingStock: "",
         dayProduction: "",
         income: "",
-        date: new Date(),
+        date: undefined,
       });
       router.refresh();
     } else {
