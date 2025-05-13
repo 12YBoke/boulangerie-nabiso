@@ -77,7 +77,11 @@ export const InputFieldDate = ({
                 </Button>
               </FormControl>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 bg-white" align="start">
+            <PopoverContent
+              className="w-auto p-0 bg-white"
+              align="start"
+              disablePortal
+            >
               <Calendar
                 mode="single"
                 selected={field.value}

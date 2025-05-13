@@ -167,6 +167,31 @@ export const OrderForm = ({ customers, users }: Props) => {
     doc.save("Commande/" + date + "/" + idOrder + ".pdf");
   };
 
+  const tokenOrderVC = (
+    idOrder: string,
+    id: any,
+    amount: number,
+    bp: number,
+    date: string
+  ) => {
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: [50, 50],
+    });
+
+    doc.setFontSize(10);
+    doc.text("Boulangerie na biso", 25, 5, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("VC " + id, 25, 15, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("" + amount + " Fc", 25, 25, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("L " + bp + " Fc", 25, 35, { align: "center" });
+    doc.text("" + date, 25, 45, { align: "center" });
+    doc.save("Commande/" + date + "/" + idOrder + ".pdf");
+  };
+
   async function onSubmit(values: z.infer<typeof OrdersFormFieldsType>) {
     startLoading();
     const {
@@ -213,16 +238,29 @@ export const OrderForm = ({ customers, users }: Props) => {
         ),
       });
       stopLoading();
-      tokenOrder(
-        order.orderId,
-        customerid
-          ? customers.filter((customer) => customer.value === customerid)[0]
-              .customerNumber
-          : name,
-        amount,
-        voucher,
-        format(dateordered, "dd-MM-yyyy", { locale: fr })
-      );
+      if (type === "CASH_SALE") {
+        tokenOrderVC(
+          order.orderId,
+          customerid
+            ? customers.filter((customer) => customer.value === customerid)[0]
+                .customerNumber
+            : name,
+          amount,
+          voucher,
+          format(dateordered, "dd-MM-yyyy", { locale: fr })
+        );
+      } else {
+        tokenOrder(
+          order.orderId,
+          customerid
+            ? customers.filter((customer) => customer.value === customerid)[0]
+                .customerNumber
+            : name,
+          amount,
+          voucher,
+          format(dateordered, "dd-MM-yyyy", { locale: fr })
+        );
+      }
       form.reset();
       router.refresh();
     } else {
