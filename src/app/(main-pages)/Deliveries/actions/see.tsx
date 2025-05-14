@@ -152,21 +152,13 @@ export const See = ({ delivery }: Props) => {
               orderId={delivery.id}
               orderDate={delivery.dateOrdered}
               limit={
-                delivery.totaldelivered === 0
-                  ? (delivery.type === "ORDER" &&
-                      delivery.amount &&
-                      delivery.amount) ||
-                    (delivery.type != "ORDER" &&
-                      delivery.amountToBeDelivered &&
-                      delivery.amountToBeDelivered) ||
-                    0
-                  : (delivery.type === "ORDER" &&
-                      delivery.amount &&
-                      delivery.amount - delivery.totaldelivered) ||
-                    (delivery.type != "ORDER" &&
-                      delivery.amountToBeDelivered &&
-                      delivery.amountToBeDelivered - delivery.totaldelivered) ||
-                    0
+                (delivery.type === "ORDER" &&
+                  delivery.amount &&
+                  delivery.amount - delivery.totaldelivered) ||
+                (delivery.type != "ORDER" &&
+                  delivery.amountToBeDelivered &&
+                  delivery.amountToBeDelivered - delivery.totaldelivered) ||
+                0
               }
             />
           </Container>
