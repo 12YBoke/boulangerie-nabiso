@@ -171,7 +171,7 @@ export const OrderForm = ({ customers, users }: Props) => {
     idOrder: string,
     id: any,
     amount: number,
-    bp: number,
+    amountdelivered: number,
     date: string
   ) => {
     const doc = new jsPDF({
@@ -187,7 +187,7 @@ export const OrderForm = ({ customers, users }: Props) => {
     doc.setFontSize(10);
     doc.text("" + amount + " Fc", 25, 25, { align: "center" });
     doc.setFontSize(10);
-    doc.text("L " + bp + " Fc", 25, 35, { align: "center" });
+    doc.text("L " + amountdelivered + " Fc", 25, 35, { align: "center" });
     doc.text("" + date, 25, 45, { align: "center" });
     doc.save("Commande/" + date + "/" + idOrder + ".pdf");
   };
