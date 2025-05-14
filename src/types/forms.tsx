@@ -118,7 +118,7 @@ export const RegisterCustomersFormFieldsType = z.object({
 export const AmountDeliveredFormFieldsType = z.object({
   amountdelivered: z
     .number()
-    .min(1, { message: "Le montant livré doit être supérieur ou égal à 1." }),
+    .min(0, { message: "Le montant livré doit être supérieur ou égal à 0." }),
 });
 
 export const AddCashFlowFormFieldsType = z.object({
