@@ -136,7 +136,7 @@ export const AmountDeliveredForm = ({
           <Container>
             <Button
               disabled={
-                amountdelivered === 0
+                amountdelivered === -1
                   ? true
                   : amountdelivered > limit
                   ? true
