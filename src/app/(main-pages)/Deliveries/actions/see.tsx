@@ -78,12 +78,10 @@ export const See = ({ delivery }: Props) => {
               <Typography className="text-primary-800">
                 Reste :{" "}
                 {FormatNumberWithCurrency(
-                  delivery.totaldelivered === 0
-                    ? 0
-                    : delivery.type === "ORDER"
+                  delivery.type === "ORDER"
                     ? delivery.amount! - delivery.totaldelivered
                     : delivery.amountToBeDelivered! - delivery.totaldelivered ||
-                      0
+                        0
                 )}
               </Typography>
             </Container>
