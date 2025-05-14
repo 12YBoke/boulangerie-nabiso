@@ -78,16 +78,18 @@ export const See = ({ delivery }: Props) => {
               <Typography className="text-primary-800">
                 Reste :{" "}
                 {FormatNumberWithCurrency(
-                  delivery.type === "ORDER"
+                  delivery.totaldelivered === 0
+                    ? 0
+                    : delivery.type === "ORDER"
                     ? delivery.amount! - delivery.totaldelivered
                     : delivery.amountToBeDelivered! - delivery.totaldelivered ||
-                        0
+                      0
                 )}
               </Typography>
             </Container>
           </SheetDescription>
         </SheetHeader>
-        {delivery.totaldelivered <= 0 ? (
+        {delivery.arraydeliveries.length === 0 ? (
           format(delivery.dateOrdered, "yyyy-MM-dd") >=
             format(now, "yyyy-MM-dd") && (
             <Container className="py-4 w-full flex flex-col gap-4">
@@ -152,13 +154,21 @@ export const See = ({ delivery }: Props) => {
               orderId={delivery.id}
               orderDate={delivery.dateOrdered}
               limit={
-                (delivery.type === "ORDER" &&
-                  delivery.amount &&
-                  delivery.amount - delivery.totaldelivered) ||
-                (delivery.type != "ORDER" &&
-                  delivery.amountToBeDelivered &&
-                  delivery.amountToBeDelivered - delivery.totaldelivered) ||
-                0
+                delivery.totaldelivered === 0
+                  ? (delivery.type === "ORDER" &&
+                      delivery.amount &&
+                      delivery.amount) ||
+                    (delivery.type != "ORDER" &&
+                      delivery.amountToBeDelivered &&
+                      delivery.amountToBeDelivered) ||
+                    0
+                  : (delivery.type === "ORDER" &&
+                      delivery.amount &&
+                      delivery.amount - delivery.totaldelivered) ||
+                    (delivery.type != "ORDER" &&
+                      delivery.amountToBeDelivered &&
+                      delivery.amountToBeDelivered - delivery.totaldelivered) ||
+                    0
               }
             />
           </Container>

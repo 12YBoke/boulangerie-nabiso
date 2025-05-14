@@ -54,15 +54,7 @@ export const AmountDeliveredForm = ({
       const currentHour = now.getHours();
 
       if (first) {
-        // Si `first` est activé, retourner la date actuelle
-        if (currentHour < 12) {
-          return orderDate; // Objet Date actuel
-        } else {
-          // Ajouter un jour pour obtenir la date de demain
-          const tomorrow = new Date(now);
-          tomorrow.setDate(now.getDate() + 1);
-          return tomorrow; // Objet Date pour demain
-        }
+        return orderDate;
       } else {
         // Vérifier si l'heure actuelle est avant 12h
         if (currentHour < 12) {
