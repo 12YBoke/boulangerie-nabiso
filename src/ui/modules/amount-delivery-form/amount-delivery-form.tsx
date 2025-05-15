@@ -59,7 +59,6 @@ export const AmountDeliveredForm = ({
         // Vérifier si l'heure actuelle est avant 12h
         if (currentHour < 12) {
           if (orderDate < now) {
-            console.log(now);
             return now; // Objet Date pour demain
           } else {
             return orderDate; // Objet Date actuel
