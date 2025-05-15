@@ -58,12 +58,32 @@ export const AmountDeliveredForm = ({
       } else {
         // Vérifier si l'heure actuelle est avant 12h
         if (currentHour < 12) {
-          return orderDate; // Objet Date actuel
+          // Si la commande n'est pas first et qu'il est avant 12h
+          // On vérifie si la date de la commande est inférieure à aujourd'hui
+          const today = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+          );
+          const orderDay = new Date(
+            orderDate.getFullYear(),
+            orderDate.getMonth(),
+            orderDate.getDate()
+          );
+          if (orderDay < today) {
+            // Si la commande est pour un jour précédent, on met la date à demain
+            const tomorrow = new Date(now);
+            tomorrow.setDate(now.getDate() + 1);
+            return tomorrow;
+          } else {
+            // Sinon, on garde la date du jour
+            return now;
+          }
         } else {
-          // Ajouter un jour pour obtenir la date de demain
+          // Si l'heure est >= 12h, on met la date à demain
           const tomorrow = new Date(now);
           tomorrow.setDate(now.getDate() + 1);
-          return tomorrow; // Objet Date pour demain
+          return tomorrow;
         }
       }
     })();
