@@ -110,7 +110,7 @@ export default async function Home() {
       order.type === "ORDER"
         ? "Commande"
         : order.type === "CASH_SALE"
-        ? "Ventre cash"
+        ? "Vente cash"
         : order.type === "CHARGE"
         ? "Charge"
         : order.type === "DONATION"

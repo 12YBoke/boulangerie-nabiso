@@ -28,7 +28,7 @@ export const getAmountOrdersGenerated = async (extensionId: string) => {
       order.type === "ORDER"
         ? "Commande"
         : order.type === "CASH_SALE"
-        ? "Ventre cash"
+        ? "Vente cash"
         : order.type === "CHARGE"
         ? "Charge"
         : order.type === "DONATION"

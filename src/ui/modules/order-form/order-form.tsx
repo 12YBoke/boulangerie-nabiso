@@ -246,7 +246,7 @@ export const OrderForm = ({ customers, users }: Props) => {
                 .customerNumber
             : name,
           amount,
-          voucher,
+          amountdelivered,
           format(dateordered, "dd-MM-yyyy", { locale: fr })
         );
       } else {
@@ -311,7 +311,7 @@ export const OrderForm = ({ customers, users }: Props) => {
                   {type === "ORDER"
                     ? "Commande"
                     : type === "CASH_SALE"
-                    ? "Ventre cash"
+                    ? "Vente cash"
                     : type === "CHARGE"
                     ? "Charge"
                     : type === "DONATION"
