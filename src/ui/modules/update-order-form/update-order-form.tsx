@@ -14,6 +14,7 @@ import { Typography } from "@/ui/components/typography/typography";
 import { InputField } from "@/ui/components/input-field/input-field";
 import { Form } from "@/shadcnui/components/ui/form";
 import { Button } from "@/ui/components/button/button";
+import { InputFieldDate } from "@/ui/components/input-field-date/input-field-date";
 
 interface Props {
   order: {
@@ -76,21 +77,35 @@ export const UpdateOrderForm = ({ order }: Props) => {
     defaultValue: order.voucherPaid!,
   });
 
+  const dateordered = useWatch({
+    control: form.control,
+    name: "dateordered",
+    defaultValue: order.dateOrdered!,
+  });
+
   useEffect(() => {
     if (type === "ORDER") {
-      if (amount > 0 || voucherpaid > 0) {
+      if (amount > 0 || voucherpaid > 0 || dateordered != order.dateOrdered) {
         setIsReady(true);
       } else {
         setIsReady(false);
       }
     } else {
-      if (amountdelivered > amount) {
+      if (amountdelivered > amount || dateordered != order.dateOrdered) {
         setIsReady(true);
       } else {
         setIsReady(false);
       }
     }
-  }, [type, form, amountdelivered, amount, voucherpaid]);
+  }, [
+    type,
+    form,
+    amountdelivered,
+    amount,
+    voucherpaid,
+    order.dateOrdered,
+    dateordered,
+  ]);
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
@@ -171,6 +186,14 @@ export const UpdateOrderForm = ({ order }: Props) => {
         className="relative flex flex-col gap-8"
       >
         <Container className="flex flex-col gap-4 w-full">
+          <Container>
+            <InputFieldDate
+              control={form.control}
+              name={"dateordered"}
+              label={"Date de la commande"}
+              role={"ADMIN"}
+            />
+          </Container>
           <Container className="gap-8">
             {type === "ORDER" ? (
               <Container className="gap-2 grid grid-cols-2">
