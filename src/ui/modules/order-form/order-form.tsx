@@ -213,7 +213,7 @@ export const OrderForm = ({ customers, users }: Props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        cardid: currentCardId,
+        cardid: type === "ORDER" ? currentCardId : "",
         amount,
         amountpaid,
         voucher,
