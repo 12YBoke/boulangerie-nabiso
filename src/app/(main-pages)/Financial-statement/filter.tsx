@@ -253,6 +253,28 @@ export const Filter = ({ data, userData, amountOrdersGenerated }: Props) => {
 
   const filterUser = userData.find((user) => user.extensionId === extensionid);
 
+  console.log(
+    filteredAmountOrdersGenerated
+      .filter((data) => {
+        return data.type === "ORDER";
+      })
+      .filter((data) => {
+        return (
+          format(data.dateOrdered!, "yyyy-MM-dd") ===
+          format(selectedDate, "yyyy-MM-dd")
+        );
+      })
+      .reduce((acc, curr) => {
+        return acc + (curr.voucherPaid || 0);
+      }, 0)
+  );
+
+  console.log(
+    filteredAmountOrdersGeneratedUntilTheDate.reduce((acc, curr) => {
+      return acc + (curr.voucherPaid || 0);
+    }, 0)
+  );
+
   return (
     <Container className="flex flex-col gap-4">
       <Container className="flex flex-row justify-between ">
@@ -279,9 +301,19 @@ export const Filter = ({ data, userData, amountOrdersGenerated }: Props) => {
                 </Typography>
                 <Typography variant="title-base" className="text-primary-800">
                   {FormatNumberWithCurrency(
-                    filteredAmountOrdersGenerated.reduce((acc, curr) => {
-                      return acc + (curr.voucherPaid || 0);
-                    }, 0) +
+                    filteredAmountOrdersGenerated
+                      .filter((data) => {
+                        return data.type === "ORDER";
+                      })
+                      .filter((data) => {
+                        return (
+                          format(data.dateOrdered!, "yyyy-MM-dd") ===
+                          format(selectedDate, "yyyy-MM-dd")
+                        );
+                      })
+                      .reduce((acc, curr) => {
+                        return acc + (curr.voucherPaid || 0);
+                      }, 0) +
                       filteredAmountOrdersGenerated
                         .filter((data) => {
                           return data.type === "ORDER";

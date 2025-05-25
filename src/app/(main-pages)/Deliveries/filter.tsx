@@ -194,9 +194,19 @@ export const Filter = ({ data, userData }: Props) => {
                 </Typography>
                 <Typography variant="title-base" className="text-primary-800">
                   {FormatNumberWithCurrency(
-                    filteredData.reduce((acc, curr) => {
-                      return acc + (curr.voucherPaid || 0);
-                    }, 0) +
+                    filteredData
+                      .filter((data) => {
+                        return data.type === "ORDER";
+                      })
+                      .filter((data) => {
+                        return (
+                          format(data.dateOrdered!, "yyyy-MM-dd") ===
+                          format(selectedDate, "yyyy-MM-dd")
+                        );
+                      })
+                      .reduce((acc, curr) => {
+                        return acc + (curr.voucherPaid || 0);
+                      }, 0) +
                       filteredData
                         .filter((data) => {
                           return data.type === "ORDER";
