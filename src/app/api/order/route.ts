@@ -18,7 +18,7 @@ export async function POST(req: Request) {
 
   const order = await prisma.orders.create({
     data: {
-      cardId: cardid,
+      cardId: type === "ORDER" ? cardid : null,
       amount: amount,
       amountPaid: amountpaid,
       voucher: voucher,
