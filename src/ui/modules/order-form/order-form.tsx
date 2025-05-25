@@ -219,7 +219,7 @@ export const OrderForm = ({ customers, users }: Props) => {
         voucher,
         voucherpaid,
         dateordered,
-        customerid,
+        customerid: type === "ORDER" ? customerid : "",
         name,
         type,
         amountdelivered,
