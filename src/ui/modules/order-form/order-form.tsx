@@ -407,7 +407,11 @@ export const OrderForm = ({ customers, users }: Props) => {
               )}
             </Container>
             <Container>
-              <Button disabled={!isReady} type="submit" isLoading={isLoading}>
+              <Button
+                disabled={isLoading || !isReady}
+                type="submit"
+                isLoading={isLoading}
+              >
                 Valider la commande
               </Button>
             </Container>
