@@ -38,6 +38,9 @@ interface Props {
       dateOrdered: Date;
       CustomerId: string | null;
       userId: string;
+      user: {
+        name: string;
+      };
       amountToBeDelivered: number | null;
       type: "ORDER" | "CASH_SALE" | "CHARGE" | "DONATION" | "DAMAGE" | "BURN";
       name: string | null;

@@ -8,6 +8,12 @@ import { FormatNumberWithCurrency } from "@/lib/format-number-with-currency";
 import { Container } from "@/ui/components/container/container";
 import { Update } from "./actions/update";
 import { Delete } from "./actions/delete";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shadcnui/components/ui/popover";
+import { IdCard } from "lucide-react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -21,6 +27,9 @@ export type Order = {
   dateOrdered: Date | null;
   CustomerId: string | null;
   userId: string;
+  user: {
+    name: string;
+  };
   name: string | null;
   amountToBeDelivered: number | null;
   type: "ORDER" | "CASH_SALE" | "CHARGE" | "DONATION" | "DAMAGE" | "BURN";
@@ -74,6 +83,29 @@ export const columns: ColumnDef<Order>[] = [
       const order = row.original;
       return (
         <Typography>{FormatNumberWithCurrency(order.voucherPaid!)}</Typography>
+      );
+    },
+  },
+  {
+    id: "seeAction",
+    cell: ({ row }) => {
+      const delivery = row.original;
+      return (
+        <Container className="flex flex-row gap-2 justify-end">
+          <Popover>
+            <PopoverTrigger
+              asChild
+              className="cursor-pointer rounded-full bg-amber-50 hover:bg-amber-100 animate flex flex-row items-center text-amber-500"
+            >
+              <span className="p-2">
+                <IdCard className="h-5 w-5" />
+              </span>
+            </PopoverTrigger>
+            <PopoverContent className="max-w-80">
+              <Typography>{delivery.user.name}</Typography>
+            </PopoverContent>
+          </Popover>
+        </Container>
       );
     },
   },

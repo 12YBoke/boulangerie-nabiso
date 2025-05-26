@@ -26,4 +26,5 @@ export interface _DeliveryTypes {
   totaldelivered: number;
   isDate: boolean;
   userId: string;
+  userName: string;
 }

@@ -33,6 +33,11 @@ export default async function Home({ params }: { params: { id: string } }) {
               name: true,
               amountToBeDelivered: true,
               type: true,
+              user: {
+                select: {
+                  name: true,
+                },
+              },
             },
             orderBy: {
               dateOrdered: "desc",

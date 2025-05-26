@@ -39,6 +39,7 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
       user: {
         select: {
           id: true,
+          name: true,
         },
       },
     },
@@ -80,6 +81,7 @@ async function getData(extensionId: string): Promise<Deliveries[]> {
     cardNumber: order.customer ? order.customer.customerNumber : null,
     customerId: order.customer ? order.customer.id : null,
     userId: order.user.id,
+    userName: order.user.name,
     isDate: false,
   }));
 

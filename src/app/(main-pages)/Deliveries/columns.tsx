@@ -11,6 +11,13 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Update } from "./actions/update";
 import { Delete } from "./actions/delete";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/shadcnui/components/ui/popover";
+import { Typography } from "@/ui/components/typography/typography";
+import { IdCard } from "lucide-react";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -42,6 +49,7 @@ export interface Deliveries {
   totaldelivered: number;
   isDate: boolean;
   userId: string;
+  userName: string;
   voucher: number | null;
 }
 
@@ -192,6 +200,19 @@ export const columns: ColumnDef<Deliveries>[] = [
       const delivery = row.original;
       return (
         <Container className="flex flex-row gap-2 justify-end">
+          <Popover>
+            <PopoverTrigger
+              asChild
+              className="cursor-pointer rounded-full bg-amber-50 hover:bg-amber-100 animate flex flex-row items-center text-amber-500"
+            >
+              <span className="p-2">
+                <IdCard className="h-5 w-5" />
+              </span>
+            </PopoverTrigger>
+            <PopoverContent className="max-w-80">
+              <Typography>{delivery.userName}</Typography>
+            </PopoverContent>
+          </Popover>
           <See delivery={delivery} />
         </Container>
       );

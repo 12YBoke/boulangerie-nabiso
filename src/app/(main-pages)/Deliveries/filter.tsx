@@ -157,6 +157,7 @@ export const Filter = ({ data, userData }: Props) => {
     cardNumber: order.cardNumber,
     customerId: order.customerId,
     userId: order.userId,
+    userName: order.userName,
     isDate:
       format(order.dateOrdered, "yyyy-MM-dd") ===
       format(selectedDate, "yyyy-MM-dd"),
