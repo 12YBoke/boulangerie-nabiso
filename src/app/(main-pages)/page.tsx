@@ -58,6 +58,7 @@ export default async function Home() {
       user: {
         select: {
           id: true,
+          name: true,
         },
       },
     },
@@ -128,6 +129,7 @@ export default async function Home() {
     cardNumber: order.customer ? order.customer.customerNumber : null,
     customerId: order.customer ? order.customer.id : null,
     userId: order.user.id,
+    userName: order.user.name,
     isDate: false,
   }));
 
